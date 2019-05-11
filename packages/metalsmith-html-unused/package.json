@@ -1,0 +1,24 @@
+{
+  "name": "metalsmith-html-unused",
+  "version": "0.0.1",
+  "description": "A Metalsmith plugin to exclude files unused in HTML.",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo pass"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emmercm/metalsmith-html-unused.git"
+  },
+  "author": "Christian Emmer",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/emmercm/metalsmith-html-unused/issues"
+  },
+  "homepage": "https://github.com/emmercm/metalsmith-html-unused#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "deepmerge": "^3.2.0",
+    "minimatch": "^3.0.4"
+  }
+}
