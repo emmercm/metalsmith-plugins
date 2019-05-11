@@ -2,15 +2,14 @@
 
 version: 2
 
-executors:
-  node:
-    docker:
-      # Current LTS version
-      - image: circleci/node:10.15.3
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:10.15.3
 
 jobs:
   test:
-    executor: node
+    <<: *defaults
     steps:
       - checkout
 
@@ -34,7 +33,7 @@ jobs:
           root: ~/repo
           paths: .
   deploy:
-    executor: node
+    <<: *defaults
     steps:
       - attach_workspace:
           at: ~/repo
@@ -49,7 +48,7 @@ workflows:
   version: 2
   test-deploy:
     jobs:
-      - test:
+      - test
       - deploy:
           requires:
             - test
