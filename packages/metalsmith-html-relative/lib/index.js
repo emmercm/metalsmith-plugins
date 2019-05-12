@@ -5,17 +5,17 @@ const needles = require('needle-string');
 const path = require('path');
 const url = require('url');
 
-module.exports = options => {
-  options = deepmerge(options || {}, {
+module.exports = (options) => {
+  options = deepmerge({
     html: '**/*.html',
     tags: {
-      'a': 'href',
-      'img': 'src',
-      'link': 'href',
-      'script': 'src',
-      'form': 'action'
-    }
-  });
+      a: 'href',
+      img: 'src',
+      link: 'href',
+      script: 'src',
+      form: 'action',
+    },
+  }, options || {});
 
   const pathslash = process.platform === 'win32' ? '\\' : '/';
 
@@ -23,12 +23,12 @@ module.exports = options => {
     // For each HTML file that matches the given pattern
     Object.keys(files)
       .filter(minimatch.filter(options.html))
-      .forEach(filename => {
-        let file = files[filename];
+      .forEach((filename) => {
+        const file = files[filename];
 
         // Find file's path relative to source root
         let rootPath = '';
-        for (let i = 0; i < needles(filename, pathslash); i++) {
+        for (let i = 0; i < needles(filename, pathslash); i += 1) {
           rootPath += '../';
         }
         file.rootPath = rootPath;
@@ -36,9 +36,9 @@ module.exports = options => {
         // For each given tag
         const $ = cheerio.load(file.contents);
         Object.keys(options.tags)
-          .forEach(tag => {
+          .forEach((tag) => {
             const attribute = options.tags[tag];
-            const selector = tag + '[' + attribute + '][' + attribute + "!='']";
+            const selector = `${tag}[${attribute}][${attribute}!='']`;
 
             // For each matching element for the tag in the file
             $(selector).each((i, elem) => {
@@ -61,7 +61,7 @@ module.exports = options => {
 
               // Ignore relative links that already resolve successfully
               if (relative.startsWith(file.rootPath)) {
-                const re = new RegExp('^' + file.rootPath);
+                const re = new RegExp(`^${file.rootPath}`);
                 if (relative.replace(re, '') in files) {
                   return;
                 }
@@ -73,9 +73,9 @@ module.exports = options => {
             });
           });
 
-        file.contents = new Buffer($.html());
+        file.contents = Buffer.from($.html());
       });
 
     done();
-  }
+  };
 };
