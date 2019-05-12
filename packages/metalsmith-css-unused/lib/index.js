@@ -3,15 +3,15 @@ const minimatch = require('minimatch');
 const path = require('path');
 const uncss = require('uncss');
 
-module.exports = options => {
+module.exports = (options) => {
   options = deepmerge({
     html: '**/*.html',
     css: '**/*.css',
     output: 'uncss.css',
     uncss: {
       raw: [],
-      stylesheets: [path.join(__dirname, 'dummy.css')]
-    }
+      stylesheets: [path.join(__dirname, 'dummy.css')],
+    },
   }, options || {});
 
   return (files, metalsmith, done) => {
@@ -30,18 +30,18 @@ module.exports = options => {
       .join('\n\n');
 
     uncss(htmlContent, options.uncss, (err, output) => {
-      if(err) {
+      if (err) {
         throw err;
       }
 
       // Remove CSS files
-      htmlFiles.forEach(filename => {
+      htmlFiles.forEach((filename) => {
         delete files[filename];
       });
 
       // Create CSS file
       files[options.output] = {
-        contents: Buffer.from(output)
+        contents: Buffer.from(output),
       };
 
       done();
