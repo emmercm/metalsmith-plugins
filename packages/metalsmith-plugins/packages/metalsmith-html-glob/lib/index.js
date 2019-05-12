@@ -3,30 +3,30 @@ const deepmerge = require('deepmerge');
 const minimatch = require('minimatch');
 const url = require('url');
 
-module.exports = options => {
-  options = deepmerge(options || {}, {
+module.exports = (options) => {
+  options = deepmerge({
     html: '**/*.html',
     tags: {
-      'a': 'href',
-      'img': 'src',
-      'link': 'href',
-      'script': 'src'
-    }
-  });
+      a: 'href',
+      img: 'src',
+      link: 'href',
+      script: 'src',
+    },
+  }, options || {});
 
   return (files, metalsmith, done) => {
     // For each HTML file that matches the given pattern
     Object.keys(files)
       .filter(minimatch.filter(options.html))
-      .forEach(filename => {
-        let file = files[filename];
+      .forEach((filename) => {
+        const file = files[filename];
 
         // For each given tag
         const $ = cheerio.load(file.contents);
         Object.keys(options.tags)
-          .forEach(tag => {
+          .forEach((tag) => {
             const attribute = options.tags[tag];
-            const selector = tag + '[' + attribute + '][' + attribute + "!='']";
+            const selector = `${tag}[${attribute}][${attribute}!='']`;
 
             // For each matching element for the tag in the file
             $(selector).each((i, elem) => {
@@ -49,14 +49,12 @@ module.exports = options => {
               // Find all input files matching the glob in the tag
               const resources = Object.keys(files)
                 .filter(minimatch.filter(relativeGlob))
-                .map(resource => {
-                  return $(elem).clone().attr(attribute, resource);
-                });
+                .map(resource => $(elem).clone().attr(attribute, resource));
 
               // If files are found, add them and remove the original tag
               if (resources.length) {
                 resources
-                  .forEach(resource => {
+                  .forEach((resource) => {
                     resource.insertBefore($(elem));
                   });
                 $(elem).remove();
@@ -64,9 +62,9 @@ module.exports = options => {
             });
           });
 
-        file.contents = new Buffer($.html());
+        file.contents = Buffer.from($.html());
       });
 
     done();
-  }
+  };
 };
