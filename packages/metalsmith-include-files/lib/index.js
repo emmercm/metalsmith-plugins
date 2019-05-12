@@ -16,7 +16,6 @@ module.exports = options => (files, metalsmith, done) => {
         .forEach((file) => {
           const contents = fs.readFileSync(file);
           const key = path.join(folder, path.basename(file));
-          // eslint-disable-next-line no-param-reassign
           files[key] = {
             contents,
             mode: Mode(fs.statSync(file)).toOctal(),
