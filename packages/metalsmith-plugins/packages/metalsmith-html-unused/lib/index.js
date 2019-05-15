@@ -60,10 +60,13 @@ module.exports = (options) => {
                             });
                         }
                         return [];
-                      })),
+                      }),
+                  ),
                 ];
-              }));
-        })).filter((x, i, a) => a.indexOf(x) === i);
+              }),
+          );
+        }),
+    ).filter((x, i, a) => a.indexOf(x) === i);
 
     // For each file that matches the given pattern
     Object.keys(files)
