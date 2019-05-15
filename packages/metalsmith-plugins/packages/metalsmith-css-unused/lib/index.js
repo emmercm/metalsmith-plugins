@@ -35,7 +35,7 @@ module.exports = (options) => {
       }
 
       // Remove CSS files
-      htmlFiles.forEach((filename) => {
+      cssFiles.forEach((filename) => {
         delete files[filename];
       });
 
