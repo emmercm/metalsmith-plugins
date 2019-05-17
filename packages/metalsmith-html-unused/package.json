@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-html-unused",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A Metalsmith plugin to exclude files unused in HTML.",
   "main": "lib/index.js",
   "scripts": {
@@ -23,8 +23,8 @@
     "minimatch": "^3.0.4"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.17.2"
+    "eslint": "5.16.0",
+    "eslint-config-airbnb-base": "13.1.0",
+    "eslint-plugin-import": "2.17.2"
   }
 }
