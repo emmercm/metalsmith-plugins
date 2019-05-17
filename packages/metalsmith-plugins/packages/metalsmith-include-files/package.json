@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-include-files",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A Metalsmith plugin to include external files.",
   "main": "lib/index.js",
   "dependencies": {
@@ -8,9 +8,9 @@
     "stat-mode": "^0.3.0"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.17.2"
+    "eslint": "5.16.0",
+    "eslint-config-airbnb-base": "13.1.0",
+    "eslint-plugin-import": "2.17.2"
   },
   "scripts": {
     "lint": "eslint . --fix || true",
