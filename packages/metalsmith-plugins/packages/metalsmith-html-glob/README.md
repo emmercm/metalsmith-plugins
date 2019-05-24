@@ -5,6 +5,7 @@
 
 [![](https://badgen.net/badge/emmercm/metalsmith-html-glob/purple?icon=github)](https://github.com/emmercm/metalsmith-html-glob)
 [![](https://badgen.net/circleci/github/emmercm/metalsmith-html-glob/master?icon=circleci)](https://github.com/emmercm/metalsmith-html-glob/blob/master/.circleci/config.yml)
+[![](https://codecov.io/gh/emmercm/metalsmith-html-glob/branch/master/graph/badge.svg)](https://codecov.io/gh/emmercm/metalsmith-html-glob)
 [![](https://badgen.net/github/license/emmercm/metalsmith-html-glob?color=grey)](https://github.com/emmercm/metalsmith-html-glob/blob/master/LICENSE)
 
 A Metalsmith plugin to apply glob patterns within HTML.

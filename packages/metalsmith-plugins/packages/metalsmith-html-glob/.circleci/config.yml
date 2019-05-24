@@ -17,13 +17,18 @@ jobs:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
       - run: npm install
-      - run:
-          name: Run tests
-          command: npm test
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Run tests
+          command: npm run test:junit
+      - store_test_results:
+          path: reports
+      - run:
+          name: Codecov
+          command: bash <(curl -s https://codecov.io/bash)
 
   # https://circleci.com/docs/2.0/deployment-integrations/#npm
   publish:
