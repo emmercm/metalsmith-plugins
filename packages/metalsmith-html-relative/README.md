@@ -5,6 +5,7 @@
 
 [![](https://badgen.net/badge/emmercm/metalsmith-html-relative/purple?icon=github)](https://github.com/emmercm/metalsmith-html-relative)
 [![](https://badgen.net/circleci/github/emmercm/metalsmith-html-relative/master?icon=circleci)](https://github.com/emmercm/metalsmith-html-relative/blob/master/.circleci/config.yml)
+[![](https://codecov.io/gh/emmercm/metalsmith-html-relative/branch/master/graph/badge.svg)](https://codecov.io/gh/emmercm/metalsmith-html-relative)
 [![](https://badgen.net/github/license/emmercm/metalsmith-html-relative?color=grey)](https://github.com/emmercm/metalsmith-html-relative/blob/master/LICENSE)
 
 A Metalsmith plugin to convert to relative paths within HTML.
