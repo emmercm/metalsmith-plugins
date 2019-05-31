@@ -5,6 +5,8 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = options => (files, metalsmith, done) => {
+  options = options || {};
+
   Object.keys(options)
     .forEach((folder) => {
       let globs = options[folder];

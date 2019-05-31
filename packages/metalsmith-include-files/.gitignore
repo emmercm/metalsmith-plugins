@@ -20,6 +20,7 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
+*.lcov
 
 # nyc test coverage
 .nyc_output
@@ -85,3 +86,7 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+
+lib/fixtures/*/build/
+reports/
