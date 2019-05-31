@@ -5,6 +5,7 @@
 
 [![](https://badgen.net/badge/emmercm/metalsmith-include-files/purple?icon=github)](https://github.com/emmercm/metalsmith-include-files)
 [![](https://badgen.net/circleci/github/emmercm/metalsmith-include-files/master?icon=circleci)](https://github.com/emmercm/metalsmith-include-files/blob/master/.circleci/config.yml)
+[![](https://codecov.io/gh/emmercm/metalsmith-include-files/branch/master/graph/badge.svg)](https://codecov.io/gh/emmercm/metalsmith-include-files)
 [![](https://badgen.net/github/license/emmercm/metalsmith-include-files?color=grey)](https://github.com/emmercm/metalsmith-include-files/blob/master/LICENSE)
 
 A Metalsmith plugin to include external files.
@@ -18,7 +19,8 @@ npm install metalsmith-include-files
 ## JavaScript Usage
 
 ```javascript
-const include = require('metalsmith-include-files');
+const Metalsmith = require('metalsmith');
+const include    = require('metalsmith-include-files');
 
 Metalsmith(__dirname)
     .use(include({

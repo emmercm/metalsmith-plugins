@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-include-files",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "A Metalsmith plugin to include external files.",
   "main": "lib/index.js",
   "dependencies": {
@@ -8,13 +8,20 @@
     "stat-mode": "^0.3.0"
   },
   "devDependencies": {
+    "assert-dir-equal": "1.1.0",
     "eslint": "5.16.0",
     "eslint-config-airbnb-base": "13.1.0",
-    "eslint-plugin-import": "2.17.2"
+    "eslint-plugin-import": "2.17.2",
+    "jest": "24.8.0",
+    "jest-junit": "6.4.0",
+    "metalsmith": "2.3.0"
   },
   "scripts": {
     "lint": "eslint . --fix || true",
-    "test": "eslint ."
+    "test": "jest --verbose --coverage && eslint .",
+    "test:update": "jest --verbose --coverage --updateSnapshot",
+    "test:watch": "jest --verbose --watch",
+    "test:junit": "JEST_JUNIT_OUTPUT=reports/junit/results.xml jest --ci --runInBand --reporters=default --reporters=jest-junit"
   },
   "repository": {
     "type": "git",
