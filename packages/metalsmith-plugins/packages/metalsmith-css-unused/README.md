@@ -5,6 +5,7 @@
 
 [![](https://badgen.net/badge/emmercm/metalsmith-uncss-2/purple?icon=github)](https://github.com/emmercm/metalsmith-uncss-2)
 [![](https://badgen.net/circleci/github/emmercm/metalsmith-uncss-2/master?icon=circleci)](https://github.com/emmercm/metalsmith-uncss-2/blob/master/.circleci/config.yml)
+[![](https://codecov.io/gh/emmercm/metalsmith-uncss-2/branch/master/graph/badge.svg)](https://codecov.io/gh/emmercm/metalsmith-uncss-2)
 [![](https://badgen.net/github/license/emmercm/metalsmith-uncss-2?color=grey)](https://github.com/emmercm/metalsmith-uncss-2/blob/master/LICENSE)
 
 A Metalsmith plugin to run UnCSS stylesheet optimizer.
