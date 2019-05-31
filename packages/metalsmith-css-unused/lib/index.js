@@ -9,6 +9,7 @@ module.exports = (options) => {
     css: '**/*.css',
     output: 'uncss.css',
     uncss: {
+      banner: false,
       raw: [],
       stylesheets: [path.join(__dirname, 'dummy.css')],
     },
