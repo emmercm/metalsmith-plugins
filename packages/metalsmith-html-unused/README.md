@@ -5,6 +5,7 @@
 
 [![](https://badgen.net/badge/emmercm/metalsmith-html-unused/purple?icon=github)](https://github.com/emmercm/metalsmith-html-unused)
 [![](https://badgen.net/circleci/github/emmercm/metalsmith-html-unused/master?icon=circleci)](https://github.com/emmercm/metalsmith-html-unused/blob/master/.circleci/config.yml)
+[![](https://codecov.io/gh/emmercm/metalsmith-html-unused/branch/master/graph/badge.svg)](https://codecov.io/gh/emmercm/metalsmith-html-unused)
 [![](https://badgen.net/github/license/emmercm/metalsmith-html-unused?color=grey)](https://github.com/emmercm/metalsmith-html-unused/blob/master/LICENSE)
 
 A Metalsmith plugin to exclude files unused in HTML.
@@ -18,7 +19,8 @@ npm install metalsmith-html-unused
 ## JavaScript Usage
 
 ```javascript
-const unused = require('metalsmith-html-unused');
+const Metalsmith = require('metalsmith');
+const unused     = require('metalsmith-html-unused');
 
 Metalsmith(__dirname)
     .use(unused({
