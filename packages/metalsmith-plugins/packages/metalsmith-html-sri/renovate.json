@@ -7,8 +7,13 @@
   "timezone": "America/Detroit",
   "assignees": ["@emmercm"],
   "vulnerabilityAlerts": {
-    "labels": ["security"],
     "schedule": "at any time"
   },
+  "packageRules": [{
+    "depTypeList": ["devDependencies"],
+    "groupName": "Dev Dependencies",
+    "assignees": [],
+    "automerge": true
+  }],
   "bumpVersion": "patch"
 }
