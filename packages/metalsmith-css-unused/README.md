@@ -19,7 +19,8 @@ npm install metalsmith-uncss-2
 ## JavaScript Usage
 
 ```javascript
-const uncss = require('metalsmith-uncss-2');
+const Metalsmith = require('metalsmith');
+const uncss      = require('metalsmith-uncss-2');
 
 Metalsmith(__dirname)
     .use(uncss({

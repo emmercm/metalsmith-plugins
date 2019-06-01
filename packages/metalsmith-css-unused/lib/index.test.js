@@ -1,5 +1,5 @@
 const {
-  existsSync, readdirSync, readFileSync, statSync,
+  existsSync, mkdirSync, readdirSync, readFileSync, statSync,
 } = require('fs');
 const { join } = require('path');
 
@@ -10,6 +10,11 @@ const uncss = require('./index');
 
 const test = (dir, options) => {
   it(`should build the directory "${dir}"`, (done) => {
+    // Allow src directory to not exist / be empty and not committed
+    if (!existsSync(`${dir}/src`)) {
+      mkdirSync(`${dir}/src`);
+    }
+
     Metalsmith(`${dir}`)
       .use(uncss(options))
       .build((err) => {
@@ -17,13 +22,13 @@ const test = (dir, options) => {
           done(err);
         }
 
-        assertDir(`${dir}/expected`, `${dir}/build`);
+        assertDir(`${dir}/expected`, `${dir}/build`, { filter: () => true });
         done();
       });
   });
 };
 
-describe('metalsmith-html-glob', () => {
+describe('metalsmith-uncss-2', () => {
   const dirs = p => readdirSync(p)
     .map(f => join(p, f))
     .filter(f => statSync(f).isDirectory());

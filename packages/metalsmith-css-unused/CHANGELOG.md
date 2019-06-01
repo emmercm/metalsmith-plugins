@@ -20,4 +20,4 @@
 
 ## v0.0.1 / 2019-05-11
 
-- Initial verison.
+- Initial version.
