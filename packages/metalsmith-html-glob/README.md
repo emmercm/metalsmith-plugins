@@ -19,7 +19,8 @@ npm install metalsmith-html-glob
 ## JavaScript Usage
 
 ```javascript
-const glob = require('metalsmith-html-glob');
+const Metalsmith = require('metalsmith');
+const glob       = require('metalsmith-html-glob');
 
 Metalsmith(__dirname)
     .use(glob({
