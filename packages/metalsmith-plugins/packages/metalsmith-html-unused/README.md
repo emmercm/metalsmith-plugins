@@ -39,17 +39,18 @@ Metalsmith(__dirname)
         "href",
         "src"
     ],
-    "pattern": ""
+    "pattern": "",
+    "ignore": ""
 }
 ```
 
 ### `html`
 
-`string` - minimatch glob pattern for HTML files.
+`string` - [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for HTML files.
 
 ### `attributes`
 
-`Array` - what attributes to look for local files in:
+`Array` - HTML attributes that link to files:
 
 ```json
 {
@@ -62,11 +63,21 @@ Metalsmith(__dirname)
 
 ### `pattern`
 
-`string` - minimatch glob pattern for local files:
+`string` - [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for files to consider for removal:
 
 ```json
 {
     "pattern": "**/*.@(css|js)"
+}
+```
+
+### `ignore`
+
+`string` - [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for files to exclude from removal:
+
+```json
+{
+    "ignore": "**/*.svg"
 }
 ```
 

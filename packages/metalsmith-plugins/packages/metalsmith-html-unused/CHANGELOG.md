@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.0 / 2019-06-23
+
+- Added `ignore` option.
+
 ## v0.1.0 / 2019-05-31
 
 - Added Jest tests.
