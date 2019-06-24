@@ -11,6 +11,7 @@ module.exports = (options) => {
       'src',
     ],
     pattern: '',
+    ignore: '',
   }, options || {});
 
   return (files, metalsmith, done) => {
@@ -70,7 +71,12 @@ module.exports = (options) => {
 
     // For each file that matches the given pattern
     Object.keys(files)
-      .filter(minimatch.filter(options.pattern))
+      .filter((filename) => {
+        if (options.ignore && minimatch(filename, options.ignore)) {
+          return false;
+        }
+        return minimatch(filename, options.pattern);
+      })
       .forEach((filename) => {
         // Remove the file if it's unused
         if (resources.indexOf(filename) === -1) {
