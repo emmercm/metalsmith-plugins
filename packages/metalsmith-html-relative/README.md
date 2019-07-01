@@ -1,11 +1,12 @@
 # metalsmith-html-relative
 
 [![](https://badgen.net/npm/v/metalsmith-html-relative?icon=npm)](https://www.npmjs.com/package/metalsmith-html-relative)
-[![](https://badgen.net/npm/dw/metalsmith-html-relative?icon=npm)](https://www.npmjs.com/package/metalsmith-html-relative)
+[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-html-relative/badge.svg)](https://snyk.io/test/npm/metalsmith-html-relative)
+[![](https://badgen.net/npm/dw/metalsmith-html-relative)](https://www.npmjs.com/package/metalsmith-html-relative)
 
 [![](https://badgen.net/badge/emmercm/metalsmith-html-relative/purple?icon=github)](https://github.com/emmercm/metalsmith-html-relative)
 [![](https://badgen.net/circleci/github/emmercm/metalsmith-html-relative/master?icon=circleci)](https://github.com/emmercm/metalsmith-html-relative/blob/master/.circleci/config.yml)
-[![](https://codecov.io/gh/emmercm/metalsmith-html-relative/branch/master/graph/badge.svg)](https://codecov.io/gh/emmercm/metalsmith-html-relative)
+[![](https://badgen.net/codecov/c/github/emmercm/metalsmith-html-relative/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-html-relative)
 [![](https://badgen.net/github/license/emmercm/metalsmith-html-relative?color=grey)](https://github.com/emmercm/metalsmith-html-relative/blob/master/LICENSE)
 
 A Metalsmith plugin to convert to relative paths within HTML.
@@ -47,7 +48,7 @@ Metalsmith(__dirname)
 
 ### `html`
 
-`string` - minimatch glob pattern for HTML files.
+`string` - [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for HTML files.
 
 ### `tags`
 
