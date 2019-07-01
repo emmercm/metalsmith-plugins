@@ -1,11 +1,12 @@
 # metalsmith-html-sri
 
 [![](https://badgen.net/npm/v/metalsmith-html-sri?icon=npm)](https://www.npmjs.com/package/metalsmith-html-sri)
-[![](https://badgen.net/npm/dw/metalsmith-html-sri?icon=npm)](https://www.npmjs.com/package/metalsmith-html-sri)
+[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-html-sri/badge.svg)](https://snyk.io/test/npm/metalsmith-html-sri)
+[![](https://badgen.net/npm/dw/metalsmith-html-sri)](https://www.npmjs.com/package/metalsmith-html-sri)
 
 [![](https://badgen.net/badge/emmercm/metalsmith-html-sri/purple?icon=github)](https://github.com/emmercm/metalsmith-html-sri)
 [![](https://badgen.net/circleci/github/emmercm/metalsmith-html-sri/master?icon=circleci)](https://github.com/emmercm/metalsmith-html-sri/blob/master/.circleci/config.yml)
-[![](https://codecov.io/gh/emmercm/metalsmith-html-sri/branch/master/graph/badge.svg)](https://codecov.io/gh/emmercm/metalsmith-html-sri)
+[![](https://badgen.net/codecov/c/github/emmercm/metalsmith-html-sri/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-html-sri)
 [![](https://badgen.net/github/license/emmercm/metalsmith-html-sri?color=grey)](https://github.com/emmercm/metalsmith-html-sri/blob/master/LICENSE)
 
 A Metalsmith plugin to add subresource integrity attributes to HTML.
@@ -51,7 +52,7 @@ Metalsmith(__dirname)
 
 ### `html`
 
-`string` - minimatch glob pattern for HTML files.
+`string` - [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for HTML files.
 
 ### `tags`
 
