@@ -1,11 +1,12 @@
 # metalsmith-html-glob
 
 [![](https://badgen.net/npm/v/metalsmith-html-glob?icon=npm)](https://www.npmjs.com/package/metalsmith-html-glob)
-[![](https://badgen.net/npm/dw/metalsmith-html-glob?icon=npm)](https://www.npmjs.com/package/metalsmith-html-glob)
+[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-html-glob/badge.svg)](https://snyk.io/test/npm/metalsmith-html-glob)
+[![](https://badgen.net/npm/dw/metalsmith-html-glob)](https://www.npmjs.com/package/metalsmith-html-glob)
 
 [![](https://badgen.net/badge/emmercm/metalsmith-html-glob/purple?icon=github)](https://github.com/emmercm/metalsmith-html-glob)
 [![](https://badgen.net/circleci/github/emmercm/metalsmith-html-glob/master?icon=circleci)](https://github.com/emmercm/metalsmith-html-glob/blob/master/.circleci/config.yml)
-[![](https://codecov.io/gh/emmercm/metalsmith-html-glob/branch/master/graph/badge.svg)](https://codecov.io/gh/emmercm/metalsmith-html-glob)
+[![](https://badgen.net/codecov/c/github/emmercm/metalsmith-html-glob/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-html-glob)
 [![](https://badgen.net/github/license/emmercm/metalsmith-html-glob?color=grey)](https://github.com/emmercm/metalsmith-html-glob/blob/master/LICENSE)
 
 A Metalsmith plugin to apply glob patterns within HTML.
@@ -46,7 +47,7 @@ Metalsmith(__dirname)
 
 ### `html`
 
-`string` - minimatch glob pattern for HTML files.
+`string` - [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for HTML files.
 
 ### `tags`
 
