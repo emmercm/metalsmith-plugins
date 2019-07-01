@@ -2,7 +2,20 @@
   "name": "metalsmith-html-glob",
   "version": "0.1.2",
   "description": "A Metalsmith plugin to apply glob patterns within HTML.",
-  "main": "lib/index.js",
+  "homepage": "https://github.com/emmercm/metalsmith-html-glob#readme",
+  "bugs": {
+    "url": "https://github.com/emmercm/metalsmith-html-glob/issues"
+  },
+  "license": "GPL-3.0-or-later",
+  "author": "Christian Emmer",
+  "files": [
+    "/lib"
+  ],
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emmercm/metalsmith-html-glob.git"
+  },
   "scripts": {
     "lint": "eslint . --fix || true",
     "test": "jest --verbose --coverage && eslint .",
@@ -10,16 +23,11 @@
     "test:watch": "jest --verbose --watch",
     "test:junit": "JEST_JUNIT_OUTPUT=reports/junit/results.xml jest --ci --runInBand --reporters=default --reporters=jest-junit"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/emmercm/metalsmith-html-glob.git"
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "deepmerge": "^3.2.0",
+    "minimatch": "^3.0.4"
   },
-  "author": "Christian Emmer",
-  "license": "GPL-3.0-or-later",
-  "bugs": {
-    "url": "https://github.com/emmercm/metalsmith-html-glob/issues"
-  },
-  "homepage": "https://github.com/emmercm/metalsmith-html-glob#readme",
   "devDependencies": {
     "assert-dir-equal": "1.1.0",
     "eslint": "6.0.1",
@@ -28,10 +36,5 @@
     "jest": "24.8.0",
     "jest-junit": "6.4.0",
     "metalsmith": "2.3.0"
-  },
-  "dependencies": {
-    "cheerio": "^1.0.0-rc.3",
-    "deepmerge": "^3.2.0",
-    "minimatch": "^3.0.4"
   }
 }
