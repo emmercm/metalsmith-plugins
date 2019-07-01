@@ -1,11 +1,12 @@
 # metalsmith-uncss-2
 
 [![](https://badgen.net/npm/v/metalsmith-uncss-2?icon=npm)](https://www.npmjs.com/package/metalsmith-uncss-2)
-[![](https://badgen.net/npm/dw/metalsmith-uncss-2?icon=npm)](https://www.npmjs.com/package/metalsmith-uncss-2)
+[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-uncss-2/badge.svg)](https://snyk.io/test/npm/metalsmith-uncss-2)
+[![](https://badgen.net/npm/dw/metalsmith-uncss-2)](https://www.npmjs.com/package/metalsmith-uncss-2)
 
 [![](https://badgen.net/badge/emmercm/metalsmith-uncss-2/purple?icon=github)](https://github.com/emmercm/metalsmith-uncss-2)
 [![](https://badgen.net/circleci/github/emmercm/metalsmith-uncss-2/master?icon=circleci)](https://github.com/emmercm/metalsmith-uncss-2/blob/master/.circleci/config.yml)
-[![](https://codecov.io/gh/emmercm/metalsmith-uncss-2/branch/master/graph/badge.svg)](https://codecov.io/gh/emmercm/metalsmith-uncss-2)
+[![](https://badgen.net/codecov/c/github/emmercm/metalsmith-uncss-2/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-uncss-2)
 [![](https://badgen.net/github/license/emmercm/metalsmith-uncss-2?color=grey)](https://github.com/emmercm/metalsmith-uncss-2/blob/master/LICENSE)
 
 A Metalsmith plugin to run UnCSS stylesheet optimizer.
@@ -42,11 +43,11 @@ Metalsmith(__dirname)
 
 ### `html`
 
-`string` - minimatch glob pattern for HTML files.
+`string` - [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for HTML files.
 
 ### `css`
 
-`string` - minimatch glob pattern for CSS files.
+`string` - [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for CSS files.
 
 ### `output`
 
