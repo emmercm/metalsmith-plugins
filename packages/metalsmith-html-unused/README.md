@@ -1,11 +1,12 @@
 # metalsmith-html-unused
 
 [![](https://badgen.net/npm/v/metalsmith-html-unused?icon=npm)](https://www.npmjs.com/package/metalsmith-html-unused)
-[![](https://badgen.net/npm/dw/metalsmith-html-unused?icon=npm)](https://www.npmjs.com/package/metalsmith-html-unused)
+[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-html-unused/badge.svg)](https://snyk.io/test/npm/metalsmith-html-unused)
+[![](https://badgen.net/npm/dw/metalsmith-html-unused)](https://www.npmjs.com/package/metalsmith-html-unused)
 
 [![](https://badgen.net/badge/emmercm/metalsmith-html-unused/purple?icon=github)](https://github.com/emmercm/metalsmith-html-unused)
 [![](https://badgen.net/circleci/github/emmercm/metalsmith-html-unused/master?icon=circleci)](https://github.com/emmercm/metalsmith-html-unused/blob/master/.circleci/config.yml)
-[![](https://codecov.io/gh/emmercm/metalsmith-html-unused/branch/master/graph/badge.svg)](https://codecov.io/gh/emmercm/metalsmith-html-unused)
+[![](https://badgen.net/codecov/c/github/emmercm/metalsmith-html-unused/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-html-unused)
 [![](https://badgen.net/github/license/emmercm/metalsmith-html-unused?color=grey)](https://github.com/emmercm/metalsmith-html-unused/blob/master/LICENSE)
 
 A Metalsmith plugin to exclude files unused in HTML.
