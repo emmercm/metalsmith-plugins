@@ -2,7 +2,20 @@
   "name": "metalsmith-html-unused",
   "version": "0.2.2",
   "description": "A Metalsmith plugin to exclude files unused in HTML.",
-  "main": "lib/index.js",
+  "homepage": "https://github.com/emmercm/metalsmith-html-unused#readme",
+  "bugs": {
+    "url": "https://github.com/emmercm/metalsmith-html-unused/issues"
+  },
+  "license": "GPL-3.0-or-later",
+  "author": "Christian Emmer",
+  "files": [
+    "/lib"
+  ],
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emmercm/metalsmith-html-unused.git"
+  },
   "scripts": {
     "lint": "eslint . --fix || true",
     "test": "jest --verbose --coverage && eslint .",
@@ -10,16 +23,6 @@
     "test:watch": "jest --verbose --watch",
     "test:junit": "JEST_JUNIT_OUTPUT=reports/junit/results.xml jest --ci --runInBand --reporters=default --reporters=jest-junit"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/emmercm/metalsmith-html-unused.git"
-  },
-  "author": "Christian Emmer",
-  "license": "GPL-3.0-or-later",
-  "bugs": {
-    "url": "https://github.com/emmercm/metalsmith-html-unused/issues"
-  },
-  "homepage": "https://github.com/emmercm/metalsmith-html-unused#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
     "deepmerge": "^3.2.0",
