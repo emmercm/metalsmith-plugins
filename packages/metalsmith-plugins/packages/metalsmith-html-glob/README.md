@@ -14,7 +14,7 @@ A Metalsmith plugin to apply glob patterns within HTML.
 ## Installation
 
 ```bash
-npm install metalsmith-html-glob
+npm install --save metalsmith-html-glob
 ```
 
 ## JavaScript Usage
