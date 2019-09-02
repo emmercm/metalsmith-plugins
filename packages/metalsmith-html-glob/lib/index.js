@@ -50,7 +50,7 @@ module.exports = (options) => {
               const resources = Object.keys(files)
                 .filter(minimatch.filter(relativeGlob))
                 .sort()
-                .map(resource => $(elem).clone().attr(attribute, resource));
+                .map((resource) => $(elem).clone().attr(attribute, resource));
 
               // If files are found, add them and remove the original tag
               if (resources.length) {
