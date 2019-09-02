@@ -4,7 +4,7 @@ const Mode = require('stat-mode');
 const fs = require('fs');
 const path = require('path');
 
-module.exports = options => (files, metalsmith, done) => {
+module.exports = (options) => (files, metalsmith, done) => {
   options = options || {};
 
   Object.keys(options)

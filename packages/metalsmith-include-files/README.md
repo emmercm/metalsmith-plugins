@@ -14,7 +14,7 @@ A Metalsmith plugin to include external files.
 ## Installation
 
 ```bash
-npm install metalsmith-include-files
+npm install --save metalsmith-include-files
 ```
 
 ## JavaScript Usage
