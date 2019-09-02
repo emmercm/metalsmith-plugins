@@ -14,7 +14,7 @@ A Metalsmith plugin to add subresource integrity attributes to HTML.
 ## Installation
 
 ```bash
-npm install metalsmith-html-sri
+npm install --save metalsmith-html-sri
 ```
 
 ## JavaScript Usage

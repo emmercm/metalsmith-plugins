@@ -60,7 +60,7 @@ module.exports = (options) => {
                 if (typeof files[subresource].integrity === 'undefined') {
                   // https://www.w3.org/TR/2016/REC-SRI-20160623/#the-integrity-attribute
                   files[subresource].integrity = options.algorithm
-                    .map(algorithm => `${algorithm}-${crypto.createHash(algorithm).update(files[subresource].contents).digest('base64')}`)
+                    .map((algorithm) => `${algorithm}-${crypto.createHash(algorithm).update(files[subresource].contents).digest('base64')}`)
                     .join(' ');
                 }
 
@@ -83,7 +83,7 @@ module.exports = (options) => {
                   if (!Object.prototype.hasOwnProperty.call(remoteSubresources, uri)) {
                     const response = request('GET', uri);
                     remoteSubresources[uri] = options.algorithm
-                      .map(algorithm => `${algorithm}-${crypto.createHash(algorithm).update(response.body).digest('base64')}`)
+                      .map((algorithm) => `${algorithm}-${crypto.createHash(algorithm).update(response.body).digest('base64')}`)
                       .join(' ');
                   }
 
