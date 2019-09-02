@@ -19,15 +19,15 @@ module.exports = (options) => {
     // Build list of HTML content
     const htmlFiles = Object.keys(files)
       .filter(minimatch.filter(options.html))
-      .map(filename => filename);
-    const htmlContent = htmlFiles.map(filename => files[filename].contents.toString());
+      .map((filename) => filename);
+    const htmlContent = htmlFiles.map((filename) => files[filename].contents.toString());
 
     // Build string of CSS content
     const cssFiles = Object.keys(files)
       .filter(minimatch.filter(options.css))
-      .map(filename => filename);
+      .map((filename) => filename);
     options.uncss.raw = cssFiles
-      .map(filename => files[filename].contents.toString())
+      .map((filename) => files[filename].contents.toString())
       .join('\n\n');
 
     uncss(htmlContent, options.uncss, (err, output) => {
