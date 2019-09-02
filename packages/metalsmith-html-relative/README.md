@@ -14,7 +14,7 @@ A Metalsmith plugin to convert to relative paths within HTML.
 ## Installation
 
 ```bash
-npm install metalsmith-html-relative
+npm install --save metalsmith-html-relative
 ```
 
 ## JavaScript Usage
