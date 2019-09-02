@@ -14,7 +14,7 @@ A Metalsmith plugin to run UnCSS stylesheet optimizer.
 ## Installation
 
 ```bash
-npm install metalsmith-uncss-2
+npm install --save metalsmith-uncss-2
 ```
 
 ## JavaScript Usage
