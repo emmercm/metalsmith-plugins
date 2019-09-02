@@ -34,19 +34,19 @@ module.exports = (options) => {
                   ...$(selector)
                     .map((i, elem) => path.join(path.dirname(filename), $(elem).attr(attribute)))
                     .get()
-                    .filter(resource => resource in files),
+                    .filter((resource) => resource in files),
 
                   // Manifest-referenced resources
                   ...[].concat(
                     ...$(`${selector}[rel="manifest"]`)
                       .map((i, elem) => path.join(path.dirname(filename), $(elem).attr(attribute)))
                       .get()
-                      .filter(resource => resource in files)
+                      .filter((resource) => resource in files)
                       .map((resource) => {
                         const contents = JSON.parse(files[resource].contents);
                         if (Object.prototype.hasOwnProperty.call(contents, 'icons')) {
                           return contents.icons
-                            .filter(icon => Object.prototype.hasOwnProperty.call(icon, 'src'))
+                            .filter((icon) => Object.prototype.hasOwnProperty.call(icon, 'src'))
                             .map((icon) => {
                               // Get rid of leading slash
                               const relative = icon.src.replace(/^\//, '');

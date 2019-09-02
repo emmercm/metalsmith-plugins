@@ -14,7 +14,7 @@ A Metalsmith plugin to exclude files unused in HTML.
 ## Installation
 
 ```bash
-npm install metalsmith-html-unused
+npm install --save metalsmith-html-unused
 ```
 
 ## JavaScript Usage
