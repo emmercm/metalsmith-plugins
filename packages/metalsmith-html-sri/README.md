@@ -5,7 +5,6 @@
 [![](https://badgen.net/npm/dw/metalsmith-html-sri)](https://www.npmjs.com/package/metalsmith-html-sri)
 
 [![](https://badgen.net/badge/emmercm/metalsmith-html-sri/purple?icon=github)](https://github.com/emmercm/metalsmith-html-sri)
-[![](https://badgen.net/circleci/github/emmercm/metalsmith-html-sri/master?icon=circleci)](https://github.com/emmercm/metalsmith-html-sri/blob/master/.circleci/config.yml)
 [![](https://badgen.net/codecov/c/github/emmercm/metalsmith-html-sri/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-html-sri)
 [![](https://badgen.net/github/license/emmercm/metalsmith-html-sri?color=grey)](https://github.com/emmercm/metalsmith-html-sri/blob/master/LICENSE)
 
@@ -46,6 +45,7 @@ Metalsmith(__dirname)
             "selector": ":not([type]), [type!=\"module\"]"
         }
     },
+    "ignoreResources": [],
     "algorithm": "sha384"
 }
 ```
@@ -73,6 +73,18 @@ Metalsmith(__dirname)
 }
 ```
 
+### `ignoreResources`
+
+`Array` - regular expressions of resources to be ignored:
+
+```json
+{
+    "ignoreResources": [
+        "fonts\\.googleapis\\.com"
+    ]
+}
+```
+
 ### `algorithm`
 
 `Array|string` - hashing algorithm(s) to use.
@@ -84,13 +96,13 @@ Metalsmith(__dirname)
 Given a file tree:
 
 ```
-/
-|-- static/
-|   |-- css/
-|   |   |-- bootstrap.min.css
-|   |-- js/
-|   |   |-- bootstrap.bundle.min.js
-|-- index.html
+.
+├── index.html
+└── static
+    ├── bootstrap.bundle.min.js
+    ├── css
+    │   └── bootstrap.min.css
+    └── js
 ```
 
 And `index.html`:

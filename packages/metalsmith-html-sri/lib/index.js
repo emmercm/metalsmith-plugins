@@ -1,3 +1,5 @@
+'use strict';
+
 const cheerio = require('cheerio');
 const crypto = require('crypto');
 const deepmerge = require('deepmerge');
@@ -22,6 +24,7 @@ module.exports = (options) => {
         selector: ':not([type]), [type!="module"]',
       },
     },
+    ignoreResources: [],
     // https://www.w3.org/TR/2016/REC-SRI-20160623/#hash-collision-attacks
     algorithm: 'sha384',
   }, options || {});
@@ -29,7 +32,7 @@ module.exports = (options) => {
     options.algorithm = [options.algorithm];
   }
 
-  const remoteSubresources = {};
+  const remoteResources = {};
 
   return (files, metalsmith, done) => {
     // For each HTML file that matches the given pattern
@@ -52,24 +55,32 @@ module.exports = (options) => {
             // For each matching element for the tag in the file
             $elems.each((i, elem) => {
               const uri = $(elem).attr(attribute);
-              const subresource = path.join(path.dirname(filename), uri);
+              const resource = path.join(path.dirname(filename), uri);
 
-              if (subresource in files) {
-                // Add/overwrite integrity attribute of local subresources
-                // Only calculate file hash once
-                if (typeof files[subresource].integrity === 'undefined') {
+              // Skip ignored resources
+              let ignore = false;
+              options.ignoreResources.forEach((ignoreResource) => {
+                const re = new RegExp(ignoreResource);
+                ignore = re.test(resource);
+              });
+              if (ignore) {
+                return;
+              }
+
+              if (resource in files) {
+                // Add/overwrite integrity attribute of local resources
+
+                // Only calculate resource hash once
+                if (typeof files[resource].integrity === 'undefined') {
                   // https://www.w3.org/TR/2016/REC-SRI-20160623/#the-integrity-attribute
-                  files[subresource].integrity = options.algorithm
-                    .map((algorithm) => `${algorithm}-${crypto.createHash(algorithm).update(files[subresource].contents).digest('base64')}`)
+                  files[resource].integrity = options.algorithm
+                    .map((algorithm) => `${algorithm}-${crypto.createHash(algorithm).update(files[resource].contents).digest('base64')}`)
                     .join(' ');
                 }
 
-                $(elem).attr('integrity', files[subresource].integrity);
+                $(elem).attr('integrity', files[resource].integrity);
               } else {
-                // https://github.com/google/fonts/issues/473
-                if (uri.indexOf('fonts.googleapis.com') !== -1) {
-                  return;
-                }
+                // Add integrity attribute to remote resources
 
                 // Skip bad URLs
                 const parsedUri = url.parse(uri);
@@ -77,20 +88,22 @@ module.exports = (options) => {
                   return;
                 }
 
-                // Add integrity attribute to remote subresources
-                if ($(elem).not('[integrity][integrity!=""]')) {
-                  // Only calculate file hash once
-                  if (!Object.prototype.hasOwnProperty.call(remoteSubresources, uri)) {
-                    const response = request('GET', uri);
-                    remoteSubresources[uri] = options.algorithm
-                      .map((algorithm) => `${algorithm}-${crypto.createHash(algorithm).update(response.body).digest('base64')}`)
-                      .join(' ');
-                  }
-
-                  $(elem).attr('integrity', remoteSubresources[uri]);
+                // Don't overwrite valid integrity attributes
+                if ($(elem).is('[integrity][integrity!=""]')) {
+                  return;
                 }
 
-                // Enforce crossorigin attribute for non-local subresources with integrity attribute
+                // Only calculate resource hash once
+                if (!Object.prototype.hasOwnProperty.call(remoteResources, uri)) {
+                  const response = request('GET', uri);
+                  remoteResources[uri] = options.algorithm
+                    .map((algorithm) => `${algorithm}-${crypto.createHash(algorithm).update(response.body).digest('base64')}`)
+                    .join(' ');
+                }
+
+                $(elem).attr('integrity', remoteResources[uri]);
+
+                // Enforce crossorigin attribute for non-local resources with integrity attribute
                 //  https://www.w3.org/TR/2016/REC-SRI-20160623/#cross-origin-data-leakage
                 if ($(elem).is('[integrity][integrity!=""]')
                   && $(elem).is('[crossorigin][crossorigin=""], :not([crossorigin])')
