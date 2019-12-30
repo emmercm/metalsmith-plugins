@@ -55,18 +55,17 @@ module.exports = (options) => {
             // For each matching element for the tag in the file
             $elems.each((i, elem) => {
               const uri = $(elem).attr(attribute);
-              const resource = path.join(path.dirname(filename), uri);
 
               // Skip ignored resources
-              let ignore = false;
-              options.ignoreResources.forEach((ignoreResource) => {
+              const ignore = options.ignoreResources.some((ignoreResource) => {
                 const re = new RegExp(ignoreResource);
-                ignore = re.test(resource);
+                return re.test(uri);
               });
               if (ignore) {
                 return;
               }
 
+              const resource = path.join(path.dirname(filename), uri);
               if (resource in files) {
                 // Add/overwrite integrity attribute of local resources
 
