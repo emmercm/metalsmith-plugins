@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.2.1 / 2019-12-29
+
+- Fixed `ignoreResources` not ignoring some resources.
+- Fixed `ignoreResources` to correctly use resource URI.
+
 ## v0.2.0 / 2019-12-29
 
 - Added `ignoreResources` option.
