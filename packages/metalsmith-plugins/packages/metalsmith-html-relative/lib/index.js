@@ -1,3 +1,5 @@
+'use strict';
+
 const cheerio = require('cheerio');
 const deepmerge = require('deepmerge');
 const minimatch = require('minimatch');
@@ -10,7 +12,7 @@ module.exports = (options) => {
     html: '**/*.html',
     tags: {
       a: 'href',
-      img: 'src',
+      img: ['src', 'data-src'],
       link: 'href',
       script: 'src',
       form: 'action',
@@ -25,6 +27,7 @@ module.exports = (options) => {
       .filter(minimatch.filter(options.html))
       .forEach((filename) => {
         const file = files[filename];
+        const $ = cheerio.load(file.contents);
 
         // Find file's path relative to source root
         let rootPath = '';
@@ -34,42 +37,47 @@ module.exports = (options) => {
         file.rootPath = rootPath;
 
         // For each given tag
-        const $ = cheerio.load(file.contents);
         Object.keys(options.tags)
           .forEach((tag) => {
-            const attribute = options.tags[tag];
-            const selector = `${tag}[${attribute}][${attribute}!='']`;
+            let attributes = options.tags[tag];
+            if (!Array.isArray(attributes)) {
+              attributes = [attributes];
+            }
 
-            // For each matching element for the tag in the file
-            $(selector).each((i, elem) => {
-              const resource = $(elem).attr(attribute);
+            attributes.forEach((attribute) => {
+              const selector = `${tag}[${attribute}][${attribute}!='']`;
 
-              // Ignore non-local resources
-              const resourceURL = url.parse(resource);
-              if (resourceURL.protocol) {
-                return;
-              }
+              // For each matching element for the tag in the file
+              $(selector).each((i, elem) => {
+                const resource = $(elem).attr(attribute);
 
-              // Ignore anchor links
-              if (resource.startsWith('#')) {
-                return;
-              }
-
-              // Get rid of leading slash
-              const relative = resource.replace(/^\//, '');
-              $(elem).attr(attribute, relative);
-
-              // Ignore relative links that already resolve successfully
-              if (relative.startsWith(file.rootPath)) {
-                const re = new RegExp(`^${file.rootPath}`);
-                if (relative.replace(re, '') in files) {
+                // Ignore non-local resources
+                const resourceURL = url.parse(resource);
+                if (resourceURL.protocol) {
                   return;
                 }
-              }
 
-              // Change to a relative link
-              const joined = path.join(file.rootPath, relative);
-              $(elem).attr(attribute, joined);
+                // Ignore anchor links
+                if (resource.startsWith('#')) {
+                  return;
+                }
+
+                // Get rid of leading slash
+                const relative = resource.replace(/^\//, '');
+                $(elem).attr(attribute, relative);
+
+                // Ignore relative links that already resolve successfully
+                if (relative.startsWith(file.rootPath)) {
+                  const re = new RegExp(`^${file.rootPath}`);
+                  if (relative.replace(re, '') in files) {
+                    return;
+                  }
+                }
+
+                // Change to a relative link
+                const joined = path.join(file.rootPath, relative);
+                $(elem).attr(attribute, joined);
+              });
             });
           });
 
