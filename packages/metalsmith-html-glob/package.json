@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-html-glob",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "A Metalsmith plugin to apply glob patterns within HTML.",
   "homepage": "https://github.com/emmercm/metalsmith-html-glob#readme",
   "bugs": {

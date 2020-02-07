@@ -5,7 +5,6 @@
 [![](https://badgen.net/npm/dw/metalsmith-html-glob)](https://www.npmjs.com/package/metalsmith-html-glob)
 
 [![](https://badgen.net/badge/emmercm/metalsmith-html-glob/purple?icon=github)](https://github.com/emmercm/metalsmith-html-glob)
-[![](https://badgen.net/circleci/github/emmercm/metalsmith-html-glob/master?icon=circleci)](https://github.com/emmercm/metalsmith-html-glob/blob/master/.circleci/config.yml)
 [![](https://badgen.net/codecov/c/github/emmercm/metalsmith-html-glob/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-html-glob)
 [![](https://badgen.net/github/license/emmercm/metalsmith-html-glob?color=grey)](https://github.com/emmercm/metalsmith-html-glob/blob/master/LICENSE)
 

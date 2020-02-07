@@ -1,3 +1,5 @@
+'use strict';
+
 const {
   existsSync, mkdirSync, readdirSync, readFileSync, statSync,
 } = require('fs');
@@ -22,7 +24,7 @@ const test = (dir, options) => {
           done(err);
         }
 
-        assertDir(`${dir}/expected`, `${dir}/build`, { filter: () => true });
+        assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
         done();
       });
   });
