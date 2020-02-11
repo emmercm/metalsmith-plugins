@@ -1,0 +1,8 @@
+{
+  "options": {
+    "htmllint": {
+      "doctype-first": false,
+      "head-req-title": false
+    }
+  }
+}
