@@ -46,14 +46,16 @@ Type: `Object` Default:
 ```json
 {
     "attr-bans": [
-        "align", "alink", "background", "bgcolor", "border", "cellpadding", "cellspacing", "char", "charoff", "clear", "compact", "frame", "frameborder", "height", "hspace", "link", "marginheight", "marginwidth", "noshade", "nowrap", "rules", "scrolling", "size", "text", "type", "valign", "vlink", "vspace", "width"
+        "align", "alink", "background", "bgcolor", "border", "cellpadding", "cellspacing", "char", "charoff", "clear", "compact", "frame", "frameborder", "height", "hspace", "link", "marginheight", "marginwidth", "noshade", "nowrap", "rules", "scrolling", "size", "text", "valign", "vlink", "vspace", "width"
     ],
     "attr-req-value": false,
     "doctype-first": true,
+    "id-class-style": false,
     "indent-style": false,
     "indent-width": false,
     "line-end-style": false,
     "line-no-trailing-whitespace": false,
+    "spec-char-escape": false,
     "tag-bans": [
         "acronym", "applet", "basefont", "big", "center", "dir", "font", "frame", "frameset", "isindex", "noframes", "strike", "tt"
     ],
