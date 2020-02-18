@@ -1,4 +1,0 @@
-{
-  "pattern": "**/*.@(css|js|json)",
-  "ignore": "**/*.css"
-}

@@ -1,3 +1,5 @@
+'use strict';
+
 const cheerio = require('cheerio');
 const deepmerge = require('deepmerge');
 const minimatch = require('minimatch');
@@ -5,14 +7,16 @@ const path = require('path');
 
 module.exports = (options) => {
   options = deepmerge({
-    html: '**/*.html',
-    attributes: [
-      'href',
-      'src',
-    ],
     pattern: '',
     ignore: '',
-  }, options || {});
+    html: '**/*.html',
+    attributes: [
+      'href', // <a>, <link>
+      'src', // <img>, <script>
+      'data-src', // <img>
+      'content', // <meta>
+    ],
+  }, options || {}, { arrayMerge: (destinationArray, sourceArray) => sourceArray });
 
   return (files, metalsmith, done) => {
     const resources = [].concat(
