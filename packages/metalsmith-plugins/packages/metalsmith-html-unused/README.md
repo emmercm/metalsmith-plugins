@@ -1,13 +1,15 @@
 # metalsmith-html-unused
 
-[![](https://badgen.net/npm/v/metalsmith-html-unused?icon=npm)](https://www.npmjs.com/package/metalsmith-html-unused)
-[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-html-unused/badge.svg)](https://snyk.io/test/npm/metalsmith-html-unused)
-[![](https://badgen.net/npm/dw/metalsmith-html-unused)](https://www.npmjs.com/package/metalsmith-html-unused)
+[![npm Version](https://badgen.net/npm/v/metalsmith-html-unused?icon=npm)](https://www.npmjs.com/package/metalsmith-html-unused)
+[![node Version](https://badgen.net/npm/node/metalsmith-html-unused)](https://github.com/emmercm/metalsmith-html-unused/blob/master/package.json)
+[![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-html-unused)](https://www.npmjs.com/package/metalsmith-html-unused)
 
-[![](https://badgen.net/badge/emmercm/metalsmith-html-unused/purple?icon=github)](https://github.com/emmercm/metalsmith-html-unused)
-[![](https://badgen.net/circleci/github/emmercm/metalsmith-html-unused/master?icon=circleci)](https://github.com/emmercm/metalsmith-html-unused/blob/master/.circleci/config.yml)
-[![](https://badgen.net/codecov/c/github/emmercm/metalsmith-html-unused/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-html-unused)
-[![](https://badgen.net/github/license/emmercm/metalsmith-html-unused?color=grey)](https://github.com/emmercm/metalsmith-html-unused/blob/master/LICENSE)
+[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-html-unused/badge.svg)](https://snyk.io/test/npm/metalsmith-html-unused)
+[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/metalsmith-html-unused/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-html-unused)
+[![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-html-unused?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-html-unused/maintainability)
+
+[![GitHub](https://badgen.net/badge/emmercm/metalsmith-html-unused/purple?icon=github)](https://github.com/emmercm/metalsmith-html-unused)
+[![License](https://badgen.net/github/license/emmercm/metalsmith-html-unused?color=grey)](https://github.com/emmercm/metalsmith-html-unused/blob/master/LICENSE)
 
 A Metalsmith plugin to exclude files unused in HTML.
 
@@ -27,74 +29,52 @@ Metalsmith(__dirname)
     .use(unused({
         // options here
     }))
+    .build((err) => {
+        if (err) {
+            throw err;
+        }
+    });
 ```
 
 ## Options
 
-### Default Options
+### `pattern` (required)
 
-```json
-{
-    "html": "**/*.html",
-    "attributes": [
-        "href",
-        "src"
-    ],
-    "pattern": "",
-    "ignore": ""
-}
-```
+Type: `string`
 
-### `html`
+A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for files to consider for removal.
 
-`string` - [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for HTML files.
+### `ignore` (optional)
 
-### `attributes`
+Type: `string`
 
-`Array` - HTML attributes that link to files:
+A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for files to exclude from removal.
 
-```json
-{
-    "attributes": [
-        "href",
-        "src"
-    ]
-}
-```
+### `html` (optional)
 
-### `pattern`
+Type: `string` Default: `**/*.html`
 
-`string` - [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for files to consider for removal:
+A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern to find HTML files.
 
-```json
-{
-    "pattern": "**/*.@(css|js)"
-}
-```
+### `attributes` (optional)
 
-### `ignore`
+Type: `string[]` Default: `["href", "src", "data-src", "content"]`
 
-`string` - [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for files to exclude from removal:
-
-```json
-{
-    "ignore": "**/*.svg"
-}
-```
+An array of HTML attributes that link to files.
 
 ## Example
 
 Given a file tree:
 
-```
-/
-|-- static/
-|   |-- css/
-|   |   |-- bootstrap.min.css
-|   |-- js/
-|   |   |-- bootstrap.bundle.min.js
-|   |   |-- scrollreveal.min.js
-|-- index.html
+```text
+.
+├── index.html
+└── static
+    ├── css
+    │   └── bootstrap.min.css
+    └── js
+        ├── bootstrap.bundle.min.js
+        └── scrollreveal.min.js
 ```
 
 And `index.html`:

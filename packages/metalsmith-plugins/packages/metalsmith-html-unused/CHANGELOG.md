@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.0 / 2020-02-17
+
+- Added `"data-src"` and `"content"` as defaults to `attributes`.
+
 ## v0.2.0 / 2019-06-23
 
 - Added `ignore` option.

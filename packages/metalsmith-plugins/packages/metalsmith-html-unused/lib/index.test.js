@@ -1,3 +1,5 @@
+'use strict';
+
 const {
   existsSync, mkdirSync, readdirSync, readFileSync, statSync,
 } = require('fs');
@@ -8,7 +10,7 @@ const assertDir = require('assert-dir-equal');
 
 const unused = require('./index');
 
-const test = (dir, options) => {
+const test = (dir, config) => {
   it(`should build the directory "${dir}"`, (done) => {
     // Allow src directory to not exist / be empty and not committed
     if (!existsSync(`${dir}/src`)) {
@@ -16,13 +18,22 @@ const test = (dir, options) => {
     }
 
     Metalsmith(`${dir}`)
-      .use(unused(options))
+      .use(unused(config.options))
       .build((err) => {
-        if (err) {
-          done(err);
+        if (config.error) {
+          expect(err)
+            .toBe(config.error);
+        } else {
+          expect(err)
+            .toBeNull();
         }
 
-        assertDir(`${dir}/expected`, `${dir}/build`, { filter: () => true });
+        if (err) {
+          done();
+          return;
+        }
+
+        assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
         done();
       });
   });
@@ -33,7 +44,7 @@ describe('metalsmith-html-unused', () => {
     .map((f) => join(p, f))
     .filter((f) => statSync(f).isDirectory());
   dirs('lib/fixtures').forEach((dir) => {
-    const options = existsSync(`${dir}/options.json`) ? JSON.parse(readFileSync(`${dir}/options.json`).toString()) : null;
-    test(dir, options);
+    const config = existsSync(`${dir}/config.json`) ? JSON.parse(readFileSync(`${dir}/config.json`).toString()) : {};
+    test(dir, config);
   });
 });
