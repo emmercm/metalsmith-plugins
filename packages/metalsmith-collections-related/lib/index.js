@@ -1,24 +1,27 @@
 'use strict';
 
-const os = require('os');
-
 const deepmerge = require('deepmerge');
 const minimatch = require('minimatch');
-const async = require('async');
 const htmlEscaper = require('html-escaper');
 const sanitizeHtml = require('sanitize-html');
-const retext = require('retext');
-const pos = require('retext-pos');
-const keywords = require('retext-keywords');
-const nlcstToString = require('nlcst-to-string');
-const stringSimilarity = require('string-similarity');
+const natural = require('natural');
+
+const { TfIdf } = natural;
 
 module.exports = (options) => {
   options = deepmerge({
     pattern: '**/*',
     maxRelated: 3,
-    parallelism: os.cpus().length,
-  }, options || {}, { arrayMerge: (destinationArray, sourceArray) => sourceArray });
+    natural: {
+      minTfIdf: 0,
+      maxTerms: 10,
+    },
+    sanitizeHtml: {
+      allowedTags: [],
+      allowedAttributes: {},
+      nonTextTags: ['pre'],
+    },
+  }, options || {});
 
   return (files, metalsmith, done) => {
     // Filter files to be considered
@@ -39,70 +42,68 @@ module.exports = (options) => {
           });
       });
 
-    const fileKeywords = {};
+    // For each collection of files
+    Object.keys(collections)
+      .forEach((collection) => {
+        const collectionFiles = collections[collection];
 
-    // Find each file's keywords
-    async.eachLimit(keywordFiles, options.parallelism, (filename, complete) => {
-      const file = files[filename];
+        // For each file in the collection
+        collectionFiles
+          .forEach((filename) => {
+            const tfidf = new TfIdf();
 
-      if (file.keywords) {
-        fileKeywords[filename] = file.keywords;
-        complete();
-        return;
-      }
+            // Gather filenames in order
+            const documentFilenames = [filename, ...collectionFiles
+              .filter((relatedFilename) => relatedFilename !== filename)];
 
-      // Read file contents, stripping
-      const contents = htmlEscaper.unescape(sanitizeHtml(file.contents.toString(), {
-        allowedTags: [],
-        allowedAttributes: {},
-        nonTextTags: ['code', 'pre'],
-      }))
-        .trim();
+            // Add each file to tf-idf
+            documentFilenames
+              .forEach((documentFilename) => {
+                const contents = files[documentFilename].contents.toString();
+                const sanitized = htmlEscaper
+                  .unescape(sanitizeHtml(contents, options.sanitizeHtml))
+                  .trim();
+                tfidf.addDocument(sanitized);
+              });
 
-      retext()
-        .use(pos)
-        .use(keywords)
-        .process(contents, (err, parsed) => {
-          if (err) {
-            throw err;
-          }
+            // Find key terms
+            const terms = tfidf.listTerms(0)
+              .filter((term) => term.tfidf >= options.natural.minTfIdf)
+              .map((term) => term.term)
+              .slice(0, options.natural.maxTerms);
 
-          if (parsed.data.keywords) {
-            fileKeywords[filename] = parsed.data.keywords
-              .map((keyword) => nlcstToString(keyword.matches[0].node));
-          }
-
-          complete();
-        });
-    }, () => {
-      // For each collection of files
-      Object.keys(collections)
-        .forEach((collection) => {
-          const collectionFiles = collections[collection];
-
-          // For each file in the collection
-          collectionFiles
-            .forEach((filename) => {
-              // Find the top related files in the collection
-              const relatedFilenames = collectionFiles
-                .filter((relatedFilename) => relatedFilename !== filename)
-                .map((relatedFilename) => ({
-                  filename: relatedFilename,
-                  similarity: stringSimilarity.compareTwoStrings(fileKeywords[filename].join(' '), fileKeywords[relatedFilename].join(' ')),
-                }))
-                .sort((a, b) => b.similarity - a.similarity)
-                .slice(0, options.maxRelated)
-                .map((related) => files[related.filename]);
-
-              // Set related info in the file's metadata
-              if (!files[filename].related) {
-                files[filename].related = {};
-              }
-              files[filename].related[collection] = relatedFilenames;
+            // Find related files
+            let relatedFiles = [];
+            tfidf.tfidfs(terms, (i, measure) => {
+              relatedFiles.push({
+                filename: documentFilenames[i],
+                measure,
+              });
             });
-        });
+            relatedFiles = relatedFiles
+              .slice(1)
+              .sort((a, b) => {
+                // Sort by `measure` descending first
+                if (b.measure > a.measure) {
+                  return 1;
+                }
+                if (b.measure < a.measure) {
+                  return -1;
+                }
+                // Sort by filename ascending second
+                return a.filename > b.filename;
+              })
+              .slice(0, options.maxRelated)
+              .map((related) => files[related.filename]);
 
-      done();
-    });
+            // Set related info in the file's metadata
+            if (!files[filename].related) {
+              files[filename].related = {};
+            }
+            files[filename].related[collection] = relatedFiles;
+          });
+      });
+
+    done();
   };
 };

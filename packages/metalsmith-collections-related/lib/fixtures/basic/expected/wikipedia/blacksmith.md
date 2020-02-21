@@ -3,5 +3,5 @@ A blacksmith is a metalsmith who creates objects from wrought iron or steel by f
 While there are many people who work with metal such as farriers, wheelwrights, and armorers, the blacksmith had a general knowledge of how to make and repair many things, from the most complex of weapons and armor to simple things like nails or lengths of chain.
 
 wikipedia/metalsmith.md
-wikipedia/tinsmith.md
+wikipedia/goldsmith.md
 wikipedia/silversmith.md
