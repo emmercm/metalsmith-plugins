@@ -48,17 +48,17 @@ This plugin adds a metadata field named `related` to each file in the format:
 
 ```json5
 {
-  contents: "...",
-  path: "...",
-  related: {
+  "contents": "...",
+  "path": "...",
+  "related": {
     "[collection name]": [
-      { contents: "...", path: "..." },
-      { contents: "...", path: "..." }
+      { "contents": "...", "path": "..." },
+      { "contents": "...", "path": "..." }
       // up to the `maxRelated` number of files
     ],
     "[another collection name]": [
-      { contents: "...", path: "..." },
-      { contents: "...", path: "..." }
+      { "contents": "...", "path": "..." },
+      { "contents": "...", "path": "..." }
       // up to the `maxRelated` number of files
     ]
     // up to as many collections as the file is in
@@ -66,7 +66,7 @@ This plugin adds a metadata field named `related` to each file in the format:
 }
 ```
 
-which can be used in templating engines, such as in [Handlebars](https://www.npmjs.com/package/handlebars):
+which can be used with templating engines, such as with [Handlebars](https://www.npmjs.com/package/handlebars):
 
 ```handlebars
 {{#each related}}
@@ -88,11 +88,42 @@ Type: `number` Default: `3`
 
 The number of related files to add to each file's metadata.
 
-### `parallelism` (optional)
+### `natural` (optional)
 
-Type: `number` Default: the number of logical CPU cores available
+Type: `object` Default:
 
-The maximum number of async operations at a time.
+```json
+{
+    "minTfIdf": 0,
+    "maxTerms": 10
+}
+```
+
+#### `natural.minTfIdf` (optional)
+
+Type: `number` Default: `0`
+
+The minimum [tf-idf](https://en.wikipedia.org/wiki/Tf%E2%80%93idf) (term frequency-inverse document frequency) measure.
+
+#### `natural.maxTerms` (optional)
+
+Type: `number` Default: `10`
+
+The maximum number of terms to use for [tf-idf](https://en.wikipedia.org/wiki/Tf%E2%80%93idf) weighting.
+
+### `sanitizeHtml` (optional)
+
+Type: `object` Default:
+
+```json
+{
+    "allowedTags": [],
+    "allowedAttributes": {},
+    "nonTextTags": ["pre"]
+}
+```
+
+An object of [`sanitize-html` options](https://www.npmjs.com/package/sanitize-html).
 
 ## Changelog
 

@@ -4,6 +4,6 @@ Goldsmiths must be skilled in forming metal through filing, soldering, sawing, f
 
 At least in Europe, goldsmiths increasingly performed many of the functions now regarded as part of banking, especially providing custody of valuable items and currency exchange, though they were usually restrained from lending at interest, which was regarded as usury.
 
-wikipedia/silversmith.md
 wikipedia/metalsmith.md
-wikipedia/coppersmith.md
+wikipedia/blacksmith.md
+wikipedia/tinsmith.md
