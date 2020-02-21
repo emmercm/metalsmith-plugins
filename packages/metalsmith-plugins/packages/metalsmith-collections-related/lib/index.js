@@ -91,7 +91,7 @@ module.exports = (options) => {
                   return -1;
                 }
                 // Sort by filename ascending second
-                return a.filename > b.filename;
+                return a.filename > b.filename ? 1 : -1;
               })
               .slice(0, options.maxRelated)
               .map((related) => files[related.filename]);
