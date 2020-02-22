@@ -1,0 +1,50 @@
+{
+  "name": "metalsmith-reading-time",
+  "version": "0.0.1",
+  "description": "A Metalsmith plugin to estimate pages' reading times.",
+  "keywords": [
+    "metalsmith",
+    "metalsmith-plugin",
+    "plugin"
+  ],
+  "homepage": "https://github.com/emmercm/metalsmith-collections-related#readme",
+  "bugs": {
+    "url": "https://github.com/emmercm/metalsmith-collections-related/issues"
+  },
+  "license": "GPL-3.0-or-later",
+  "author": "Christian Emmer",
+  "files": [
+    "lib/index.js"
+  ],
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emmercm/metalsmith-collections-related.git"
+  },
+  "scripts": {
+    "lint": "eslint . --fix || true",
+    "test": "jest --verbose --coverage && eslint .",
+    "test:update": "jest --verbose --coverage --updateSnapshot",
+    "test:watch": "jest --verbose --watch",
+    "test:junit": "JEST_JUNIT_OUTPUT=reports/junit/results.xml jest --ci --runInBand --reporters=default --reporters=jest-junit"
+  },
+  "dependencies": {
+    "deepmerge": "^4.2.2",
+    "minimatch": "^3.0.4",
+    "reading-time": "^1.2.0"
+  },
+  "devDependencies": {
+    "assert-dir-equal": "1.1.0",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb-base": "14.0.0",
+    "eslint-plugin-import": "2.20.1",
+    "handlebars": "4.7.3",
+    "jest": "25.1.0",
+    "jest-junit": "10.0.0",
+    "metalsmith": "2.3.0",
+    "metalsmith-hbt-md": "1.0.1"
+  },
+  "engines": {
+    "node": ">=10.13.0"
+  }
+}
