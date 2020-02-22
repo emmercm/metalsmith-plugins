@@ -1,0 +1,48 @@
+{
+  "name": "metalsmith-tracer",
+  "version": "0.0.1",
+  "description": "A Metalsmith plugin to find related files within collections.",
+  "keywords": [
+    "metalsmith",
+    "metalsmith-plugin",
+    "plugin"
+  ],
+  "homepage": "https://github.com/emmercm/metalsmith-tracer#readme",
+  "bugs": {
+    "url": "https://github.com/emmercm/metalsmith-tracer/issues"
+  },
+  "license": "GPL-3.0-or-later",
+  "author": "Christian Emmer",
+  "files": [
+    "lib/index.js"
+  ],
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emmercm/metalsmith-tracer.git"
+  },
+  "scripts": {
+    "lint": "eslint . --fix || true",
+    "test": "jest --verbose --coverage && eslint .",
+    "test:update": "jest --verbose --coverage --updateSnapshot",
+    "test:watch": "jest --verbose --watch",
+    "test:junit": "JEST_JUNIT_OUTPUT=reports/junit/results.xml jest --ci --runInBand --reporters=default --reporters=jest-junit"
+  },
+  "dependencies": {
+    "callsites": "^3.1.0",
+    "chalk": "^3.0.0",
+    "deepmerge": "^4.2.2"
+  },
+  "devDependencies": {
+    "assert-dir-equal": "1.1.0",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb-base": "14.0.0",
+    "eslint-plugin-import": "2.20.0",
+    "jest": "25.1.0",
+    "jest-junit": "10.0.0",
+    "metalsmith": "2.3.0"
+  },
+  "engines": {
+    "node": ">=10.13.0"
+  }
+}
