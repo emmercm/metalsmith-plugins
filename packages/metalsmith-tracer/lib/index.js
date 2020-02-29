@@ -3,6 +3,9 @@
 const deepmerge = require('deepmerge');
 const callsites = require('callsites');
 const chalk = require('chalk');
+const ora = require('ora');
+
+const leftMargin = 7;
 
 const timePrefix = (milliseconds) => {
   let value = milliseconds;
@@ -14,7 +17,7 @@ const timePrefix = (milliseconds) => {
   }
 
   const fixed = value.toFixed(1);
-  return ' '.repeat(7 - fixed.length - suffix.length) + fixed + suffix;
+  return ' '.repeat(leftMargin - fixed.length - suffix.length) + fixed + suffix;
 };
 
 module.exports = (Metalsmith, options) => {
@@ -22,43 +25,79 @@ module.exports = (Metalsmith, options) => {
     log: console.log,
   }, options || {});
 
+  const spinner = ora({
+    prefixText: `\n${' '.repeat(leftMargin - 5 - 1)}`,
+    spinner: 'arrow3',
+  });
+  let index = 0; let
+    count = 0;
+
   const { use } = Metalsmith;
-  Metalsmith.use = (plugin) => use.apply(Metalsmith, [(files, metalsmith, done) => {
-    const start = process.hrtime();
+  Metalsmith.use = (plugin) => {
+    count += 1;
 
-    plugin(files, metalsmith, (...args) => {
-      const elapsed = process.hrtime(start);
-      const elapsedMs = (elapsed[0] * 1e9 + elapsed[1]) / 1000000;
+    return use.apply(Metalsmith, [(files, metalsmith, done) => {
+      const start = process.hrtime();
 
-      let elapsedColor = chalk.green;
-      if (elapsedMs >= 100) {
-        elapsedColor = chalk.yellow;
-      }
-      if (elapsedMs >= 1000) {
-        elapsedColor = chalk.red;
-      }
+      // Show progress message
+      spinner.stop();
+      index += 1;
+      spinner.text = chalk.bold(`${index}/${count} (${((index / count) * 100).toFixed(1)}%)`);
+      spinner.start();
 
-      const filename = callsites()[1].getFileName();
-      const pkg = filename.match(/.+?\/node_modules\/([^/]+)\//);
-      const pkgStr = pkg ? pkg[1] : filename;
+      plugin(files, metalsmith, (...args) => {
+        const elapsed = process.hrtime(start);
+        const elapsedMs = (elapsed[0] * 1e9 + elapsed[1]) / 1000000;
 
-      const pkgColor = pkgStr === 'timers.js' ? chalk.blackBright : chalk.reset;
+        let elapsedColor = chalk.green;
+        if (elapsedMs >= 100) {
+          elapsedColor = chalk.yellow;
+        }
+        if (elapsedMs >= 1000) {
+          elapsedColor = chalk.red;
+        }
 
-      options.log(`${elapsedColor(timePrefix(elapsedMs))} ${pkgColor(pkgStr)}`);
+        const filenames = callsites()
+          .slice(1)
+          .map((callsite) => callsite.getFileName());
+        const pkg = filenames
+          .map((filename) => {
+            const match = filename.match(/.+?\/node_modules\/(metalsmith-[^/]+)\//);
+            return match ? match[1] : null;
+          })
+          .filter((name) => name && name !== 'async')
+          .find(() => true);
+        let pkgStr = pkg || filenames[0];
 
-      done(...args);
-    });
-  }]);
+        let pkgColor = chalk.reset;
+        if (pkgStr === 'metalsmith-if' || pkgStr.indexOf('timers.js') !== -1 || pkgStr.indexOf('next_tick.js') !== -1) {
+          pkgColor = chalk.blackBright;
+          pkgStr = '(unnamed)';
+        }
+
+        spinner.stop();
+        options.log(`${elapsedColor(timePrefix(elapsedMs))} ${pkgColor(pkgStr)}`);
+
+        done(...args);
+      });
+    }]);
+  };
 
   const { build } = Metalsmith;
   Metalsmith.build = (func) => {
+    options.log(`${'-'.repeat(leftMargin)} ${chalk.bold('Build process started')} ${'-'.repeat(leftMargin)}`);
+    options.log();
+
     const start = process.hrtime();
 
     return build.apply(Metalsmith, [(...args) => {
       const elapsed = process.hrtime(start);
       const elapsedMs = (elapsed[0] * 1e9 + elapsed[1]) / 1000000;
 
-      options.log(`\n${chalk.bold(`${timePrefix(elapsedMs)} Total build time`)}`);
+      spinner.stop();
+      options.log();
+      options.log(`${chalk.bold(timePrefix(elapsedMs))} Total build time`);
+      options.log();
 
       func(...args);
     }]);

@@ -28,6 +28,9 @@ const test = (dir, config) => {
       .use((files, metalsmith, metalsmithDone) => {
         metalsmithDone();
       })
+      .use((files, metalsmith, metalsmithDone) => {
+        setImmediate(metalsmithDone);
+      })
       .build((err) => {
         if (config.error) {
           expect(err)
@@ -44,9 +47,14 @@ const test = (dir, config) => {
 
         assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
 
-        expect(buffer).toHaveLength(2);
-        expect(buffer[0]).toContain('index.test.js');
-        expect(buffer[1]).toContain('Total build time');
+        expect(buffer).toHaveLength(7);
+        expect(buffer[0]).toContain('Build process started');
+        expect(buffer[1]).toBeUndefined();
+        expect(buffer[2]).toContain(__filename);
+        expect(buffer[3]).toContain('(unnamed)');
+        expect(buffer[4]).toBeUndefined();
+        expect(buffer[5]).toContain('Total build time');
+        expect(buffer[6]).toBeUndefined();
 
         done();
       });
