@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.0 / 2020-03-24
+
+- Fixed a `Cannot read property 'indexOf' of undefined` issue.
+
 ## v0.1.0 / 2020-02-29
 
 - Filtered out:

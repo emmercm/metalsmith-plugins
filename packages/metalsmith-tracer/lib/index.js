@@ -70,7 +70,7 @@ module.exports = (Metalsmith, options) => {
         let pkgStr = pkg || filenames[0];
 
         let pkgColor = chalk.reset;
-        if (pkgStr === 'metalsmith-if' || pkgStr.indexOf('timers.js') !== -1 || pkgStr.indexOf('next_tick.js') !== -1) {
+        if (!pkgStr || pkgStr === 'metalsmith-if' || pkgStr.indexOf('timers.js') !== -1 || pkgStr.indexOf('next_tick.js') !== -1) {
           pkgColor = chalk.blackBright;
           pkgStr = '(unnamed)';
         }
