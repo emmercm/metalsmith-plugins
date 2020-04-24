@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.4.0 / 2020-04-24
+
+- Fixed a `` / `` (Unix) vs. `` \ `` (Windows) path separator issue.
+
 ## v0.3.0 / 2020-02-17
 
 - Added `"data-src"` and `"content"` as defaults to `attributes`.

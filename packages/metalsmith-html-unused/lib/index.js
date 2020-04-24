@@ -75,6 +75,7 @@ module.exports = (options) => {
 
     // For each file that matches the given pattern
     Object.keys(files)
+      .map((filename) => filename.replace('/', '\\'))
       .filter((filename) => {
         if (options.ignore && minimatch(filename, options.ignore)) {
           return false;
