@@ -21,7 +21,7 @@ const test = (dir, config) => {
     }
 
     Metalsmith(`${dir}`)
-      .use(collect())
+      .use(collect({}))
       .use(related(config.options))
       .use(hbtmd(handlebars))
       .build((err) => {
