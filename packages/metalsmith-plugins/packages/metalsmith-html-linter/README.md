@@ -29,6 +29,11 @@ Metalsmith(__dirname)
     .use(linter({
         // options here
     }))
+    .build((err) => {
+        if (err) {
+            throw err;
+        }
+    });
 ```
 
 ## Options
@@ -41,7 +46,7 @@ A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern to find HTML
 
 ### `htmllint` (optional)
 
-Type: `Object` Default:
+Type: `object` Default:
 
 ```json
 {
@@ -67,6 +72,12 @@ Type: `Object` Default:
 Note: [`htmllint`](https://github.com/htmllint/htmllint) has an opinionated set of default options that are inconsistent with the HTML5 specification, hence the complicated default.
 
 An object of [`htmllint` options](https://github.com/htmllint/htmllint/wiki/Options).
+
+### `parallelism` (optional)
+
+Type: `number` Default: the number of logical CPU cores available
+
+The maximum number of async operations at a time.
 
 ## Changelog
 

@@ -1,8 +1,12 @@
 {
   "name": "metalsmith-html-linter",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A Metalsmith plugin to lint HTML.",
-  "keywords": ["metalsmith", "metalsmith-plugin", "plugin"],
+  "keywords": [
+    "metalsmith",
+    "metalsmith-plugin",
+    "plugin"
+  ],
   "homepage": "https://github.com/emmercm/metalsmith-html-linter#readme",
   "bugs": {
     "url": "https://github.com/emmercm/metalsmith-html-linter/issues"
@@ -10,9 +14,9 @@
   "license": "GPL-3.0-or-later",
   "author": "Christian Emmer",
   "files": [
-    "/lib"
+    "lib/index.js"
   ],
-  "main": "./lib/index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/emmercm/metalsmith-html-linter.git"
@@ -28,7 +32,7 @@
     "async": "^3.1.1",
     "deepmerge": "^4.2.2",
     "htmllint": "^0.8.0",
-    "minimatch": "latest"
+    "minimatch": "^3.0.4"
   },
   "devDependencies": {
     "assert-dir-equal": "1.1.0",
