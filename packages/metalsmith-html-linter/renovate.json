@@ -27,5 +27,8 @@
       "groupName": "htmllint",
       "automerge": false
     }
-  ]
+  ],
+  "lockFileMaintenance": {
+    "enabled": true
+  }
 }

@@ -1,5 +1,7 @@
 'use strict';
 
+const os = require('os');
+
 const async = require('async');
 const deepmerge = require('deepmerge');
 const htmllint = require('htmllint');
@@ -26,6 +28,7 @@ module.exports = (options) => {
       'tag-name-lowercase': false, // https://dev.w3.org/html5/spec-LC/syntax.html#elements-0,
       'title-max-len': false, // https://dev.w3.org/html5/spec-LC/semantics.html#the-title-element
     },
+    parallelism: os.cpus().length,
   }, options || {}, { arrayMerge: (destinationArray, sourceArray) => sourceArray });
 
   return (files, metalsmith, done) => {
@@ -34,7 +37,7 @@ module.exports = (options) => {
 
     const failures = {};
 
-    async.eachLimit(htmlFiles, 4, (filename, complete) => {
+    async.eachLimit(htmlFiles, options.parallelism, (filename, complete) => {
       const file = files[filename];
       const contents = file.contents.toString();
 
