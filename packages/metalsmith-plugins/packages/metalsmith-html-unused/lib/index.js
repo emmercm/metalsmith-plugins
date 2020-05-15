@@ -71,11 +71,15 @@ module.exports = (options) => {
               }),
           );
         }),
-    ).filter((x, i, a) => a.indexOf(x) === i);
+    )
+      // Map to a consistent path separator
+      .map((filename) => filename.replace(/[/\\]/g, '/'))
+      // Get rid of duplicates
+      .filter((x, i, a) => a.indexOf(x) === i);
 
     // For each file that matches the given pattern
     Object.keys(files)
-      .map((filename) => filename.replace('/', '\\'))
+      // Filter "pattern" and "ignore"
       .filter((filename) => {
         if (options.ignore && minimatch(filename, options.ignore)) {
           return false;
@@ -83,8 +87,10 @@ module.exports = (options) => {
         return minimatch(filename, options.pattern);
       })
       .forEach((filename) => {
+        // Map to a consistent path separator
+        const normalizedPath = filename.replace(/[/\\]/g, '/');
         // Remove the file if it's unused
-        if (resources.indexOf(filename) === -1) {
+        if (resources.indexOf(normalizedPath) === -1) {
           delete files[filename];
         }
       });
