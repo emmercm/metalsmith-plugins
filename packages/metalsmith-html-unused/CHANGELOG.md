@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.4.1 / 2020-05-15
+
+- Fix for v0.4.0 breaking functionality with `` / `` (Unix) path separators.
+
 ## v0.4.0 / 2020-04-24
 
 - Fixed a `` / `` (Unix) vs. `` \ `` (Windows) path separator issue.
