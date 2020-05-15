@@ -55,6 +55,7 @@ module.exports = (options) => {
 
                 // Find all input files matching the glob in the tag
                 const resources = Object.keys(files)
+                  .map((resource) => resource.replace(/[/\\]/g, '/'))
                   .filter(minimatch.filter(relativeGlob))
                   .sort()
                   .map((resource) => $(elem).clone().attr(attribute, resource));
