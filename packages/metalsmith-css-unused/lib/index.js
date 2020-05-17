@@ -1,3 +1,5 @@
+'use strict';
+
 const deepmerge = require('deepmerge');
 const minimatch = require('minimatch');
 const path = require('path');

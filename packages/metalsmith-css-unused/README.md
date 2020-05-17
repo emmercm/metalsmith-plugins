@@ -1,13 +1,15 @@
 # metalsmith-uncss-2
 
-[![](https://badgen.net/npm/v/metalsmith-uncss-2?icon=npm)](https://www.npmjs.com/package/metalsmith-uncss-2)
-[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-uncss-2/badge.svg)](https://snyk.io/test/npm/metalsmith-uncss-2)
-[![](https://badgen.net/npm/dw/metalsmith-uncss-2)](https://www.npmjs.com/package/metalsmith-uncss-2)
+[![npm Version](https://badgen.net/npm/v/metalsmith-uncss-2?icon=npm)](https://www.npmjs.com/package/metalsmith-uncss-2)
+[![node Version](https://badgen.net/npm/node/metalsmith-uncss-2)](https://github.com/emmercm/metalsmith-uncss-2/blob/master/package.json)
+[![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-uncss-2)](https://www.npmjs.com/package/metalsmith-uncss-2)
 
-[![](https://badgen.net/badge/emmercm/metalsmith-uncss-2/purple?icon=github)](https://github.com/emmercm/metalsmith-uncss-2)
-[![](https://badgen.net/circleci/github/emmercm/metalsmith-uncss-2/master?icon=circleci)](https://github.com/emmercm/metalsmith-uncss-2/blob/master/.circleci/config.yml)
-[![](https://badgen.net/codecov/c/github/emmercm/metalsmith-uncss-2/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-uncss-2)
-[![](https://badgen.net/github/license/emmercm/metalsmith-uncss-2?color=grey)](https://github.com/emmercm/metalsmith-uncss-2/blob/master/LICENSE)
+[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-uncss-2/badge.svg)](https://snyk.io/test/npm/metalsmith-uncss-2)
+[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/metalsmith-uncss-2/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-uncss-2)
+[![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-uncss-2?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-uncss-2/maintainability)
+
+[![GitHub](https://badgen.net/badge/emmercm/metalsmith-uncss-2/purple?icon=github)](https://github.com/emmercm/metalsmith-uncss-2)
+[![License](https://badgen.net/github/license/emmercm/metalsmith-uncss-2?color=grey)](https://github.com/emmercm/metalsmith-uncss-2/blob/master/LICENSE)
 
 A Metalsmith plugin to run UnCSS stylesheet optimizer.
 
@@ -27,35 +29,38 @@ Metalsmith(__dirname)
     .use(uncss({
         // options here
     }))
+    .build((err) => {
+        if (err) {
+            throw err;
+        }
+    });
 ```
 
 ## Options
 
-### Default Options
+### `html` (optional)
 
-```json
-{
-    "html": "**/*.html",
-    "css": "**/*.css",
-    "output": "uncss.css"
-}
-```
+Type: `string` Default: `**/*.html`
 
-### `html`
+A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern to find HTML files.
 
-`string` - [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for HTML files.
+### `css` (optional)
 
-### `css`
+Type: `string` Default: `**/*.css`
 
-`string` - [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for CSS files.
+A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern to find CSS files.
 
-### `output`
+### `output` (optional)
 
-`string` - output CSS filename.
+Type: `string` Default: `uncss.css`
 
-### `uncss`
+The output CSS filename.
 
-`Object` - [UnCSS options](https://github.com/uncss/uncss#usage).
+### `uncss` (optional)
+
+Type: `object` Default: `{}`
+
+An object of [UnCSS options](https://github.com/uncss/uncss#usage).
 
 ## Example
 
