@@ -1,3 +1,5 @@
+'use strict';
+
 const fg = require('fast-glob');
 const Mode = require('stat-mode');
 
