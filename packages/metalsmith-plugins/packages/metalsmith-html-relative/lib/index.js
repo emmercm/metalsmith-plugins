@@ -3,7 +3,6 @@
 const cheerio = require('cheerio');
 const deepmerge = require('deepmerge');
 const minimatch = require('minimatch');
-const needles = require('needle-string');
 const path = require('path');
 const url = require('url');
 
@@ -19,22 +18,14 @@ module.exports = (options) => {
     },
   }, options || {});
 
-  const pathslash = process.platform === 'win32' ? '\\' : '/';
-
   return (files, metalsmith, done) => {
     // For each HTML file that matches the given pattern
     Object.keys(files)
       .filter(minimatch.filter(options.html))
       .forEach((filename) => {
         const file = files[filename];
+        const normalizedFilename = filename.replace(/[/\\]/g, path.sep);
         const $ = cheerio.load(file.contents);
-
-        // Find file's path relative to source root
-        let rootPath = '';
-        for (let i = 0; i < needles(filename, pathslash); i += 1) {
-          rootPath += '../';
-        }
-        file.rootPath = rootPath;
 
         // For each given tag
         Object.keys(options.tags)
@@ -62,21 +53,20 @@ module.exports = (options) => {
                   return;
                 }
 
-                // Get rid of leading slash
-                const relative = resource.replace(/^\//, '');
-                $(elem).attr(attribute, relative);
-
-                // Ignore relative links that already resolve successfully
-                if (relative.startsWith(file.rootPath)) {
-                  const re = new RegExp(`^${file.rootPath}`);
-                  if (relative.replace(re, '') in files) {
-                    return;
-                  }
+                // Find the absolute path of the resource
+                let absoluteResource = resource;
+                if (!resource.startsWith('/')) {
+                  absoluteResource = path.join(path.dirname(normalizedFilename), resource)
+                    .normalize();
                 }
+                absoluteResource = absoluteResource.replace(/^[/\\]+/, '');
 
-                // Change to a relative link
-                const joined = path.join(file.rootPath, relative);
-                $(elem).attr(attribute, joined);
+                // Find the relative path of the resource
+                const relativeResource = path.relative(
+                  path.dirname(normalizedFilename), absoluteResource,
+                ).replace(/[/\\]/g, '/');
+
+                $(elem).attr(attribute, relativeResource);
               });
             });
           });
