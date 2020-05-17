@@ -61,8 +61,9 @@ module.exports = (Metalsmith, options) => {
           .slice(1)
           .map((callsite) => callsite.getFileName());
         const pkg = filenames
+          .filter((filename) => filename)
           .map((filename) => {
-            const match = filename.match(/.+?\/node_modules\/(metalsmith-[^/]+)\//);
+            const match = filename.match(/.+?[/\\]node_modules[/\\](metalsmith-[^/\\]+)[/\\]/);
             return match ? match[1] : null;
           })
           .filter((name) => name && name !== 'async')

@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.3.0 / 2020-05-17
+
+- Fixed a `Cannot read property 'match' of null` issue.
+- Fixed a `` / `` (Unix) vs. `` \ `` (Windows) path separator issue.
+
 ## v0.2.0 / 2020-03-24
 
 - Fixed a `Cannot read property 'indexOf' of undefined` issue.
