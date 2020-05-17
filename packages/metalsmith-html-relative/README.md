@@ -1,12 +1,15 @@
 # metalsmith-html-relative
 
-[![](https://badgen.net/npm/v/metalsmith-html-relative?icon=npm)](https://www.npmjs.com/package/metalsmith-html-relative)
-[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-html-relative/badge.svg)](https://snyk.io/test/npm/metalsmith-html-relative)
-[![](https://badgen.net/npm/dw/metalsmith-html-relative)](https://www.npmjs.com/package/metalsmith-html-relative)
+[![npm Version](https://badgen.net/npm/v/metalsmith-html-relative?icon=npm)](https://www.npmjs.com/package/metalsmith-html-relative)
+[![node Version](https://badgen.net/npm/node/metalsmith-html-relative)](https://github.com/emmercm/metalsmith-html-relative/blob/master/package.json)
+[![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-html-relative)](https://www.npmjs.com/package/metalsmith-html-relative)
 
-[![](https://badgen.net/badge/emmercm/metalsmith-html-relative/purple?icon=github)](https://github.com/emmercm/metalsmith-html-relative)
-[![](https://badgen.net/codecov/c/github/emmercm/metalsmith-html-relative/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-html-relative)
-[![](https://badgen.net/github/license/emmercm/metalsmith-html-relative?color=grey)](https://github.com/emmercm/metalsmith-html-relative/blob/master/LICENSE)
+[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-html-relative/badge.svg)](https://snyk.io/test/npm/metalsmith-html-relative)
+[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/metalsmith-html-relative/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-html-relative)
+[![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-html-relative?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-html-relative/maintainability)
+
+[![GitHub](https://badgen.net/badge/emmercm/metalsmith-html-relative/purple?icon=github)](https://github.com/emmercm/metalsmith-html-relative)
+[![License](https://badgen.net/github/license/emmercm/metalsmith-html-relative?color=grey)](https://github.com/emmercm/metalsmith-html-relative/blob/master/LICENSE)
 
 A Metalsmith plugin to convert to relative paths within HTML.
 
@@ -26,44 +29,36 @@ Metalsmith(__dirname)
     .use(relative({
         // options here
     }))
+    .build((err) => {
+        if (err) {
+            throw err;
+        }
+    });
 ```
 
 ## Options
 
-### Default Options
+### `html` (optional)
+
+Type: `string` Default: `**/*.html`
+
+A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern to find HTML files.
+
+### `tags` (optional)
+
+Type: `object` Default:
 
 ```json
 {
-    "html": "**/*.html",
-    "tags": {
-        "a": "href",
-        "img": "src",
-        "link": "href",
-        "script": "src",
-        "form": "action"
-    }
+    "a": "href",
+    "img": ["src", "data-src"],
+    "link": "href",
+    "script": "src",
+    "form": "action"
 }
 ```
 
-### `html`
-
-`string` - [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for HTML files.
-
-### `tags`
-
-`Object` - what tags and attributes to glob:
-
-```json
-{
-    "tags": {
-        "a": "href",
-        "img": "src",
-        "link": "href",
-        "script": "src",
-        "form": "action"
-    }
-}
-```
+An object of what tags and attributes to process for glob patterns.
 
 ## Example HTML
 
@@ -71,16 +66,16 @@ Metalsmith(__dirname)
 
 Given a file tree:
 
-```
-/
-|-- contact/
-|   |-- index.html
-|-- static/
-|   |-- css/
-|   |   |-- styles.css
-|   |-- js/
-|   |   |-- scripts.js
-|-- index.html
+```text
+.
+├── contact
+│   └── index.html
+├── index.html
+└── static
+    ├── css
+    │   └── styles.css
+    └── js
+        └── scripts.js
 ```
 
 And `contact/index.html`:

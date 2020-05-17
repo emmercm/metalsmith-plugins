@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.0 / 2020-05-17
+
+- Fixed a `` / `` (Unix) vs. `` \ `` (Windows) path separator issue.
+
 ## v0.2.0 / 2020-02-06
 
 - Added support for `<img data-src="">`.

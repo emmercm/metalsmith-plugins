@@ -1,7 +1,12 @@
 {
   "name": "metalsmith-html-relative",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A Metalsmith plugin to convert to relative paths within HTML.",
+  "keywords": [
+    "metalsmith",
+    "metalsmith-plugin",
+    "plugin"
+  ],
   "homepage": "https://github.com/emmercm/metalsmith-html-relative#readme",
   "bugs": {
     "url": "https://github.com/emmercm/metalsmith-html-relative/issues"
@@ -9,9 +14,9 @@
   "license": "GPL-3.0-or-later",
   "author": "Christian Emmer",
   "files": [
-    "/lib"
+    "lib/index.js"
   ],
-  "main": "./lib/index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/emmercm/metalsmith-html-relative.git"
@@ -26,8 +31,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
     "deepmerge": "^4.0.0",
-    "minimatch": "^3.0.4",
-    "needle-string": "^1.0.0"
+    "minimatch": "^3.0.4"
   },
   "devDependencies": {
     "assert-dir-equal": "1.1.0",
@@ -37,5 +41,8 @@
     "jest": "25.5.3",
     "jest-junit": "10.0.0",
     "metalsmith": "2.3.0"
+  },
+  "engines": {
+    "node": ">=10.13.0"
   }
 }
