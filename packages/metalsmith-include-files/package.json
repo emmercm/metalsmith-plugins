@@ -2,6 +2,11 @@
   "name": "metalsmith-include-files",
   "version": "0.1.4",
   "description": "A Metalsmith plugin to include external files.",
+  "keywords": [
+    "metalsmith",
+    "metalsmith-plugin",
+    "plugin"
+  ],
   "homepage": "https://github.com/emmercm/metalsmith-include-files#readme",
   "bugs": {
     "url": "https://github.com/emmercm/metalsmith-include-files/issues"
@@ -9,9 +14,9 @@
   "license": "GPL-3.0-or-later",
   "author": "Christian Emmer",
   "files": [
-    "/lib"
+    "lib/index.js"
   ],
-  "main": "./lib/index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/emmercm/metalsmith-include-files.git"
@@ -35,5 +40,8 @@
     "jest": "25.5.3",
     "jest-junit": "10.0.0",
     "metalsmith": "2.3.0"
+  },
+  "engines": {
+    "node": ">=8.10.0"
   }
 }

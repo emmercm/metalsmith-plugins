@@ -1,4 +1,0 @@
-{
-  ".": ["**/fixtures/style.css"],
-  "./": "**/fixtures/script.js"
-}
