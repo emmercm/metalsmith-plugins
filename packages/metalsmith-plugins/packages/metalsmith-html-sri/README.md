@@ -1,12 +1,15 @@
 # metalsmith-html-sri
 
-[![](https://badgen.net/npm/v/metalsmith-html-sri?icon=npm)](https://www.npmjs.com/package/metalsmith-html-sri)
-[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-html-sri/badge.svg)](https://snyk.io/test/npm/metalsmith-html-sri)
-[![](https://badgen.net/npm/dw/metalsmith-html-sri)](https://www.npmjs.com/package/metalsmith-html-sri)
+[![npm Version](https://badgen.net/npm/v/metalsmith-html-sri?icon=npm)](https://www.npmjs.com/package/metalsmith-html-sri)
+[![node Version](https://badgen.net/npm/node/metalsmith-html-sri)](https://github.com/emmercm/metalsmith-html-sri/blob/master/package.json)
+[![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-html-sri)](https://www.npmjs.com/package/metalsmith-html-sri)
 
-[![](https://badgen.net/badge/emmercm/metalsmith-html-sri/purple?icon=github)](https://github.com/emmercm/metalsmith-html-sri)
-[![](https://badgen.net/codecov/c/github/emmercm/metalsmith-html-sri/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-html-sri)
-[![](https://badgen.net/github/license/emmercm/metalsmith-html-sri?color=grey)](https://github.com/emmercm/metalsmith-html-sri/blob/master/LICENSE)
+[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-html-sri/badge.svg)](https://snyk.io/test/npm/metalsmith-html-sri)
+[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/metalsmith-html-sri/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-html-sri)
+[![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-html-sri?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-html-sri/maintainability)
+
+[![GitHub](https://badgen.net/badge/emmercm/metalsmith-html-sri/purple?icon=github)](https://github.com/emmercm/metalsmith-html-sri)
+[![License](https://badgen.net/github/license/emmercm/metalsmith-html-sri?color=grey)](https://github.com/emmercm/metalsmith-html-sri/blob/master/LICENSE)
 
 A Metalsmith plugin to add subresource integrity attributes to HTML.
 
@@ -26,68 +29,53 @@ Metalsmith(__dirname)
     .use(sri({
         // options here
     }))
+    .build((err) => {
+        if (err) {
+            throw err;
+        }
+    });
 ```
 
 ## Options
 
-### Default Options
+### `html` (optional)
+
+Type: `string` Default: `**/*.html`
+
+A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern to find HTML files.
+
+### `tags` (optional)
+
+Type: `object` Default:
 
 ```json
 {
-    "html": "**/*.html",
-    "tags": {
-        "link": {
-            "attribute": "href",
-            "selector": "[rel=\"stylesheet\"]"
-        },
-        "script": {
-            "attribute": "src",
-            "selector": ":not([type]), [type!=\"module\"]"
-        }
+    "link": {
+        "attribute": "href",
+        "selector": "[rel=\"stylesheet\"]"
     },
-    "ignoreResources": [],
-    "algorithm": "sha384"
-}
-```
-
-### `html`
-
-`string` - [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for HTML files.
-
-### `tags`
-
-`Object` - what tags to add an integrity attribute to:
-
-```json
-{
-    "tags": {
-        "link": {
-            "attribute": "href",
-            "selector": "[rel=\"stylesheet\"]"
-        },
-        "script": {
-            "attribute": "src",
-            "selector": ":not([type]), [type!=\"module\"]"
-        }
+    "script": {
+        "attribute": "src",
+        "selector": ":not([type]), [type!=\"module\"]"
     }
 }
 ```
 
-### `ignoreResources`
+An object of what tags to add an integrity attribute to.
 
-`Array` - regular expressions of resources to be ignored:
+### `ignoreResources` (optional)
 
-```json
-{
-    "ignoreResources": [
-        "fonts\\.googleapis\\.com"
-    ]
-}
-```
+Type: `string[]` Default: `[]`
 
-### `algorithm`
+An array of regular expressions of resources to be ignored.
 
-`Array|string` - hashing algorithm(s) to use.
+### `algorithm` (optional)
+
+Type: `string|string[]` Default: `sha384`
+
+Either a string or an array of strings of hashing algorithms to use.
+
+Valid hashing algorithsm: `sha256`, `sha384`, `sha512`.
 
 ## Example HTML
 
@@ -95,7 +83,7 @@ Metalsmith(__dirname)
 
 Given a file tree:
 
-```
+```text
 .
 ├── index.html
 └── static
