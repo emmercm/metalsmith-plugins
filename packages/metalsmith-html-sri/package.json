@@ -2,6 +2,11 @@
   "name": "metalsmith-html-sri",
   "version": "0.2.1",
   "description": "A Metalsmith to add subresource integrity attributes to HTML.",
+  "keywords": [
+    "metalsmith",
+    "metalsmith-plugin",
+    "plugin"
+  ],
   "homepage": "https://github.com/emmercm/metalsmith-html-sri#readme",
   "bugs": {
     "url": "https://github.com/emmercm/metalsmith-html-sri/issues"
@@ -9,9 +14,9 @@
   "license": "GPL-3.0-or-later",
   "author": "Christian Emmer",
   "files": [
-    "/lib"
+    "lib/index.js"
   ],
-  "main": "./lib/index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/emmercm/metalsmith-html-sri.git"
@@ -37,5 +42,8 @@
     "jest": "25.5.3",
     "jest-junit": "10.0.0",
     "metalsmith": "2.3.0"
+  },
+  "engines": {
+    "node": ">=8.10.0"
   }
 }
