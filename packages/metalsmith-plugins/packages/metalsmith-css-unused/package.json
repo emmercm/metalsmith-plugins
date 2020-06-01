@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-uncss-2",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A Metalsmith plugin to run UnCSS stylesheet optimizer.",
   "keywords": [
     "metalsmith",
@@ -29,9 +29,9 @@
     "test:junit": "JEST_JUNIT_OUTPUT=reports/junit/results.xml jest --ci --runInBand --reporters=default --reporters=jest-junit"
   },
   "dependencies": {
-    "deepmerge": "^4.0.0",
+    "deepmerge": "^4.2.2",
     "minimatch": "^3.0.4",
-    "uncss": "^0.17.0"
+    "uncss": "^0.17.3"
   },
   "devDependencies": {
     "assert-dir-equal": "1.1.0",
