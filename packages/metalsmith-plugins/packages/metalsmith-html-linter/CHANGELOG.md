@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.3.0 / 2020-06-12
+
+- Added ability to specify `ignoreTags` of selectors to remove before linting.
+- Made the error output more human-readable with [`@babel/code-frame`](https://www.npmjs.com/package/@babel/code-frame).
+
 ## v0.2.0 / 2020-05-09
 
 - Added ability to specify `parallelism`, defaulting to the number of logical CPU cores available.

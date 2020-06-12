@@ -73,6 +73,12 @@ Note: [`htmllint`](https://github.com/htmllint/htmllint) has an opinionated set 
 
 An object of [`htmllint` options](https://github.com/htmllint/htmllint/wiki/Options).
 
+### `ignoreTags` (optional)
+
+Type: `string[]` Default: `["code", "pre", "textarea"]`
+
+An array of [cheerio](https://cheerio.js.org/) selectors to remove before linting.
+
 ### `parallelism` (optional)
 
 Type: `number` Default: the number of logical CPU cores available

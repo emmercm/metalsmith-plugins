@@ -3,6 +3,8 @@
 const os = require('os');
 
 const async = require('async');
+const cheerio = require('cheerio');
+const codeFrame = require('@babel/code-frame');
 const deepmerge = require('deepmerge');
 const htmllint = require('htmllint');
 const minimatch = require('minimatch');
@@ -28,6 +30,12 @@ module.exports = (options) => {
       'tag-name-lowercase': false, // https://dev.w3.org/html5/spec-LC/syntax.html#elements-0,
       'title-max-len': false, // https://dev.w3.org/html5/spec-LC/semantics.html#the-title-element
     },
+    ignoreTags: [
+      // https://github.com/htmllint/htmllint/issues/194
+      'code',
+      'pre',
+      'textarea',
+    ],
     parallelism: os.cpus().length,
   }, options || {}, { arrayMerge: (destinationArray, sourceArray) => sourceArray });
 
@@ -35,23 +43,40 @@ module.exports = (options) => {
     const htmlFiles = Object.keys(files)
       .filter(minimatch.filter(options.html));
 
-    const failures = {};
+    const failures = [];
 
     async.eachLimit(htmlFiles, options.parallelism, (filename, complete) => {
       const file = files[filename];
-      const contents = file.contents.toString();
+      const $ = cheerio.load(file.contents);
+
+      // Remove ignored tags
+      $(options.ignoreTags.join(', ')).remove();
+
+      const contents = $.html();
 
       htmllint(contents, options.htmllint)
         .then((results) => {
           if (results.length) {
-            failures[filename] = results;
+            const codeFrames = results
+              .map((result) => {
+                // Use @babel/code-frame to get a more human-readable error message
+                const frame = codeFrame.codeFrameColumns(contents, { start: result });
+                let data = '';
+                if (Object.keys(result.data).length) {
+                  data = ` ${JSON.stringify(result.data)}:`;
+                }
+                return `${result.rule} (${result.code}):${data}\n\n${frame.replace(/^/gm, '  ')}`;
+              })
+              .join('\n\n');
+
+            failures.push(`${filename}:\n\n${codeFrames.replace(/^/gm, '  ')}`);
           }
 
           complete();
         });
     }, () => {
-      if (Object.keys(failures).length) {
-        done(JSON.stringify(failures, null, 2));
+      if (failures.length) {
+        done(failures.join('\n\n'));
       }
 
       done();
