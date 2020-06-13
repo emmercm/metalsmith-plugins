@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.0 / 2020-06-13
+
+- Fixed `lib/dummy.css` missing from npm package.
+
 ## v0.1.0 / 2019-05-31
 
 - Added Jest tests.

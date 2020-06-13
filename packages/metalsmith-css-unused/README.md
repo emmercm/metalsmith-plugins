@@ -58,7 +58,16 @@ The output CSS filename.
 
 ### `uncss` (optional)
 
-Type: `object` Default: `{}`
+Type: `object` Default:
+
+```json
+{
+  "banner": false,
+  "jsdom": {
+    "runScripts": "outside-only"
+  }
+}
+```
 
 An object of [UnCSS options](https://github.com/uncss/uncss#usage).
 
