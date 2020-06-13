@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.4.0 / 2020-06-13
+
+- Globbed resources are now absolute to output root (leading `/`).
+
 ## v0.3.0 / 2020-05-15
 
 - Fixed a `` / `` (Unix) vs. `` \ `` (Windows) path separator issue.
