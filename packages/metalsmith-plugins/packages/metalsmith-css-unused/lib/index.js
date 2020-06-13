@@ -12,7 +12,10 @@ module.exports = (options) => {
     output: 'uncss.css',
     uncss: {
       banner: false,
-      raw: [],
+      jsdom: {
+        // https://github.com/uncss/uncss/issues/433
+        runScripts: 'outside-only',
+      },
       stylesheets: [path.join(__dirname, 'dummy.css')],
     },
   }, options || {});

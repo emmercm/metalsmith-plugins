@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-uncss-2",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "A Metalsmith plugin to run UnCSS stylesheet optimizer.",
   "keywords": [
     "metalsmith",
@@ -14,7 +14,8 @@
   "license": "GPL-3.0-or-later",
   "author": "Christian Emmer",
   "files": [
-    "lib/index.js"
+    "lib/index.js",
+    "lib/dummy.css"
   ],
   "main": "lib/index.js",
   "repository": {
