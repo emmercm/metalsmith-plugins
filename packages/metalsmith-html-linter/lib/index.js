@@ -50,7 +50,7 @@ module.exports = (options) => {
       const $ = cheerio.load(file.contents);
 
       // Remove ignored tags
-      $(options.ignoreTags.join(', ')).remove();
+      $(options.ignoreTags.join(', ')).html('');
 
       const contents = $.html();
 
