@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.1 / 2020-06-30
+
+- Changed `ignoreTags` to remove inner HTML rather than outer HTML.
+
 ## v0.3.0 / 2020-06-12
 
 - Added ability to specify `ignoreTags` of selectors to remove before linting.
