@@ -73,7 +73,7 @@ const test = (dir, config) => {
   });
 };
 
-describe('metalsmith-html-unused', () => {
+describe('metalsmith-reading-time', () => {
   const dirs = (p) => readdirSync(p)
     .map((f) => join(p, f))
     .filter((f) => statSync(f).isDirectory());
