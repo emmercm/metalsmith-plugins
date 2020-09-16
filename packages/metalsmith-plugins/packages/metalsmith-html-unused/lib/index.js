@@ -88,9 +88,9 @@ module.exports = (options) => {
       })
       .forEach((filename) => {
         // Map to a consistent path separator
-        const normalizedPath = filename.replace(/[/\\]/g, '/');
+        const normalizedFilename = filename.replace(/[/\\]/g, '/');
         // Remove the file if it's unused
-        if (resources.indexOf(normalizedPath) === -1) {
+        if (resources.indexOf(normalizedFilename) === -1) {
           delete files[filename];
         }
       });
