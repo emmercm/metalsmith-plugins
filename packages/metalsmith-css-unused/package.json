@@ -1,5 +1,5 @@
 {
-  "name": "metalsmith-uncss-2",
+  "name": "metalsmith-css-unused",
   "version": "0.2.0",
   "description": "A Metalsmith plugin to run UnCSS stylesheet optimizer.",
   "keywords": [
@@ -7,9 +7,9 @@
     "metalsmith-plugin",
     "plugin"
   ],
-  "homepage": "https://github.com/emmercm/metalsmith-uncss-2#readme",
+  "homepage": "https://github.com/emmercm/metalsmith-css-unused#readme",
   "bugs": {
-    "url": "https://github.com/emmercm/metalsmith-uncss-2/issues"
+    "url": "https://github.com/emmercm/metalsmith-css-unused/issues"
   },
   "license": "GPL-3.0-or-later",
   "author": "Christian Emmer",
@@ -20,7 +20,7 @@
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/emmercm/metalsmith-uncss-2.git"
+    "url": "git+https://github.com/emmercm/metalsmith-css-unused.git"
   },
   "scripts": {
     "lint": "eslint . --fix || true",
