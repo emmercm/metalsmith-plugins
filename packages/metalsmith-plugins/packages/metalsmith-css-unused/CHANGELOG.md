@@ -1,27 +1,5 @@
 # Changelog
 
-## v0.2.0 / 2020-06-13
+## v0.2.0 / 2020-12-02
 
-- Fixed `lib/dummy.css` missing from npm package.
-
-## v0.1.0 / 2019-05-31
-
-- Added Jest tests.
-- UnCSS filename "banner" turned off by default.
-
-## v0.0.3 / 2019-05-14
-
-- Fixed accidentally removing all HTML files.
-
-## v0.0.2 / 2019-05-11
-
-- Fixed option defaulting.
-- Fixed linting.
-- Created README.
-- Created CHANGELOG.
-- Updated dependencies:
-  - `eslint`
-
-## v0.0.1 / 2019-05-11
-
-- Initial version.
+- Mirrored from [emmercm/metalsmith-uncss-2](https://github.com/emmercm/metalsmith-uncss-2).

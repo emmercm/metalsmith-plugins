@@ -70,7 +70,7 @@ const test = (dir, config) => {
   });
 };
 
-describe('metalsmith-uncss-2', () => {
+describe('metalsmith-css-unused', () => {
   const dirs = (p) => readdirSync(p)
     .map((f) => join(p, f))
     .filter((f) => statSync(f).isDirectory());
