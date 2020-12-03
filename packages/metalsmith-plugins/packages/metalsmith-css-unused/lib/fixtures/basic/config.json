@@ -1,9 +1,9 @@
 {
   "options": {
-    "output": "static/uncss.css",
-    "uncss": {
-      "ignore": [
-        ".ignored"
+    "output": "static/used.css",
+    "purgecss": {
+      "safelist": [
+        "ignored"
       ]
     }
   }

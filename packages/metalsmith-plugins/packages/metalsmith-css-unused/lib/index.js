@@ -2,55 +2,46 @@
 
 const deepmerge = require('deepmerge');
 const minimatch = require('minimatch');
-const path = require('path');
-const uncss = require('uncss');
+const { PurgeCSS } = require('purgecss');
 
 module.exports = (options) => {
   options = deepmerge({
     html: '**/*.html',
     css: '**/*.css',
-    output: 'uncss.css',
-    uncss: {
-      banner: false,
-      jsdom: {
-        // https://github.com/uncss/uncss/issues/433
-        runScripts: 'outside-only',
-      },
-      stylesheets: [path.join(__dirname, 'dummy.css')],
-    },
+    output: 'used.css',
+    purgecss: {},
   }, options || {});
 
   return (files, metalsmith, done) => {
     // Build list of HTML content
-    const htmlFiles = Object.keys(files)
+    options.purgecss.content = Object.keys(files)
       .filter(minimatch.filter(options.html))
-      .map((filename) => filename);
-    const htmlContent = htmlFiles.map((filename) => files[filename].contents.toString());
+      .map((filename) => ({
+        raw: files[filename].contents.toString(),
+        extension: 'html',
+      }));
 
     // Build string of CSS content
     const cssFiles = Object.keys(files)
-      .filter(minimatch.filter(options.css))
-      .map((filename) => filename);
-    options.uncss.raw = cssFiles
-      .map((filename) => files[filename].contents.toString())
-      .join('\n\n');
+      .filter(minimatch.filter(options.css));
+    options.purgecss.css = cssFiles
+      .map((filename) => ({
+        raw: files[filename].contents.toString(),
+      }));
 
-    uncss(htmlContent, options.uncss, (err, output) => {
-      if (err) {
-        throw err;
-      }
+    (new PurgeCSS().purge(options.purgecss))
+      .then((purgecss) => {
+        // Remove CSS files
+        cssFiles.forEach((filename) => {
+          delete files[filename];
+        });
 
-      // Remove CSS files
-      cssFiles.forEach((filename) => {
-        delete files[filename];
+        // Create CSS file
+        files[options.output] = {
+          contents: Buffer.from(purgecss[0].css),
+        };
+
+        done();
       });
-
-      // Create CSS file
-      files[options.output] = {
-        contents: Buffer.from(output),
-      };
-
-      done();
-    });
   };
 };

@@ -8,7 +8,7 @@ const { join } = require('path');
 const Metalsmith = require('metalsmith');
 const assertDir = require('assert-dir-equal');
 
-const uncss = require('./index');
+const cssUnused = require('./index');
 
 const test = (dir, config) => {
   describe(dir, () => {
@@ -33,7 +33,7 @@ const test = (dir, config) => {
             done();
           })
           // Run the plugin
-          .use(uncss(config.options))
+          .use(cssUnused(config.options))
           // Convert the path separators back to system default
           .use((files, metalsmith, done) => {
             const properPathSeparator = process.platform === 'win32' ? '\\' : '/';

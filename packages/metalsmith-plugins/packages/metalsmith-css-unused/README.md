@@ -11,7 +11,7 @@
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-css-unused/purple?icon=github)](https://github.com/emmercm/metalsmith-css-unused)
 [![License](https://badgen.net/github/license/emmercm/metalsmith-css-unused?color=grey)](https://github.com/emmercm/metalsmith-css-unused/blob/master/LICENSE)
 
-A Metalsmith plugin to run UnCSS stylesheet optimizer.
+A Metalsmith plugin to remove unused CSS rules.
 
 ## Installation
 
@@ -23,10 +23,10 @@ npm install --save metalsmith-css-unused
 
 ```javascript
 const Metalsmith = require('metalsmith');
-const uncss      = require('metalsmith-css-unused');
+const cssUnused  = require('metalsmith-css-unused');
 
 Metalsmith(__dirname)
-    .use(uncss({
+    .use(cssUnused({
         // options here
     }))
     .build((err) => {
@@ -52,35 +52,26 @@ A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern to find CSS 
 
 ### `output` (optional)
 
-Type: `string` Default: `uncss.css`
+Type: `string` Default: `used.css`
 
 The output CSS filename.
 
-### `uncss` (optional)
+### `purgecss` (optional)
 
-Type: `object` Default:
+Type: `object` Default: `{}`
 
-```json
-{
-  "banner": false,
-  "jsdom": {
-    "runScripts": "outside-only"
-  }
-}
-```
-
-An object of [UnCSS options](https://github.com/uncss/uncss#usage).
+An object of [PurgeCSS options](https://purgecss.com/configuration.html#options).
 
 ## Example
 
 ```javascript
-const uncss = require('metalsmith-css-unused');
+const cssUnused = require('metalsmith-css-unused');
 
 Metalsmith(__dirname)
-    .use(uncss({
+    .use(cssUnused({
         output: 'static/css/styles.css',
-        uncss: {
-            ignore: [
+        purgecss: {
+            safelist: [
                 // Bootstrap 4 JavaScript
                 /\.carousel-item-.+/,
                 /\.modal/,
