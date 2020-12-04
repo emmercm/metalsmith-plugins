@@ -8,7 +8,6 @@ module.exports = (options) => {
   options = deepmerge({
     html: '**/*.html',
     css: '**/*.css',
-    output: 'used.css',
     purgecss: {},
   }, options || {});
 
@@ -24,6 +23,7 @@ module.exports = (options) => {
     // Build string of CSS content
     const cssFiles = Object.keys(files)
       .filter(minimatch.filter(options.css));
+    cssFiles.push(...cssFiles);
     options.purgecss.css = cssFiles
       .map((filename) => ({
         raw: files[filename].contents.toString(),
@@ -31,15 +31,9 @@ module.exports = (options) => {
 
     (new PurgeCSS().purge(options.purgecss))
       .then((purgecss) => {
-        // Remove CSS files
-        cssFiles.forEach((filename) => {
-          delete files[filename];
-        });
-
-        // Create CSS file
-        files[options.output] = {
-          contents: Buffer.from(purgecss[0].css),
-        };
+        for (let i = 0; i < purgecss.length; i += 1) {
+          files[cssFiles[i]].contents = Buffer.from(purgecss[i].css);
+        }
 
         done();
       });
