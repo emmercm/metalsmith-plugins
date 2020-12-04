@@ -1,6 +1,5 @@
 {
   "options": {
-    "output": "static/used.css",
     "purgecss": {
       "safelist": [
         "ignored"

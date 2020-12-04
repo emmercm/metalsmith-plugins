@@ -21,6 +21,8 @@ npm install --save metalsmith-css-unused
 
 ## JavaScript Usage
 
+This plugin writes output back to the original
+
 ```javascript
 const Metalsmith = require('metalsmith');
 const cssUnused  = require('metalsmith-css-unused');
@@ -49,12 +51,6 @@ A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern to find HTML
 Type: `string` Default: `**/*.css`
 
 A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern to find CSS files.
-
-### `output` (optional)
-
-Type: `string` Default: `used.css`
-
-The output CSS filename.
 
 ### `purgecss` (optional)
 
