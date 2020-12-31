@@ -1,0 +1,8 @@
+{
+  "options": {
+    "ignore": [
+      "status=5[0-9]{2}"
+    ]
+  },
+  "error": "Broken links found:\n\nindex.html:\n  https://totally.fake.not.real.url\n  https://urlecho.appspot.com/echo?status=399\n  https://urlecho.appspot.com/echo?status=400\n  https://urlecho.appspot.com/echo?status=600\n  https://urlecho.appspot.com/echo?status=999"
+}
