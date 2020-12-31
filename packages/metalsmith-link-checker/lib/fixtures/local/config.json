@@ -1,0 +1,8 @@
+{
+  "options": {
+    "ignore": [
+      ".*\\.jpg"
+    ]
+  },
+  "error": "Broken links found:\n\nabout/index.html:\n  ../static/logo.png\n\nindex.html:\n  static/logo.png"
+}
