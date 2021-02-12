@@ -96,6 +96,7 @@ const validUrl = (link, options, asyncCallback, method = 'HEAD') => {
       return;
     }
 
+    // TODO: retry mechanism
     asyncCallback(null, res && !(res.statusCode >= 400 && res.statusCode <= 599));
   }).on('error', () => {
     asyncCallback(null, false);
@@ -125,7 +126,7 @@ const validLocal = (files, src, dest) => {
     return true;
   }
 
-  return linkPath in files || `${linkPath}/index.html` in files;
+  return linkPath in files || path.join(linkPath, 'index.html') in files;
 };
 
 const protocolValidators = {
