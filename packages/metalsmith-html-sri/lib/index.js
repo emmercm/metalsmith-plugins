@@ -40,6 +40,7 @@ module.exports = (options) => {
       .filter(minimatch.filter(options.html))
       .forEach((filename) => {
         const file = files[filename];
+        const normalizedFilename = filename.replace(/[/\\]/g, path.sep);
 
         // For each given tag
         const $ = cheerio.load(file.contents);
@@ -65,7 +66,14 @@ module.exports = (options) => {
                 return;
               }
 
-              const resource = path.join(path.dirname(filename), uri);
+              // Look for local resource without leading slash
+              let resource = uri.replace(/^\//, '');
+
+              if (!(resource in files)) {
+                // Look for local resource relative to current file
+                resource = path.join(path.dirname(normalizedFilename), uri);
+              }
+
               if (resource in files) {
                 // Add/overwrite integrity attribute of local resources
 
@@ -87,7 +95,7 @@ module.exports = (options) => {
                   return;
                 }
 
-                // Don't overwrite valid integrity attributes
+                // Don't overwrite existing integrity attributes
                 if ($(elem).is('[integrity][integrity!=""]')) {
                   return;
                 }
