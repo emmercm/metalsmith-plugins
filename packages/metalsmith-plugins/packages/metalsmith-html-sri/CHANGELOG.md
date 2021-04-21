@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.3.0 / 2021-04-20
+
+- Fixed root-relative resource paths (starting with `` / ``) being excluded.
+- Fixed a `` / `` (Unix) vs. `` \ `` (Windows) path separator issue.
+
 ## v0.2.1 / 2019-12-29
 
 - Fixed `ignoreResources` not ignoring some resources.
