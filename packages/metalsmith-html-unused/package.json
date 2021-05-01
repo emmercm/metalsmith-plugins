@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-html-unused",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "A Metalsmith plugin to exclude files unused in HTML.",
   "keywords": [
     "metalsmith",
@@ -29,7 +29,7 @@
     "test:junit": "JEST_JUNIT_OUTPUT=reports/junit/results.xml jest --ci --runInBand --reporters=default --reporters=jest-junit"
   },
   "dependencies": {
-    "cheerio": "^1.0.0-rc.5",
+    "cheerio": "^1.0.0-rc.6",
     "deepmerge": "^4.2.2",
     "minimatch": "^3.0.4"
   },
