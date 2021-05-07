@@ -29,8 +29,5 @@
       "automerge": false
     }
   ],
-  "lockFileMaintenance": {
-    "enabled": true,
-    "assignees": []
-  }
+  "transitiveRemediation": true
 }
