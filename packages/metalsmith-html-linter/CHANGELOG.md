@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.4.0 / 2021-05-08
+
+- Removed `width` and `height` from `attr-bans` (E001) due to Google Lighthouse suggestions.
+
 ## v0.3.1 / 2020-06-30
 
 - Changed `ignoreTags` to remove inner HTML rather than outer HTML.
