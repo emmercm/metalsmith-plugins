@@ -13,8 +13,10 @@ module.exports = (options) => {
   options = deepmerge({
     html: '**/*.html',
     htmllint: {
-      'attr-bans': [ // https://www.w3.org/TR/html5-diff/#obsolete-attributes
-        'align', 'alink', 'background', 'bgcolor', 'border', 'cellpadding', 'cellspacing', 'char', 'charoff', 'clear', 'compact', 'frame', 'frameborder', 'height', 'hspace', 'link', 'marginheight', 'marginwidth', 'noshade', 'nowrap', 'rules', 'scrolling', 'size', 'text', 'valign', 'vlink', 'vspace', 'width',
+      'attr-bans': [
+        // https://www.w3.org/TR/html5-diff/#obsolete-attributes
+        // https://web.dev/optimize-cls/#images-without-dimensions (Google Lighthouse)
+        'align', 'alink', 'background', 'bgcolor', 'border', 'cellpadding', 'cellspacing', 'char', 'charoff', 'clear', 'compact', 'frame', 'frameborder', 'hspace', 'link', 'marginheight', 'marginwidth', 'noshade', 'nowrap', 'rules', 'scrolling', 'size', 'text', 'valign', 'vlink', 'vspace',
       ],
       'attr-req-value': false, // https://dev.w3.org/html5/spec-LC/syntax.html#attributes-0
       'doctype-first': true, // https://dev.w3.org/html5/spec-LC/syntax.html#the-doctype
