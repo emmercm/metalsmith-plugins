@@ -1,7 +1,6 @@
 # metalsmith-html-sri
 
 [![npm Version](https://badgen.net/npm/v/metalsmith-html-sri?icon=npm)](https://www.npmjs.com/package/metalsmith-html-sri)
-[![node Version](https://badgen.net/npm/node/metalsmith-html-sri)](https://github.com/emmercm/metalsmith-html-sri/blob/master/package.json)
 [![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-html-sri)](https://www.npmjs.com/package/metalsmith-html-sri)
 
 [![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-html-sri/badge.svg)](https://snyk.io/test/npm/metalsmith-html-sri)
