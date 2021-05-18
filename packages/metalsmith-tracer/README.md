@@ -1,7 +1,6 @@
 # metalsmith-tracer
 
 [![npm Version](https://badgen.net/npm/v/metalsmith-tracer?icon=npm)](https://www.npmjs.com/package/metalsmith-tracer)
-[![node Version](https://badgen.net/npm/node/metalsmith-tracer)](https://github.com/emmercm/metalsmith-tracer/blob/master/package.json)
 [![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-tracer)](https://www.npmjs.com/package/metalsmith-tracer)
 
 [![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-tracer/badge.svg)](https://snyk.io/test/npm/metalsmith-tracer)
