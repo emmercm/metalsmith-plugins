@@ -1,7 +1,6 @@
 # metalsmith-html-glob
 
 [![npm Version](https://badgen.net/npm/v/metalsmith-html-glob?icon=npm)](https://www.npmjs.com/package/metalsmith-html-glob)
-[![node Version](https://badgen.net/npm/node/metalsmith-html-glob)](https://github.com/emmercm/metalsmith-html-glob/blob/master/package.json)
 [![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-html-glob)](https://www.npmjs.com/package/metalsmith-html-glob)
 
 [![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-html-glob/badge.svg)](https://snyk.io/test/npm/metalsmith-html-glob)
