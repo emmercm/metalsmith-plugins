@@ -1,7 +1,6 @@
 # metalsmith-html-unused
 
 [![npm Version](https://badgen.net/npm/v/metalsmith-html-unused?icon=npm)](https://www.npmjs.com/package/metalsmith-html-unused)
-[![node Version](https://badgen.net/npm/node/metalsmith-html-unused)](https://github.com/emmercm/metalsmith-html-unused/blob/master/package.json)
 [![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-html-unused)](https://www.npmjs.com/package/metalsmith-html-unused)
 
 [![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-html-unused/badge.svg)](https://snyk.io/test/npm/metalsmith-html-unused)
