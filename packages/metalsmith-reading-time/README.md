@@ -1,7 +1,6 @@
 # metalsmith-reading-time
 
 [![npm Version](https://badgen.net/npm/v/metalsmith-reading-time?icon=npm)](https://www.npmjs.com/package/metalsmith-reading-time)
-[![node Version](https://badgen.net/npm/node/metalsmith-reading-time)](https://github.com/emmercm/metalsmith-reading-time/blob/master/package.json)
 [![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-reading-time)](https://www.npmjs.com/package/metalsmith-reading-time)
 
 [![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-reading-time/badge.svg)](https://snyk.io/test/npm/metalsmith-reading-time)
