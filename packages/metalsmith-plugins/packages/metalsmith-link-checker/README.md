@@ -1,7 +1,6 @@
 # metalsmith-link-checker
 
 [![npm Version](https://badgen.net/npm/v/metalsmith-link-checker?icon=npm)](https://www.npmjs.com/package/metalsmith-link-checker)
-[![node Version](https://badgen.net/npm/node/metalsmith-link-checker)](https://github.com/emmercm/metalsmith-link-checker/blob/main/package.json)
 [![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-link-checker)](https://www.npmjs.com/package/metalsmith-link-checker)
 
 [![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-link-checker/badge.svg)](https://snyk.io/test/npm/metalsmith-link-checker)
