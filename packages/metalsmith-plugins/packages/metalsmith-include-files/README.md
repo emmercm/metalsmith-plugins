@@ -1,7 +1,6 @@
 # metalsmith-include-files
 
 [![npm Version](https://badgen.net/npm/v/metalsmith-include-files?icon=npm)](https://www.npmjs.com/package/metalsmith-include-files)
-[![node Version](https://badgen.net/npm/node/metalsmith-include-files)](https://github.com/emmercm/metalsmith-include-files/blob/master/package.json)
 [![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-include-files)](https://www.npmjs.com/package/metalsmith-include-files)
 
 [![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-include-files/badge.svg)](https://snyk.io/test/npm/metalsmith-include-files)
