@@ -46,8 +46,5 @@
     "metalsmith": "2.3.0",
     "metalsmith-auto-collections": "0.2.0",
     "metalsmith-hbt-md": "1.0.1"
-  },
-  "engines": {
-    "node": ">=10.13.0"
   }
 }
