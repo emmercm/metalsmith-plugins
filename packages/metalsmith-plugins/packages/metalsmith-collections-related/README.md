@@ -1,7 +1,6 @@
 # metalsmith-collections-related
 
 [![npm Version](https://badgen.net/npm/v/metalsmith-collections-related?icon=npm)](https://www.npmjs.com/package/metalsmith-collections-related)
-[![node Version](https://badgen.net/npm/node/metalsmith-collections-related)](https://github.com/emmercm/metalsmith-collections-related/blob/master/package.json)
 [![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-collections-related)](https://www.npmjs.com/package/metalsmith-collections-related)
 
 [![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-collections-related/badge.svg)](https://snyk.io/test/npm/metalsmith-collections-related)
