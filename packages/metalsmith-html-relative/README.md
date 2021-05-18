@@ -1,7 +1,6 @@
 # metalsmith-html-relative
 
 [![npm Version](https://badgen.net/npm/v/metalsmith-html-relative?icon=npm)](https://www.npmjs.com/package/metalsmith-html-relative)
-[![node Version](https://badgen.net/npm/node/metalsmith-html-relative)](https://github.com/emmercm/metalsmith-html-relative/blob/master/package.json)
 [![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-html-relative)](https://www.npmjs.com/package/metalsmith-html-relative)
 
 [![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-html-relative/badge.svg)](https://snyk.io/test/npm/metalsmith-html-relative)
