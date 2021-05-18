@@ -1,7 +1,6 @@
 # metalsmith-css-unused
 
 [![npm Version](https://badgen.net/npm/v/metalsmith-css-unused?icon=npm)](https://www.npmjs.com/package/metalsmith-css-unused)
-[![node Version](https://badgen.net/npm/node/metalsmith-css-unused)](https://github.com/emmercm/metalsmith-css-unused/blob/master/package.json)
 [![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-css-unused)](https://www.npmjs.com/package/metalsmith-css-unused)
 
 [![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-css-unused/badge.svg)](https://snyk.io/test/npm/metalsmith-css-unused)
@@ -21,7 +20,7 @@ npm install --save metalsmith-css-unused
 
 ## JavaScript Usage
 
-This plugin writes output back to the original
+This plugin writes output back to the original input file(s).
 
 ```javascript
 const Metalsmith = require('metalsmith');
@@ -61,7 +60,8 @@ An object of [PurgeCSS options](https://purgecss.com/configuration.html#options)
 ## Example
 
 ```javascript
-const cssUnused = require('metalsmith-css-unused');
+const Metalsmith = require('metalsmith');
+const cssUnused  = require('metalsmith-css-unused');
 
 Metalsmith(__dirname)
     .use(cssUnused({
