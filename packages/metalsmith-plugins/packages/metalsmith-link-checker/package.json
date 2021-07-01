@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-link-checker",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A Metalsmith plugin to check for broken links.",
   "keywords": [
     "metalsmith",
@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "async": "^3.2.0",
-    "cheerio": "^1.0.0-rc.9",
+    "cheerio": "^1.0.0-rc.10",
     "deepmerge": "^4.2.2",
     "minimatch": "^3.0.4",
     "top-user-agents": "^1.0.26"
