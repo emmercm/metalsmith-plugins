@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.5.0 / 2021-08-23
+
+- Implemented the suggested workaround for [htmllint/htmllint#267](https://github.com/htmllint/htmllint/issues/267).
+
 ## v0.4.0 / 2021-05-08
 
 - Removed `width` and `height` from `attr-bans` (E001) due to Google Lighthouse suggestions.
