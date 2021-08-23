@@ -25,11 +25,11 @@ module.exports = (options) => {
       'indent-width': false,
       'line-end-style': false,
       'line-no-trailing-whitespace': false,
-      'spec-char-escape': false, // https://github.com/htmllint/htmllint/issues/267
       'tag-bans': [ // https://www.w3.org/TR/html5-diff/#obsolete-elements
         'acronym', 'applet', 'basefont', 'big', 'center', 'dir', 'font', 'frame', 'frameset', 'isindex', 'noframes', 'strike', 'tt',
       ],
       'tag-name-lowercase': false, // https://dev.w3.org/html5/spec-LC/syntax.html#elements-0,
+      'text-ignore-regex': /&[a-zA-Z0-9]+=/, // https://github.com/htmllint/htmllint/issues/267
       'title-max-len': false, // https://dev.w3.org/html5/spec-LC/semantics.html#the-title-element
     },
     ignoreTags: [
@@ -49,7 +49,10 @@ module.exports = (options) => {
 
     async.eachLimit(htmlFiles, options.parallelism, (filename, complete) => {
       const file = files[filename];
-      const $ = cheerio.load(file.contents);
+      const $ = cheerio.load(file.contents, {
+        _useHtmlParser2: true, // https://github.com/cheeriojs/cheerio/issues/1198
+        decodeEntities: false,
+      });
 
       // Remove ignored tags
       $(options.ignoreTags.join(', ')).html('');
