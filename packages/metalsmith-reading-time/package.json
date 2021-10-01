@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-reading-time",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A Metalsmith plugin to estimate pages' reading times.",
   "keywords": [
     "metalsmith",
@@ -31,7 +31,7 @@
   "dependencies": {
     "deepmerge": "^4.2.2",
     "minimatch": "^3.0.4",
-    "reading-time": "^1.4.0"
+    "reading-time": "^1.5.0"
   },
   "devDependencies": {
     "assert-dir-equal": "1.1.0",
