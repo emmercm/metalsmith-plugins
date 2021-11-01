@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-html-linter",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "A Metalsmith plugin to lint HTML.",
   "keywords": [
     "metalsmith",
@@ -29,8 +29,8 @@
     "test:junit": "JEST_JUNIT_OUTPUT=reports/junit/results.xml jest --ci --runInBand --reporters=default --reporters=jest-junit"
   },
   "dependencies": {
-    "@babel/code-frame": "^7.14.5",
-    "async": "^3.2.1",
+    "@babel/code-frame": "^7.16.0",
+    "async": "^3.2.2",
     "cheerio": "^1.0.0-rc.10",
     "deepmerge": "^4.2.2",
     "htmllint": "^0.8.0",
