@@ -1,8 +1,9 @@
 {
   "options": {
     "ignore": [
-      "status=5[0-9]{2}"
-    ]
+      "status/5[0-9]{2}"
+    ],
+    "timeout": 1000
   },
-  "error": "Broken links found:\n\nindex.html:\n  https://totally.fake.not.real.url\n  https://urlecho.appspot.com/echo?status=399\n  https://urlecho.appspot.com/echo?status=400\n  https://urlecho.appspot.com/echo?status=600\n  https://urlecho.appspot.com/echo?status=999"
+  "error": "Broken links found:\n\nindex.html:\n  https://postman-echo.com/status/399 (HTTP 400)\n  https://postman-echo.com/status/400 (HTTP 400)\n  https://postman-echo.com/status/405 (HTTP 405)\n  https://postman-echo.com/status/600 (HTTP 400)\n  https://postman-echo.com/status/999 (HTTP 400)\n  https://totally.fake.not.real.url (getaddrinfo ENOTFOUND totally.fake.not.real.url)"
 }
