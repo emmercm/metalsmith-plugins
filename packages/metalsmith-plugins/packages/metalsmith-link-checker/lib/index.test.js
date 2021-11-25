@@ -49,21 +49,25 @@ const test = (dir, config) => {
           })
           // Test the output
           .build((err) => {
-            if (config.error) {
-              expect(err)
-                .toBe(config.error);
-            } else {
-              expect(err)
-                .toBeNull();
-            }
+            try {
+              if (config.error) {
+                expect(err)
+                  .toBe(config.error);
+              } else {
+                expect(err)
+                  .toBeNull();
+              }
 
-            if (err) {
+              if (err) {
+                testDone();
+                return;
+              }
+
+              assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
               testDone();
-              return;
+            } catch (assertionError) {
+              testDone(assertionError);
             }
-
-            assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
-            testDone();
           });
       }, 30 * 1000);
     });

@@ -4,7 +4,6 @@ const http = require('http');
 const https = require('https');
 const os = require('os');
 const path = require('path');
-const url = require('url');
 
 const async = require('async');
 const cheerio = require('cheerio');
@@ -13,46 +12,49 @@ const minimatch = require('minimatch');
 const userAgents = require('top-user-agents');
 
 /**
- * Flip an object of arrays so the array values become the keys.
- * @param {Object} input
- * @returns {Object}
- */
-const flipObjectOfArrays = (input) => {
-  const output = {};
-  Object.keys(input)
-    .forEach((key) => {
-      input[key]
-        .forEach((val) => {
-          if (output[val] === undefined) {
-            output[val] = [];
-          }
-          output[val].push(key);
-        });
-    });
-  return output;
-};
-
-/**
  * Return a fake user agent.
  * @returns {string}
  */
-const userAgent = () => userAgents[0];
+const userAgent = userAgents[0];
+
+/**
+ * A lenient WHATWG version of url.parse().
+ * @param {String} input
+ * @returns {{}|URL}
+ */
+const urlParse = (input) => {
+  try {
+    return new URL(input);
+  } catch (err) {
+    return {};
+  }
+};
+
+/**
+ * An object of a link in filename.
+ * @typedef {{filename: string, link: string}} filenameAndLink
+ */
+
+/**
+ * An object of a link in a filename, with a validation result.
+ * @typedef {{filename: string, link: string, result: ?string}} filenameAndLinkWithResult
+ */
 
 /**
  * Gather all links from all HTML files.
  * @param {Object} files
  * @param {Object} options
- * @returns {Object}
+ * @returns {Array.<filenameAndLink>}
  */
 const htmlLinks = (files, options) => Object.keys(files)
   // For each HTML file that matches the given pattern
   .filter(minimatch.filter(options.html.pattern))
-  .reduce((obj, filename) => {
+  .reduce((arr, filename) => {
     const file = files[filename];
     const $ = cheerio.load(file.contents);
 
     const normalizedFilename = filename.replace(/[/\\]/g, '/');
-    obj[normalizedFilename] = [].concat(
+    return arr.concat(
       // For each given tag
       ...Object.keys(options.html.tags)
         .map((tag) => {
@@ -63,23 +65,34 @@ const htmlLinks = (files, options) => Object.keys(files)
 
           return [].concat(
             // For each given attribute, get the value of it
-            ...attributes.map((attribute) => $(`${tag}[${attribute}][${attribute}!='']`)
-              .map((i, elem) => $(elem).attr(attribute))
-              .get()),
-          );
+            ...attributes
+              .map((attribute) => $(`${tag}[${attribute}][${attribute}!='']`)
+                .map((i, elem) => $(elem).attr(attribute))
+                .get()),
+          ).map((link) => ({ filename: normalizedFilename, link }));
         }),
     );
-    return obj;
-  }, {});
+  }, []);
 
 /**
- * Call a callback with if `link` is a valid URL or not.
+ * @typedef {function} validator
  * @param {string} link
  * @param {Object} options Plugin options
- * @param {function} asyncCallback
- * @param {string} method
+ * @param {validatorCallback} asyncCallback
  */
-const validUrl = (link, options, asyncCallback, method = 'HEAD') => {
+
+/**
+ * @callback validatorCallback
+ * @param {Object} err
+ * @param {?string} validationError
+ */
+
+/**
+ * Validate a remote HTTP or HTTPS URL.
+ * @type {validator}
+ */
+// TODO: caching
+const validUrl = (link, options, callback, method = 'HEAD') => {
   const library = (link.substr(0, 5) === 'https' ? https : http);
   library.request(link, {
     method,
@@ -92,14 +105,20 @@ const validUrl = (link, options, asyncCallback, method = 'HEAD') => {
   }, (res) => {
     // Re-attempt HEAD 405s as GETs
     if (res.statusCode === 405 && method !== 'GET') {
-      validUrl(link, options, asyncCallback, 'GET');
+      validUrl(link, options, callback, 'GET');
       return;
     }
 
     // TODO: retry mechanism
-    asyncCallback(null, res && !(res.statusCode >= 400 && res.statusCode <= 599));
-  }).on('error', () => {
-    asyncCallback(null, false);
+    if (!res) {
+      callback(null, 'no response');
+    } else if (res.statusCode >= 400 && res.statusCode <= 599) {
+      callback(null, `HTTP ${res.statusCode}`);
+    } else {
+      callback(null, null);
+    }
+  }).on('error', (err) => {
+    callback(null, err.message);
   }).end();
 };
 
@@ -129,6 +148,9 @@ const validLocal = (files, src, dest) => {
   return linkPath in files || path.join(linkPath, 'index.html') in files;
 };
 
+/**
+ * @type {Object.<string, validator>}
+ */
 const protocolValidators = {
   'http:': validUrl,
   'https:': validUrl,
@@ -140,7 +162,7 @@ const protocolValidators = {
 /**
  * Plugin entrypoint.
  * @param {Object} options
- * @returns {function}
+ * @returns {function(Object.<string, Object>, Object, function)}
  */
 module.exports = (options) => {
   options = deepmerge({
@@ -155,7 +177,7 @@ module.exports = (options) => {
     },
     ignore: [],
     timeout: 15 * 1000,
-    userAgent: userAgent(),
+    userAgent,
     parallelism: os.cpus().length * 4,
   }, options || {});
 
@@ -166,58 +188,62 @@ module.exports = (options) => {
         return reducer;
       }, {});
 
-    // Gather the links contained in all files, and then invert the array to reduce items to check
-    const filenamesToLinks = {
+    // Gather a list of filename + link combinations, and remove ignored links
+    options.ignore = options.ignore.map((pattern) => new RegExp(pattern));
+    const filenamesAndLinks = [
       ...htmlLinks(files, options),
       // TODO: CSS files
       // TODO: manifest files
-    };
-    const linksToFilenames = flipObjectOfArrays(filenamesToLinks);
-
-    // Process ignored links
-    options.ignore = options.ignore.map((pattern) => new RegExp(pattern));
-    Object.keys(linksToFilenames)
-      .filter((link) => options.ignore.some((re) => re.test(link)))
-      .forEach((link) => delete linksToFilenames[link]);
+    ].filter((filenameAndLink) => options.ignore.some((re) => !re.test(filenameAndLink.link)));
 
     // For each link, find the files it is broken for
-    async.mapValuesLimit(linksToFilenames, options.parallelism, (filenames, link, callback) => {
-      // Validate links with a protocol
-      const linkUrl = url.parse(link);
+    async.mapLimit(filenamesAndLinks, options.parallelism, (filenameAndLink, callback) => {
+      const callbackResult = (err, result) => callback(err, { ...filenameAndLink, result });
+      const { filename, link } = filenameAndLink;
+
+      // Validate links with a protocol (remote links)
+      const linkUrl = urlParse(link);
       if (linkUrl.protocol) {
         if (protocolValidators[linkUrl.protocol] !== undefined) {
-          const validatorCallback = (err, valid) => callback(err, valid ? [] : filenames);
-          const valid = protocolValidators[linkUrl.protocol](link, options, validatorCallback);
-          if (typeof valid !== 'boolean') {
-            // Invalid boolean means the function will call the callback for us
+          const result = protocolValidators[linkUrl.protocol](link, options, callbackResult);
+          if (result === undefined) {
+            // Validation function didn't return anything, it will call the callback for us
             return;
           }
-          callback(null, valid ? [] : filenames);
+          // Otherwise, call the callback with the validation result
+          callbackResult(null, result);
           return;
         }
 
         // Assume all unknown protocols are valid
-        callback(null, []);
+        callbackResult(null, null);
         return;
       }
 
       // Validate local files
-      const badFilenames = filenames
-        .filter((filename) => !validLocal(normalizedFilenames, filename, link));
-      callback(null, badFilenames);
-    }, (err, result) => {
+      callbackResult(null, validLocal(normalizedFilenames, filename, link) ? null : 'not found');
+    }, (err, /** @type {filenameAndLinkWithResult} */ result) => {
       if (err) {
         done(err);
         return;
       }
 
+      const filenamesToLinkErrors = result
+        .filter((filenameAndLink) => filenameAndLink.result)
+        .reduce((obj, filenameAndLink) => {
+          if (!obj[filenameAndLink.filename]) {
+            obj[filenameAndLink.filename] = [];
+          }
+          obj[filenameAndLink.filename].push(`${filenameAndLink.link} (${filenameAndLink.result})`);
+          return obj;
+        }, {});
+
       // Return a pretty formatted error if there are bad links
-      result = flipObjectOfArrays(result);
-      if (Object.keys(result).length) {
-        const message = Object.keys(result).sort()
+      if (Object.keys(filenamesToLinkErrors).length) {
+        const message = Object.keys(filenamesToLinkErrors).sort()
           .map((filename) => {
-            const output = result[filename].sort()
-              .map((link) => `  ${link}`)
+            const output = filenamesToLinkErrors[filename].sort()
+              .map((linkError) => `  ${linkError}`)
               .join('\n');
             return `${filename}:\n${output}`;
           })
