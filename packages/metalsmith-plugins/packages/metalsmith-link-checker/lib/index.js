@@ -87,12 +87,21 @@ const htmlLinks = (files, options) => Object.keys(files)
  * @param {?string} validationError
  */
 
+const validUrlCache = {};
 /**
  * Validate a remote HTTP or HTTPS URL.
  * @type {validator}
  */
-// TODO: caching
 const validUrl = (link, options, callback, method = 'HEAD') => {
+  const cacheAndCallback = (err, result) => {
+    validUrlCache[link] = result;
+    callback(err, result);
+  };
+  if (link in validUrlCache) {
+    callback(null, validUrlCache[link]);
+    return;
+  }
+
   const library = (link.substr(0, 5) === 'https' ? https : http);
   library.request(link, {
     method,
@@ -111,14 +120,14 @@ const validUrl = (link, options, callback, method = 'HEAD') => {
 
     // TODO: retry mechanism
     if (!res) {
-      callback(null, 'no response');
+      cacheAndCallback(null, 'no response');
     } else if (res.statusCode >= 400 && res.statusCode <= 599) {
-      callback(null, `HTTP ${res.statusCode}`);
+      cacheAndCallback(null, `HTTP ${res.statusCode}`);
     } else {
-      callback(null, null);
+      cacheAndCallback(null, null);
     }
   }).on('error', (err) => {
-    callback(null, err.message);
+    cacheAndCallback(null, err.message);
   }).end();
 };
 
@@ -194,7 +203,17 @@ module.exports = (options) => {
       ...htmlLinks(files, options),
       // TODO: CSS files
       // TODO: manifest files
-    ].filter((filenameAndLink) => options.ignore.some((re) => !re.test(filenameAndLink.link)));
+    ]
+      .filter((v1, idx, arr) => {
+        // Filter this out if this a duplicate of an item earlier in the array
+        const comparator = (v2) => JSON.stringify(v1) === JSON.stringify(v2);
+        return arr.findIndex(comparator) === idx;
+      })
+      .filter((filenameAndLink) => {
+        // Filter this out if any ignore regex matches
+        const comparator = (re) => re.test(filenameAndLink.link);
+        return !options.ignore.some(comparator);
+      });
 
     // For each link, find the files it is broken for
     async.mapLimit(filenamesAndLinks, options.parallelism, (filenameAndLink, callback) => {

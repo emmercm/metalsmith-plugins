@@ -1,7 +1,8 @@
 {
   "options": {
     "ignore": [
-      "status/5[0-9]{2}"
+      "status/5[0-9]{2}",
+      "unmatched-ignore-pattern"
     ],
     "timeout": 1000
   },
