@@ -87,6 +87,33 @@ const htmlLinks = (files, options) => Object.keys(files)
  * @param {?string} validationError
  */
 
+/**
+ * Validate a FaceTime link.
+ * @type {validator}
+ */
+const validFacetime = (link) => {
+  // https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/FacetimeLinks/FacetimeLinks.html
+  if (link === 'facetime:') {
+    return null;
+  }
+  if (link.indexOf('@') === -1 && !link.match(/[0-9]/)) {
+    return 'invalid';
+  }
+  if (link.indexOf('@') !== -1) {
+    if (!link.match(/^facetime:[^@]+@.+$/)) {
+      return 'invalid email address';
+    }
+  } else {
+    if (link.indexOf(' ') !== -1) {
+      return 'contains a space';
+    }
+    if (!link.match(/^facetime:[0-9.+-]+$/)) {
+      return 'invalid phone number';
+    }
+  }
+  return null;
+};
+
 const validUrlCache = {};
 /**
  * Validate a remote HTTP or HTTPS URL.
@@ -132,6 +159,54 @@ const validUrl = (link, options, callback, method = 'HEAD') => {
 };
 
 /**
+ * Validate a mailto: link.
+ * @type {validator}
+ */
+const validMailto = (link) => {
+  // https://www.w3docs.com/snippets/html/how-to-create-mailto-links.html
+  if (!link.match(/^mailto:[^@]+/)) {
+    return 'invalid local-part';
+  }
+  if (!link.match(/^mailto:[^@]+@[^?]+/)) {
+    return 'invalid domain';
+  }
+  if (!link.match(/^mailto:[^@]+@[^?]+(\?(subject|cc|bcc|body)=[^&]+(&(subject|cc|bcc|body)=[^&]+)?)?$/)) {
+    return 'invalid query params';
+  }
+  return null;
+};
+
+/**
+ * Validate a sms: link.
+ * @type {validator}
+ */
+const validSms = (link) => {
+  // https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/SMSLinks/SMSLinks.html
+  if (!link.replace(/ /g, '').match(/^sms:([0-9.+-]+)?$/)) {
+    return 'invalid';
+  }
+  if (link.indexOf(' ') !== -1) {
+    return 'contains a space';
+  }
+  return null;
+};
+
+/**
+ * Validate a tel: link.
+ * @type {validator}
+ */
+const validTel = (link) => {
+  // https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/PhoneLinks/PhoneLinks.html#//apple_ref/doc/uid/TP40007899-CH6-SW1
+  if (!link.replace(/ /g, '').match(/^tel:([0-9.+-]+)?$/)) {
+    return 'invalid';
+  }
+  if (link.indexOf(' ') !== -1) {
+    return 'contains a space';
+  }
+  return null;
+};
+
+/**
  * Return if a `dest` link from a `src` file is valid or not.
  * @param {Object} files
  * @param {string} src
@@ -161,11 +236,13 @@ const validLocal = (files, src, dest) => {
  * @type {Object.<string, validator>}
  */
 const protocolValidators = {
+  'facetime:': validFacetime,
+  'facetime-audio:': validFacetime,
   'http:': validUrl,
   'https:': validUrl,
-  // TODO: mailto: validation
-  // TODO: tel: validation
-  // TODO: sms: validation
+  'mailto:': validMailto,
+  'sms:': validSms,
+  'tel:': validTel,
 };
 
 /**

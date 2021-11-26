@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.0 / 2021-11-26
+
+- Support validating `facetime:`/`facetime-audio:`, `mailto:`, `sms:`, and `tel:` links.
+
 ## v0.1.2 / 2021-11-24
 
 - Fix the `ignore` option broken in v0.1.0.
