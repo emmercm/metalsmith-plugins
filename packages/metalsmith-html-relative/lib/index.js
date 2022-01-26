@@ -62,9 +62,7 @@ module.exports = (options) => {
                 absoluteResource = absoluteResource.replace(/^[/\\]+/, '');
 
                 // Find the relative path of the resource
-                const relativeResource = path.relative(
-                  path.dirname(normalizedFilename), absoluteResource,
-                ).replace(/[/\\]/g, '/');
+                const relativeResource = path.relative(path.dirname(normalizedFilename), absoluteResource).replace(/[/\\]/g, '/');
 
                 $(elem).attr(attribute, relativeResource);
               });
