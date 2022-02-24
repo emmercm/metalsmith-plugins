@@ -12,6 +12,8 @@
 
 A Metalsmith plugin to lint HTML.
 
+This plugin will raise an exception and stop the build if any HTML files are found to be violating any configured [`htmllint`](https://www.npmjs.com/package/htmllint) rules. The goal is to catch any problems before they appear as errors in a browser.
+
 ## Installation
 
 ```bash
@@ -41,7 +43,7 @@ Metalsmith(__dirname)
 
 Type: `string` Default: `**/*.html`
 
-A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern to find HTML files.
+A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern to find HTML files.
 
 ### `htmllint` (optional)
 
@@ -68,7 +70,7 @@ Type: `object` Default:
 }
 ```
 
-Note: [`htmllint`](https://github.com/htmllint/htmllint) has an opinionated set of default options that are inconsistent with the HTML5 specification, hence the complicated default.
+Note: [`htmllint`](https://www.npmjs.com/package/htmllint) has an opinionated set of default options that are inconsistent with the HTML5 specification, hence the complicated default.
 
 An object of [`htmllint` options](https://github.com/htmllint/htmllint/wiki/Options).
 
@@ -76,7 +78,7 @@ An object of [`htmllint` options](https://github.com/htmllint/htmllint/wiki/Opti
 
 Type: `string[]` Default: `["code", "pre", "textarea"]`
 
-An array of [cheerio](https://cheerio.js.org/) selectors to remove before linting.
+An array of [`cheerio`](https://www.npmjs.com/package/cheerio) selectors to remove before linting.
 
 ### `parallelism` (optional)
 
