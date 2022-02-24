@@ -12,6 +12,16 @@
 
 A Metalsmith plugin to find related files within collections.
 
+Files are "related" if they share important terms in their contents.
+
+For each file in a collection, [Term Frequency-Inverse Document Frequency (TF-IDF)](https://en.wikipedia.org/wiki/Tf%E2%80%93idf) is used to:
+
+- Find the top `natural.maxTerms` important terms in the file's contents
+- Find how much weight those terms have in every other file in the collection
+- Filter matches that have at least `natural.minTfIdf` weight
+- Sort by descending weight (most "related" first)
+- Limit to `maxRelated` number of matches
+
 ## Installation
 
 ```bash
@@ -79,7 +89,7 @@ which can be used with templating engines, such as with [Handlebars](https://www
 
 Type: `string` Default: `**/*`
 
-A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern to find input files.
+A [micromatch](https://www.npmjs.com/package/micromatch) glob pattern to find input files.
 
 ### `maxRelated` (optional)
 
@@ -102,7 +112,7 @@ Type: `object` Default:
 
 Type: `number` Default: `0`
 
-The minimum [tf-idf](https://en.wikipedia.org/wiki/Tf%E2%80%93idf) (term frequency-inverse document frequency) measure.
+The minimum [Term Frequency-Inverse Document Frequency (TF-IDF)](https://en.wikipedia.org/wiki/Tf%E2%80%93idf) measure.
 
 #### `natural.maxTerms` (optional)
 
@@ -122,7 +132,7 @@ Type: `object` Default:
 }
 ```
 
-An object of [`sanitize-html` options](https://www.npmjs.com/package/sanitize-html).
+An object of [`sanitize-html`](https://www.npmjs.com/package/sanitize-html) options.
 
 ## Changelog
 
