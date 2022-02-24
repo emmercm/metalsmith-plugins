@@ -45,6 +45,8 @@ Reading time: {{ readingTime }}
 The rest of the page content.
 ```
 
+Reading time will be reported in minutes in the form "# min read" per [reading-time](https://www.npmjs.com/package/reading-time).
+
 ## Options
 
 ### `pattern` (optional)
@@ -57,7 +59,15 @@ A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern to find inpu
 
 Type: `object` Default: `{}`
 
-An object of [`reading-time` options](https://www.npmjs.com/package/reading-time).
+An object of [`reading-time`](https://www.npmjs.com/package/reading-time) options, example:
+
+```json
+{
+  "readingTime": {
+    "wordsPerMinute": 200
+  }
+}
+```
 
 ## Changelog
 

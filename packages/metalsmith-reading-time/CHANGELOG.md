@@ -1,9 +1,10 @@
 # Changelog
 
-## v0.1.0 / 2020-02-20
+## v0.1.0 / 2022-02-23
 
-- Use [`natural`](https://www.npmjs.com/package/natural) instead of [`retext-keywords`](https://www.npmjs.com/package/retext-keywords) and [`string-similarity`](https://www.npmjs.com/package/string-similarity).
+- Use Metalsmith v2.4's `metalsmith.match()` instead of [`minimatch`](https://www.npmjs.com/package/minimatch).
+- README update.
 
-## v0.0.2 / 2020-02-17
+## v0.0.2 / 2020-02-22
 
 - Initial version.
