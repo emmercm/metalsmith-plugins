@@ -12,6 +12,8 @@
 
 A Metalsmith plugin to include external files.
 
+A common use case is wanting to include JavaScript, CSS, or font files from an installed NPM package such as [bootstrap](https://www.npmjs.com/package/bootstrap).
+
 ## Installation
 
 ```bash
@@ -35,16 +37,44 @@ Metalsmith(__dirname)
     });
 ```
 
+## Options
+
+The option dictionary passed to the plugin is in the form:
+
+```json
+{
+  "[output directory one]": [
+    "[micromatch pattern]",
+    "[micromatch pattern]"
+  ],
+  "[output directory two]": [
+    "[micromatch pattern]",
+    "[micromatch pattern]"
+  ]
+}
+```
+
+where you can define any number of output directories, and each of those can have any number of micromatch patterns of files to include.
+
 ## Example
+
+To include a number of static assets from [jquery](https://www.npmjs.com/package/jquery), [bootstrap](https://www.npmjs.com/package/bootstrap), and [@fortawesome/fontawesome-free](https://www.npmjs.com/package/@fortawesome/fontawesome-free) in your output files:
 
 ```javascript
 const include = require('metalsmith-include-files');
 
 Metalsmith(__dirname)
     .use(include({
+        'static/css': [
+            './node_modules/bootstrap/dist/css/bootstrap.min.css',
+            './node_modules/@fortawesome/fontawesome-free/css/all.min.css'
+        ],
         'static/js': [
-            './node_modules/bootstrap/dist/js/bootstrap.js',
-            './node_modules/jquery/dist/jquery.js',
+            './node_modules/jquery/dist/jquery.slim.js',
+            './node_modules/bootstrap/dist/js/bootstrap.min.js'
+        ],
+        'static/webfonts': [
+            './node_modules/@fortawesome/fontawesome-free/webfonts/*'
         ]
     }))
 ```
