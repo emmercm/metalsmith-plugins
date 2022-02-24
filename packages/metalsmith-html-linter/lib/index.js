@@ -7,7 +7,6 @@ const cheerio = require('cheerio');
 const codeFrame = require('@babel/code-frame');
 const deepmerge = require('deepmerge');
 const htmllint = require('htmllint');
-const minimatch = require('minimatch');
 
 module.exports = (options) => {
   options = deepmerge({
@@ -42,8 +41,7 @@ module.exports = (options) => {
   }, options || {}, { arrayMerge: (destinationArray, sourceArray) => sourceArray });
 
   return (files, metalsmith, done) => {
-    const htmlFiles = Object.keys(files)
-      .filter(minimatch.filter(options.html));
+    const htmlFiles = metalsmith.match(options.html);
 
     const failures = [];
 
