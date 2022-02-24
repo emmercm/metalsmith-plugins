@@ -1,7 +1,6 @@
 'use strict';
 
 const deepmerge = require('deepmerge');
-const minimatch = require('minimatch');
 const htmlEscaper = require('html-escaper');
 const sanitizeHtml = require('sanitize-html');
 const natural = require('natural');
@@ -25,8 +24,7 @@ module.exports = (options) => {
 
   return (files, metalsmith, done) => {
     // Filter files to be considered
-    const keywordFiles = Object.keys(files)
-      .filter(minimatch.filter(options.pattern))
+    const keywordFiles = metalsmith.match(options.pattern)
       .filter((filename) => files[filename].collection);
 
     // Create a map of collection->files
