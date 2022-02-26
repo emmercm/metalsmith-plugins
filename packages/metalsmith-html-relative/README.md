@@ -12,6 +12,8 @@
 
 A Metalsmith plugin to convert to relative paths within HTML.
 
+This will change `href`, `src`, and other tag attributes that reference local files (pages, CSS, JavaScript, images, etc.) to use relative links (e.g. `../static/css/styles.css`) rather than absolute links (e.g. `/static/css/styles.css`). This allows your website to be more portable, it can exist in any kind of subdomain or subdirectory.
+
 ## Installation
 
 ```bash
@@ -41,7 +43,7 @@ Metalsmith(__dirname)
 
 Type: `string` Default: `**/*.html`
 
-A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern to find HTML files.
+A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern to find HTML files.
 
 ### `tags` (optional)
 
@@ -77,7 +79,7 @@ Given a file tree:
         └── scripts.js
 ```
 
-And `contact/index.html`:
+And the contents of `contact/index.html` are:
 
 ```html
 <!DOCTYPE html>
@@ -92,6 +94,8 @@ And `contact/index.html`:
 ```
 
 ### Example Output
+
+After this plugin is run, the output of `contact/index.html` will be:
 
 ```html
 <!DOCTYPE html>

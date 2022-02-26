@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.4.0 / 2022-02-25
+
+- Use Metalsmith v2.4's `metalsmith.match()` instead of [`minimatch`](https://www.npmjs.com/package/minimatch).
+- Major README update.
+
 ## v0.3.0 / 2020-05-17
 
 - Fixed a `` / `` (Unix) vs. `` \ `` (Windows) path separator issue.
