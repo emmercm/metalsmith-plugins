@@ -1,7 +1,6 @@
 'use strict';
 
 const deepmerge = require('deepmerge');
-const minimatch = require('minimatch');
 const { PurgeCSS } = require('purgecss');
 
 module.exports = (options) => {
@@ -13,17 +12,14 @@ module.exports = (options) => {
 
   return (files, metalsmith, done) => {
     // Build list of HTML content
-    options.purgecss.content = Object.keys(files)
-      .filter(minimatch.filter(options.html))
+    options.purgecss.content = metalsmith.match(options.html)
       .map((filename) => ({
         raw: files[filename].contents.toString(),
         extension: 'html',
       }));
 
-    // Build string of CSS content
-    const cssFiles = Object.keys(files)
-      .filter(minimatch.filter(options.css));
-    cssFiles.push(...cssFiles);
+    // Build list of CSS content
+    const cssFiles = metalsmith.match(options.css);
     options.purgecss.css = cssFiles
       .map((filename) => ({
         raw: files[filename].contents.toString(),
