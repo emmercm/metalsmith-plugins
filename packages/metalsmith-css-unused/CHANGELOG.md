@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.4.0 / 2022-02-25
+
+- Use Metalsmith v2.4's `metalsmith.match()` instead of [`minimatch`](https://www.npmjs.com/package/minimatch).
+- Major README update
+
 ## v0.3.1 / 2020-12-03
 
 - Trimmed CSS is written back to its original file, fixing an issue where only the trimmed output from the first file is written.
