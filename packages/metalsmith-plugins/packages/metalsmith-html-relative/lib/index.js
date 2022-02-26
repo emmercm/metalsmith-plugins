@@ -2,7 +2,6 @@
 
 const cheerio = require('cheerio');
 const deepmerge = require('deepmerge');
-const minimatch = require('minimatch');
 const path = require('path');
 const url = require('url');
 
@@ -20,8 +19,7 @@ module.exports = (options) => {
 
   return (files, metalsmith, done) => {
     // For each HTML file that matches the given pattern
-    Object.keys(files)
-      .filter(minimatch.filter(options.html))
+    metalsmith.match(options.html)
       .forEach((filename) => {
         const file = files[filename];
         const normalizedFilename = filename.replace(/[/\\]/g, path.sep);
