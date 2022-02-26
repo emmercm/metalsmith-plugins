@@ -7,11 +7,11 @@ const ora = require('ora');
 
 const LEFT_MARGIN = 7;
 
-const METALSMITH_BRANCH = 'metalsmith-branch';
-const IGNORE_PACKAGES = [
-  'async',
-  'metalsmith-if',
+const IGNORED_JAVASCRIPT_FILES = [
   'metalsmith-tracer',
+  'next_tick.js',
+  'task_queues.js',
+  'timers.js',
 ];
 
 const timePrefix = (milliseconds) => {
@@ -36,8 +36,8 @@ module.exports = (Metalsmith, options) => {
     prefixText: `\n${' '.repeat(LEFT_MARGIN - 5 - 1)}`,
     spinner: 'arrow3',
   });
-  let index = 0; let
-    count = 0;
+  let index = 0;
+  let count = 0;
 
   const { use } = Metalsmith;
   Metalsmith.use = (plugin) => {
@@ -52,7 +52,7 @@ module.exports = (Metalsmith, options) => {
       spinner.text = chalk.bold(`${index}/${count} (${((index / count) * 100).toFixed(1)}%)`);
       spinner.start();
 
-      plugin(files, metalsmith, (...args) => {
+      const doneInterceptor = (...args) => {
         const elapsed = process.hrtime(start);
         const elapsedMs = (elapsed[0] * 1e9 + elapsed[1]) / 1000000;
 
@@ -69,39 +69,68 @@ module.exports = (Metalsmith, options) => {
           .slice(1)
           .map((callsite) => callsite.getFileName());
 
+        // Find the first non-plugin file in the call stack. This is to prevent us from
+        // mis-identifying plugins or anonymous functions.
+        let firstNonNodeModulesIdx = filenames.length;
+        for (let i = 0; i < filenames.length; i += 1) {
+          const filename = filenames[i];
+          // Found first non-node_modules file, we're no longer in the plugin call stack
+          if (filename.indexOf('/node_modules/') === -1) {
+            firstNonNodeModulesIdx = i;
+            break;
+          }
+          // Found ware, Metalsmith uses this for plugin management,
+          // we're no longer in the plugin call stack
+          if (filename.indexOf('/node_modules/ware') !== -1
+            && filename.indexOf('metalsmith-branch') === -1) {
+            firstNonNodeModulesIdx = i;
+            break;
+          }
+        }
+
         // Find all metalsmith-related packages
         const eligiblePackages = filenames
+          .slice(0, firstNonNodeModulesIdx + 1)
           .filter((filename) => filename)
           .map((filename) => {
             const match = filename.match(/.+?[/\\]node_modules[/\\](@metalsmith\/[^/\\]+|metalsmith-[^/\\]+)[/\\]/);
             return match ? match[1] : null;
           })
-          .filter((name) => name && IGNORE_PACKAGES.indexOf(name) === -1);
+          .filter((filename) => filename && filename.indexOf('metalsmith-tracer') === -1)
+          .filter((val, idx, arr) => idx === 0 || arr[idx - 1] !== val);
 
-        // Detect if we're in the middle of metalsmith-branch, and then exclude it
-        const metalsmithBranch = eligiblePackages.indexOf('metalsmith-branch') !== -1;
-        const pkg = eligiblePackages
-          .filter((name) => name !== 'metalsmith-branch')
-          .find(() => true);
-
-        let pkgStr = pkg || filenames[0];
+        let pkgStr = eligiblePackages
+          .filter((eligiblePackage) => eligiblePackage !== 'metalsmith-branch')
+          .reverse()
+          .join(', ');
         let pkgColor = chalk.reset;
 
-        // If the package isn't metalsmith-related, ignore
-        if (!pkgStr || pkgStr.indexOf('timers.js') !== -1 || pkgStr.indexOf('next_tick.js') !== -1) {
+        if (!pkgStr) {
+          pkgColor = chalk.blackBright;
+          pkgStr = (filenames
+            .filter((filename) => filename.indexOf('/node_modules/') === -1)
+            .find(() => true) || '')
+            .replace(Metalsmith.directory(), '').replace(/^[/\\]+/, '');
+        }
+        if (!pkgStr || IGNORED_JAVASCRIPT_FILES.some((ignored) => pkgStr.indexOf(ignored) !== -1)) {
           pkgColor = chalk.blackBright;
           pkgStr = '(unnamed)';
-        }
-
-        if (metalsmithBranch) {
-          pkgStr = `(${METALSMITH_BRANCH}) ${pkgStr}`;
         }
 
         spinner.stop();
         options.log(`${elapsedColor(timePrefix(elapsedMs))} ${pkgColor(pkgStr)}`);
 
         done(...args);
-      });
+      };
+
+      // Run the plugin but give it our new "done" callback
+      plugin(files, metalsmith, doneInterceptor);
+
+      // If the plugin has fewer than 3 arguments then it can't call the "done"
+      // callback, so assume it executed synchronously and call it manually.
+      if (plugin.length < 3) {
+        doneInterceptor();
+      }
     }]);
   };
 

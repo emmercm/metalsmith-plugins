@@ -1,9 +1,15 @@
 # Changelog
 
+## v0.5.0 / 2022-02-26
+
+- If multiple plugins are in the call stack (e.g. when using `metalsmith-branch`) all of them are printed.
+- Better detection of local, non-installed plugins.
+- Synchronous plugins that don't call the "done" callback are now supported.
+
 ## v0.4.0 / 2022-02-25
 
 - Now detect `@metalsmith/*` packages in addition to `metalsmith-*`.
-- Ignore `metalsmith-branch` when detectig package name.
+- Ignore `metalsmith-branch` when detecting package name.
 
 ## v0.3.0 / 2020-05-17
 

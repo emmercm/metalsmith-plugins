@@ -12,6 +12,26 @@
 
 A tool to automatically trace and measure Metalsmith build time.
 
+The Metalsmith build process has no progress output to indicate how many plugins have been processed and how many more are left. Build pipelines with a lot of plugins can take a long time to finish, and it's very difficult to know which plugins take the most time. This package is a wrapper around Metalsmith that outputs meaningful build progress.
+
+Here is example console output when wrapped around the [metalsmith/startbootstrap-clean-blog](https://github.com/metalsmith/startbootstrap-clean-blog) example:
+
+```text
+------- Build process started -------
+
+  4.7ms (unnamed)
+ 32.5ms (unnamed)
+  2.3ms @metalsmith/collections
+  0.4ms metalsmith.js
+511.9ms @metalsmith/layouts
+   1.8s @metalsmith/sass
+  0.3ms metalsmith.js
+
+   2.4s Total build time
+
+Build finished
+```
+
 ## Installation
 
 ```bash
@@ -46,9 +66,13 @@ The logger function.
 
 ## Limitations
 
-### `setImmediate()`
+- `setImmediate()`
 
-Plugins that use `setImmediate()` to call their `done` callback will not print their real name due to how `metalsmith-tracer` uses the call stack.
+  Plugins that use `setImmediate()` to call their `done` callback will not print their real name due to how `metalsmith-tracer` uses the call stack.
+
+- `metalsmith-if`
+
+  Using `metalsmith-if` will make the name of the plugin actually being used.
 
 ## Changelog
 

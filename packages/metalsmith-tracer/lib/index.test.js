@@ -20,6 +20,7 @@ const test = (dir, config) => {
     ['/', '\\'].forEach((pathSeparator) => {
       it(`should build with path separator "${pathSeparator}"`, (testDone) => {
         tracer(Metalsmith(`${dir}`), config.options)
+          .use(() => {})
           // Convert the path separators to the one being tested
           .use((files, metalsmith, done) => {
             Object.keys(files)
