@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.4.0 / 2022-02-25
+
+- Now detect `@metalsmith/*` packages in addition to `metalsmith-*`.
+- Ignore `metalsmith-branch` when detectig package name.
+
 ## v0.3.0 / 2020-05-17
 
 - Fixed a `Cannot read property 'match' of null` issue.

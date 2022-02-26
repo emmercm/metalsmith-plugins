@@ -5,7 +5,14 @@ const callsites = require('callsites');
 const chalk = require('chalk');
 const ora = require('ora');
 
-const leftMargin = 7;
+const LEFT_MARGIN = 7;
+
+const METALSMITH_BRANCH = 'metalsmith-branch';
+const IGNORE_PACKAGES = [
+  'async',
+  'metalsmith-if',
+  'metalsmith-tracer',
+];
 
 const timePrefix = (milliseconds) => {
   let value = milliseconds;
@@ -17,7 +24,7 @@ const timePrefix = (milliseconds) => {
   }
 
   const fixed = value.toFixed(1);
-  return ' '.repeat(leftMargin - fixed.length - suffix.length) + fixed + suffix;
+  return ' '.repeat(LEFT_MARGIN - fixed.length - suffix.length) + fixed + suffix;
 };
 
 module.exports = (Metalsmith, options) => {
@@ -26,7 +33,7 @@ module.exports = (Metalsmith, options) => {
   }, options || {});
 
   const spinner = ora({
-    prefixText: `\n${' '.repeat(leftMargin - 5 - 1)}`,
+    prefixText: `\n${' '.repeat(LEFT_MARGIN - 5 - 1)}`,
     spinner: 'arrow3',
   });
   let index = 0; let
@@ -57,23 +64,37 @@ module.exports = (Metalsmith, options) => {
           elapsedColor = chalk.red;
         }
 
+        // Find the call stack filenames
         const filenames = callsites()
           .slice(1)
           .map((callsite) => callsite.getFileName());
-        const pkg = filenames
+
+        // Find all metalsmith-related packages
+        const eligiblePackages = filenames
           .filter((filename) => filename)
           .map((filename) => {
-            const match = filename.match(/.+?[/\\]node_modules[/\\](metalsmith-[^/\\]+)[/\\]/);
+            const match = filename.match(/.+?[/\\]node_modules[/\\](@metalsmith\/[^/\\]+|metalsmith-[^/\\]+)[/\\]/);
             return match ? match[1] : null;
           })
-          .filter((name) => name && name !== 'async')
-          .find(() => true);
-        let pkgStr = pkg || filenames[0];
+          .filter((name) => name && IGNORE_PACKAGES.indexOf(name) === -1);
 
+        // Detect if we're in the middle of metalsmith-branch, and then exclude it
+        const metalsmithBranch = eligiblePackages.indexOf('metalsmith-branch') !== -1;
+        const pkg = eligiblePackages
+          .filter((name) => name !== 'metalsmith-branch')
+          .find(() => true);
+
+        let pkgStr = pkg || filenames[0];
         let pkgColor = chalk.reset;
-        if (!pkgStr || pkgStr === 'metalsmith-if' || pkgStr.indexOf('timers.js') !== -1 || pkgStr.indexOf('next_tick.js') !== -1) {
+
+        // If the package isn't metalsmith-related, ignore
+        if (!pkgStr || pkgStr.indexOf('timers.js') !== -1 || pkgStr.indexOf('next_tick.js') !== -1) {
           pkgColor = chalk.blackBright;
           pkgStr = '(unnamed)';
+        }
+
+        if (metalsmithBranch) {
+          pkgStr = `(${METALSMITH_BRANCH}) ${pkgStr}`;
         }
 
         spinner.stop();
@@ -86,7 +107,7 @@ module.exports = (Metalsmith, options) => {
 
   const { build } = Metalsmith;
   Metalsmith.build = (func) => {
-    options.log(`${'-'.repeat(leftMargin)} ${chalk.bold('Build process started')} ${'-'.repeat(leftMargin)}`);
+    options.log(`${'-'.repeat(LEFT_MARGIN)} ${chalk.bold('Build process started')} ${'-'.repeat(LEFT_MARGIN)}`);
     options.log();
 
     const start = process.hrtime();
