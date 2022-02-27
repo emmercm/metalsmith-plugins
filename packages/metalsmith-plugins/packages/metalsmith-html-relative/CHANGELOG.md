@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.4.1 / 2022-02-27
+
+- Don't allow empty resource path (prevents `<a href="">` when linking to self).
+
 ## v0.4.0 / 2022-02-25
 
 - Use Metalsmith v2.4's `metalsmith.match()` instead of [`minimatch`](https://www.npmjs.com/package/minimatch).
