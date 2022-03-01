@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-collections-related",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A Metalsmith plugin to find related files within collections.",
   "keywords": [
     "metalsmith",
@@ -31,8 +31,8 @@
   "dependencies": {
     "deepmerge": "^4.2.2",
     "html-escaper": "^3.0.3",
-    "natural": "^5.1.11",
-    "sanitize-html": "^2.6.1"
+    "natural": "^5.1.13",
+    "sanitize-html": "^2.7.0"
   },
   "peerDependencies": {
     "metalsmith": "^2.4.0"
