@@ -1,0 +1,25 @@
+{
+  "extends": "airbnb-base",
+  "rules": {
+    "no-param-reassign": "off",
+    "strict": ["error", "global"]
+  },
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.js"],
+      "env": {
+        "jest": true
+      }
+    },
+    {
+      "files": ["**/fixtures/**/*.js"],
+      "rules": {
+        "strict": "off"
+      }
+    }
+  ]
+}
