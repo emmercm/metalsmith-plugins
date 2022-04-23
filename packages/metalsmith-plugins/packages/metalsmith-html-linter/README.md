@@ -45,9 +45,9 @@ Type: `string` Default: `**/*.html`
 
 A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern to find HTML files.
 
-### `htmllint` (optional)
+### `linthtmnl` (optional)
 
-Type: `object` Default:
+Type: `string` Default:
 
 ```json
 {
@@ -61,7 +61,6 @@ Type: `object` Default:
     "indent-width": false,
     "line-end-style": false,
     "line-no-trailing-whitespace": false,
-    "spec-char-escape": false,
     "tag-bans": [
         "acronym", "applet", "basefont", "big", "center", "dir", "font", "frame", "frameset", "isindex", "noframes", "strike", "tt"
     ],
@@ -70,9 +69,15 @@ Type: `object` Default:
 }
 ```
 
-Note: [`htmllint`](https://www.npmjs.com/package/htmllint) has an opinionated set of default options that are inconsistent with the HTML5 specification, hence the complicated default.
+An object of [`linthtml` options](https://github.com/linthtml/linthtml/blob/develop/docs/configuration.md). These will be merged with the [default `linthtml` options](https://github.com/linthtml/linthtml/blob/develop/lib/presets/default.js).
 
-An object of [`htmllint` options](https://github.com/htmllint/htmllint/wiki/Options).
+Note: [`linthtml`](https://www.npmjs.com/package/@linthtml/linthtml) has an opinionated set of default options inherited from [`htmllint`](https://www.npmjs.com/package/htmllint) that are inconsistent with the HTML5 specification, hence the complicated default.
+
+### `htmllint` (deprecated)
+
+Type: `object` Default: `undefined`
+
+An object of [`htmllint` options](https://github.com/htmllint/htmllint/wiki/Options). These options may break in the future if [`linthtml`](https://www.npmjs.com/package/@linthtml/linthtml) stops supporting them, so the `linthtml` option above is preferred.
 
 ### `ignoreTags` (optional)
 
