@@ -35,13 +35,14 @@ module.exports = (options) => {
       // https://github.com/htmllint/htmllint/issues/194
       'code',
       'pre',
+      'svg',
       'textarea',
     ],
     parallelism: os.cpus().length,
   }, options || {}, { arrayMerge: (destinationArray, sourceArray) => sourceArray });
 
   return (files, metalsmith, done) => {
-    const htmlFiles = metalsmith.match(options.html);
+    const htmlFiles = metalsmith.match(options.html, Object.keys(files));
 
     const failures = [];
 
@@ -53,7 +54,7 @@ module.exports = (options) => {
       });
 
       // Remove ignored tags
-      $(options.ignoreTags.join(', ')).html('');
+      $(options.ignoreTags.join(', ')).remove();
 
       const contents = $.html();
 

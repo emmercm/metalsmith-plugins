@@ -76,9 +76,9 @@ An object of [`htmllint` options](https://github.com/htmllint/htmllint/wiki/Opti
 
 ### `ignoreTags` (optional)
 
-Type: `string[]` Default: `["code", "pre", "textarea"]`
+Type: `string[]` Default: `["code", "pre", "svg", "textarea"]`
 
-An array of [`cheerio`](https://www.npmjs.com/package/cheerio) selectors to remove before linting.
+An array of [`cheerio`](https://www.npmjs.com/package/cheerio) selectors of elements to remove before linting. These elements will not show up in any error output.
 
 ### `parallelism` (optional)
 
