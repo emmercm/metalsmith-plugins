@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.7.0 / 2022-04-22
+
+- Changed `ignoreTags` to remove outer HTML rather than inner HTML (reverts v0.3.1).
+- Ignore `<svg>` tags by default.
+
 ## v0.6.0 / 2022-02-23
 
 - Use Metalsmith v2.4's `metalsmith.match()` instead of [`minimatch`](https://www.npmjs.com/package/minimatch).
