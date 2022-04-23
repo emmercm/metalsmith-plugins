@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-html-linter",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "A Metalsmith plugin to lint HTML.",
   "keywords": [
     "metalsmith",
@@ -30,10 +30,10 @@
   },
   "dependencies": {
     "@babel/code-frame": "^7.16.7",
+    "@linthtml/linthtml": "^0.8.6",
     "async": "^3.2.3",
     "cheerio": "^1.0.0-rc.10",
-    "deepmerge": "^4.2.2",
-    "htmllint": "^0.8.0"
+    "deepmerge": "^4.2.2"
   },
   "peerDependencies": {
     "metalsmith": "^2.4.2"

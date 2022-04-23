@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.8.0 / 2022-04-22
+
+- Replace the abandoned [`htmllint`](https://www.npmjs.com/package/htmllint) with [`linthtml`](https://www.npmjs.com/package/@linthtml/linthtml).
+
 ## v0.7.0 / 2022-04-22
 
 - Changed `ignoreTags` to remove outer HTML rather than inner HTML (reverts v0.3.1).
