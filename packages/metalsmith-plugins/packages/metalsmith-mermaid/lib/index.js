@@ -11,6 +11,8 @@ import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 
+const CONSISTENT_CSS = '.mermaid{line-height:1.2;}';
+
 const mermaidToSvg = async (mermaid, options) => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -21,10 +23,19 @@ const mermaidToSvg = async (mermaid, options) => {
     path: require.resolve('mermaid/dist/mermaid.min.js'),
   });
 
-  const html = await page.$eval('#container', (container, mermaidBody, mermaidOptions) => {
+  const html = await page.$eval('#container', (container, mermaidBody, mermaidOptions, css) => {
     /* eslint-env browser */
     container.textContent = mermaidBody;
     window.mermaid.initialize(mermaidOptions);
+
+    if (css) {
+      const head = document.head || document.getElementsByTagName('head')[0];
+      const style = document.createElement('style');
+      style.setAttribute('type', 'text/css');
+      style.appendChild(document.createTextNode(css));
+      head.appendChild(style);
+    }
+
     window.mermaid.init(undefined, container);
 
     // Remove HTML elements that cause problems if their contents are empty
@@ -37,6 +48,9 @@ const mermaidToSvg = async (mermaid, options) => {
     const svg = container.querySelector('svg');
     svg.setAttribute('class', 'mermaid');
 
+    // Keep a consistent line height
+    svg.querySelector('style').textContent += css;
+
     // Remove attributes that restrict size
     svg.removeAttribute('style');
     svg.removeAttribute('width');
@@ -44,7 +58,7 @@ const mermaidToSvg = async (mermaid, options) => {
 
     return svg.outerHTML
       .replace(/<br>/gi, '<br/>');
-  }, mermaid, options);
+  }, mermaid, options, CONSISTENT_CSS);
   await browser.close();
   return html;
 };
