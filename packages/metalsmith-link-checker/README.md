@@ -12,6 +12,17 @@
 
 A Metalsmith plugin to check for broken links.
 
+This plugin checks a number of different link types and protocols:
+
+- `http:` and `https:` remote links (with backoff and retry)
+- Local links (both relative and absolute)
+- `facetime:` and `facetime-audio:` phone numbers and email addresses
+- `mailto:` email links
+- `sms:` phone numbers
+- `tel:` phone numbers
+
+If there are any broken or invalid links found, all of them will be printed to console and the Metalsmith build will stop.
+
 ## Installation
 
 ```bash
@@ -43,7 +54,7 @@ Metalsmith(__dirname)
 
 Type: `string` Default: `**/*.html`
 
-A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern to find HTML files.
+A [micromatch](https://www.npmjs.com/package/micromatch) glob pattern to find HTML files.
 
 ### `html.tags` (optional)
 
@@ -72,6 +83,12 @@ Type: `number` Default: `15000`
 
 The network timeout when checking external links, in milliseconds.
 
+### `attempts` (optional)
+
+Type: `number` Default: `3`
+
+The number of times to attempt checking external links.
+
 ### `userAgent` (optional)
 
 Type: `string` Default: the top result from [top-user-agents](https://www.npmjs.com/package/top-user-agents)
@@ -80,7 +97,7 @@ The user agent to use when making network requests.
 
 ### `parallelism` (optional)
 
-Type: `number` Default: the number of logical CPU cores available x4
+Type: `number` Default: `100`
 
 The maximum number of async operations at a time.
 
