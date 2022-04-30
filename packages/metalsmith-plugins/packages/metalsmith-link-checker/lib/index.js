@@ -2,13 +2,11 @@
 
 const http = require('http');
 const https = require('https');
-const os = require('os');
 const path = require('path');
 
 const async = require('async');
 const cheerio = require('cheerio');
 const deepmerge = require('deepmerge');
-const minimatch = require('minimatch');
 const userAgents = require('top-user-agents');
 
 /**
@@ -31,6 +29,11 @@ const urlParse = (input) => {
 };
 
 /**
+ * A Metalsmith files object.
+ * @typedef {Object.<string, {}>} metalsmithFiles
+ */
+
+/**
  * An object of a link in filename.
  * @typedef {{filename: string, link: string}} filenameAndLink
  */
@@ -42,37 +45,40 @@ const urlParse = (input) => {
 
 /**
  * Gather all links from all HTML files.
- * @param {Object} files
+ * @param {Object} metalsmith
+ * @param {metalsmithFiles} files
  * @param {Object} options
  * @returns {Array.<filenameAndLink>}
  */
-const htmlLinks = (files, options) => Object.keys(files)
+const htmlLinks = (metalsmith, files, options) => {
   // For each HTML file that matches the given pattern
-  .filter(minimatch.filter(options.html.pattern))
-  .reduce((arr, filename) => {
-    const file = files[filename];
-    const $ = cheerio.load(file.contents);
+  const htmlFiles = metalsmith.match(options.html.pattern, Object.keys(files));
+  return htmlFiles
+    .reduce((arr, filename) => {
+      const file = files[filename];
+      const $ = cheerio.load(file.contents);
 
-    const normalizedFilename = filename.replace(/[/\\]/g, '/');
-    return arr.concat(
-      // For each given tag
-      ...Object.keys(options.html.tags)
-        .map((tag) => {
-          let attributes = options.html.tags[tag];
-          if (!Array.isArray(attributes)) {
-            attributes = [attributes];
-          }
+      const normalizedFilename = filename.replace(/[/\\]/g, '/');
+      return arr.concat(
+        // For each given tag
+        ...Object.keys(options.html.tags)
+          .map((tag) => {
+            let attributes = options.html.tags[tag];
+            if (!Array.isArray(attributes)) {
+              attributes = [attributes];
+            }
 
-          return [].concat(
-            // For each given attribute, get the value of it
-            ...attributes
-              .map((attribute) => $(`${tag}[${attribute}][${attribute}!='']`)
-                .map((i, elem) => $(elem).attr(attribute))
-                .get()),
-          ).map((link) => ({ filename: normalizedFilename, link }));
-        }),
-    );
-  }, []);
+            return [].concat(
+              // For each given attribute, get the value of it
+              ...attributes
+                .map((attribute) => $(`${tag}[${attribute}][${attribute}!='']`)
+                  .map((i, elem) => $(elem).attr(attribute))
+                  .get()),
+            ).map((link) => ({ filename: normalizedFilename, link }));
+          }),
+      );
+    }, []);
+};
 
 /**
  * @typedef {function} validator
@@ -119,8 +125,16 @@ const validUrlCache = {};
  * Validate a remote HTTP or HTTPS URL.
  * @type {validator}
  */
-const validUrl = (link, options, callback, method = 'HEAD') => {
+const validUrl = (link, options, callback, attempt = 1, method = 'HEAD') => {
   const cacheAndCallback = (err, result) => {
+    // Retry failures if we haven't reached the retry limit
+    if (result && attempt <= options.attempts) {
+      setTimeout(() => {
+        validUrl(link, options, callback, attempt + 1, method);
+      }, Math.min(1000, 100 * 2 ** attempt));
+      return;
+    }
+    // Otherwise, store the result and call the callback
     validUrlCache[link] = result;
     callback(err, result);
   };
@@ -129,7 +143,7 @@ const validUrl = (link, options, callback, method = 'HEAD') => {
     return;
   }
 
-  const library = (link.substr(0, 5) === 'https' ? https : http);
+  const library = (link.slice(0, 5) === 'https' ? https : http);
   library.request(link, {
     method,
     headers: {
@@ -141,11 +155,10 @@ const validUrl = (link, options, callback, method = 'HEAD') => {
   }, (res) => {
     // Re-attempt HEAD 405s as GETs
     if (res.statusCode === 405 && method !== 'GET') {
-      validUrl(link, options, callback, 'GET');
+      validUrl(link, options, callback, attempt, 'GET');
       return;
     }
 
-    // TODO: retry mechanism
     if (!res) {
       cacheAndCallback(null, 'no response');
     } else if (res.statusCode >= 400 && res.statusCode <= 599) {
@@ -208,7 +221,7 @@ const validTel = (link) => {
 
 /**
  * Return if a `dest` link from a `src` file is valid or not.
- * @param {Object} files
+ * @param {metalsmithFiles} files
  * @param {string} src
  * @param {string} dest
  * @returns {boolean}
@@ -263,8 +276,9 @@ module.exports = (options) => {
     },
     ignore: [],
     timeout: 15 * 1000,
+    attempts: 3,
     userAgent,
-    parallelism: os.cpus().length * 4,
+    parallelism: 100,
   }, options || {});
 
   return (files, metalsmith, done) => {
@@ -277,20 +291,22 @@ module.exports = (options) => {
     // Gather a list of filename + link combinations, and remove ignored links
     options.ignore = options.ignore.map((pattern) => new RegExp(pattern));
     const filenamesAndLinks = [
-      ...htmlLinks(files, options),
+      ...htmlLinks(metalsmith, files, options),
       // TODO: CSS files
       // TODO: manifest files
     ]
+    // Filter this out if this a duplicate of an item earlier in the array
       .filter((v1, idx, arr) => {
-        // Filter this out if this a duplicate of an item earlier in the array
         const comparator = (v2) => JSON.stringify(v1) === JSON.stringify(v2);
         return arr.findIndex(comparator) === idx;
       })
+    // Filter this out if any ignore regex matches
       .filter((filenameAndLink) => {
-        // Filter this out if any ignore regex matches
         const comparator = (re) => re.test(filenameAndLink.link);
         return !options.ignore.some(comparator);
-      });
+      })
+    // Shuffle to try to disperse checking the same domain concurrently
+      .sort(() => Math.random() - 0.5);
 
     // For each link, find the files it is broken for
     async.mapLimit(filenamesAndLinks, options.parallelism, (filenameAndLink, callback) => {

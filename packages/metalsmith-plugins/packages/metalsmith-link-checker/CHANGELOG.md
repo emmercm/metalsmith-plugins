@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.0 / 2022-04-29
+
+- Add a retry mechanism for failed external links.
+- Change the default parallelism to be a fixed number.
+- Use Metalsmith v2.4's `metalsmith.match()` instead of [`minimatch`](https://www.npmjs.com/package/minimatch).
+
 ## v0.2.0 / 2021-11-26
 
 - Support validating `facetime:`/`facetime-audio:`, `mailto:`, `sms:`, and `tel:` links.
@@ -7,7 +13,7 @@
 ## v0.1.2 / 2021-11-24
 
 - Fix the `ignore` option broken in v0.1.0.
-- Re-implement a HTTP/HTTPS network cache removed in v0.1.0.
+- Re-implement an HTTP/HTTPS network cache removed in v0.1.0.
 - De-duplicate links before checking.
 
 ## v0.1.0 / 2021-11-24
