@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-html-relative",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A Metalsmith plugin to convert to relative paths within HTML.",
   "keywords": [
     "metalsmith",
@@ -31,7 +31,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.10",
     "deepmerge": "^4.2.2",
-    "minimatch": "^3.0.4"
+    "minimatch": "^5.0.1"
   },
   "peerDependencies": {
     "metalsmith": "^2.4.2"
