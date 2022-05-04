@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-html-glob",
-  "version": "0.4.4",
+  "version": "0.5.0",
   "description": "A Metalsmith plugin to apply glob patterns within HTML.",
   "keywords": [
     "metalsmith",
@@ -29,9 +29,14 @@
     "test:junit": "JEST_JUNIT_OUTPUT=reports/junit/results.xml jest --ci --runInBand --reporters=default --reporters=jest-junit"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.1.1",
+    "@popperjs/core": "^2.11.5",
+    "bootstrap": "^5.1.3",
     "cheerio": "^1.0.0-rc.10",
-    "deepmerge": "^4.2.2",
-    "minimatch": "^3.0.4"
+    "deepmerge": "^4.2.2"
+  },
+  "peerDependencies": {
+    "metalsmith": "^2.4.0"
   },
   "devDependencies": {
     "assert-dir-equal": "1.1.0",
@@ -40,6 +45,6 @@
     "eslint-plugin-import": "2.25.3",
     "jest": "27.4.2",
     "jest-junit": "13.0.0",
-    "metalsmith": "2.3.0"
+    "metalsmith": "2.4.2"
   }
 }

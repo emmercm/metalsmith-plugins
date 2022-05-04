@@ -12,6 +12,8 @@
 
 A Metalsmith plugin to apply glob patterns within HTML.
 
+This plugin works by expanding glob patterns in hyperlinks and resource links such as `<script src="**/*.js"></script>`. See below for a complete example.
+
 ## Installation
 
 ```bash
@@ -41,7 +43,7 @@ Metalsmith(__dirname)
 
 Type: `string` Default: `**/*.html`
 
-A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern to find HTML files.
+A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern to find HTML files.
 
 ### `tags` (optional)
 
@@ -49,16 +51,14 @@ Type: `object` Default:
 
 ```json
 {
-    "tags": {
-        "a": "href",
-        "img": ["src", "data-src"],
-        "link": "href",
-        "script": "src"
-    }
+    "a": "href",
+    "img": ["src", "data-src"],
+    "link": "href",
+    "script": "src"
 }
 ```
 
-An object of what tags and attributes to glob:
+An object of what attributes in what tags to process glob patterns for.
 
 ## Example HTML
 
@@ -71,9 +71,11 @@ Given a file tree:
 ├── index.html
 └── static
     ├── css
-    │   └── bootstrap.min.css
+    │   ├── bootstrap.min.css
+    │   └── fontawesome.all.min.css
     └── js
-        └── bootstrap.bundle.min.js
+        ├── bootstrap.min.js
+        └── popper.js
 ```
 
 And `index.html`:
@@ -92,14 +94,18 @@ And `index.html`:
 
 ### Example Output
 
+This plugin will change the contents of `index.html` to:
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <link rel="stylesheet" href="static/css/bootstrap.min.css">
+        <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
     </head>
     <body>
-        <script src="static/js/bootstrap.bundle.min.js"></script>
+        <script src="static/js/bootstrap.min.js"></script>
+        <script src="static/js/popper.js"></script>
     </body>
 </html>
 ```

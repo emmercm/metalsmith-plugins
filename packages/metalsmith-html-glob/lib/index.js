@@ -2,7 +2,6 @@
 
 const cheerio = require('cheerio');
 const deepmerge = require('deepmerge');
-const minimatch = require('minimatch');
 const url = require('url');
 
 module.exports = (options) => {
@@ -18,8 +17,7 @@ module.exports = (options) => {
 
   return (files, metalsmith, done) => {
     // For each HTML file that matches the given pattern
-    Object.keys(files)
-      .filter(minimatch.filter(options.html))
+    metalsmith.match(options.html, Object.keys(files))
       .forEach((filename) => {
         const file = files[filename];
         const $ = cheerio.load(file.contents);
@@ -54,9 +52,9 @@ module.exports = (options) => {
                 }
 
                 // Find all input files matching the glob in the tag
-                const resources = Object.keys(files)
-                  .map((resource) => resource.replace(/[/\\]/g, '/'))
-                  .filter(minimatch.filter(relativeGlob))
+                const normalizedFilenames = Object.keys(files)
+                  .map((resource) => resource.replace(/[/\\]/g, '/'));
+                const resources = metalsmith.match(relativeGlob, normalizedFilenames)
                   .sort()
                   .map((resource) => $(elem).clone().attr(attribute, `/${resource}`));
 
