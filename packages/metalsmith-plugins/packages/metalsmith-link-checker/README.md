@@ -10,7 +10,7 @@
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-link-checker/purple?icon=github)](https://github.com/emmercm/metalsmith-link-checker)
 [![License](https://badgen.net/github/license/emmercm/metalsmith-link-checker?color=grey)](https://github.com/emmercm/metalsmith-link-checker/blob/main/LICENSE)
 
-A Metalsmith plugin to check for broken links.
+A Metalsmith plugin to check for local and remote broken links.
 
 This plugin checks a number of different link types and protocols:
 
