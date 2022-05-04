@@ -2,7 +2,6 @@
 
 const cheerio = require('cheerio');
 const deepmerge = require('deepmerge');
-const minimatch = require('minimatch');
 const path = require('path');
 
 module.exports = (options) => {
@@ -21,8 +20,7 @@ module.exports = (options) => {
   return (files, metalsmith, done) => {
     const resources = [].concat(
       // For each HTML file that matches the given pattern
-      ...Object.keys(files)
-        .filter(minimatch.filter(options.html))
+      ...metalsmith.match(options.html, Object.keys(files))
         .map((filename) => {
           const file = files[filename];
 
@@ -78,14 +76,13 @@ module.exports = (options) => {
       .filter((x, i, a) => a.indexOf(x) === i);
 
     // For each file that matches the given pattern
-    Object.keys(files)
-      // Filter "pattern" and "ignore"
-      .filter((filename) => {
-        if (options.ignore && minimatch(filename, options.ignore)) {
-          return false;
-        }
-        return minimatch(filename, options.pattern);
-      })
+    const ignoredFilenames = options.ignore
+      ? metalsmith.match(options.ignore, Object.keys(files)) : [];
+    const consideredFilenames = options.pattern
+      ? metalsmith.match(options.pattern, Object.keys(files)) : [];
+    consideredFilenames
+      // Filter "ignore"
+      .filter((filename) => ignoredFilenames.indexOf(filename) === -1)
       .forEach((filename) => {
         // Map to a consistent path separator
         const normalizedFilename = filename.replace(/[/\\]/g, '/');
