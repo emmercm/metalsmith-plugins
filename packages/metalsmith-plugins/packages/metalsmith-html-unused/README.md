@@ -10,7 +10,9 @@
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-html-unused/purple?icon=github)](https://github.com/emmercm/metalsmith-html-unused)
 [![License](https://badgen.net/github/license/emmercm/metalsmith-html-unused?color=grey)](https://github.com/emmercm/metalsmith-html-unused/blob/master/LICENSE)
 
-A Metalsmith plugin to exclude files unused in HTML.
+A Metalsmith plugin to exclude resources that aren't referenced in HTML files.
+
+Removing unreferenced files such as JavaScript, CSS, images, and documents helps optimize your build output.
 
 ## Installation
 
@@ -41,39 +43,53 @@ Metalsmith(__dirname)
 
 Type: `string`
 
-A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for files to consider for removal.
+A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern for files to consider for removal.
+
+Example: `**/*.@(css|js|bmp|gif|jpg|jpeg|png|svg|tif|tiff|webp)`.
 
 ### `ignore` (optional)
 
 Type: `string`
 
-A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern for files to exclude from removal.
+A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern for files to exclude from removal. If no pattern is defined then no files will be ignored.
 
 ### `html` (optional)
 
 Type: `string` Default: `**/*.html`
 
-A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern to find HTML files.
+A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern to find HTML files.
 
 ### `attributes` (optional)
 
-Type: `string[]` Default: `["href", "src", "data-src", "content"]`
+Type: `string[]` Default: `['href', 'src', 'data-src', 'content']`
 
 An array of HTML attributes that link to files.
 
 ## Example
 
-Given a file tree:
+Given the config:
+
+```json
+{
+    "pattern": "**/*.@(css|js|png)",
+    "ignore": "**/logo.png"
+}
+```
+
+And a file tree:
 
 ```text
 .
 ├── index.html
 └── static
     ├── css
-    │   └── bootstrap.min.css
+    │   ├── bootstrap.min.css
+    │   └── fontawesome.all.min.css
+    ├── img
+    │   └── logo.png
     └── js
-        ├── bootstrap.bundle.min.js
-        └── scrollreveal.min.js
+        ├── bootstrap.min.js
+        └── popper.js
 ```
 
 And `index.html`:
@@ -82,15 +98,27 @@ And `index.html`:
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+        <link rel="stylesheet" href="static/css/bootstrap.min.css">
     </head>
     <body>
-        <script src="/static/js/bootstrap.bundle.min.js"></script>
+        <script src="static/js/bootstrap.min.js"></script>
     </body>
 </html>
 ```
 
-`static/js/scrollreveal.min.js` would be excluded from output because it is not used.
+Both `static/js/fontawesome.all.min.css` and `static/js/popper.js` would be excluded from build output because they are not referenced, and `static/img/logo.png` would persist because it was ignored. The final file tree would be:
+
+```text
+.
+├── index.html
+└── static
+    ├── css
+    │   └── bootstrap.min.css
+    ├── img
+    │   └── logo.png
+    └── js
+        └── bootstrap.min.js
+```
 
 ## Changelog
 
