@@ -10,7 +10,7 @@
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-mermaid/purple?icon=github)](https://github.com/emmercm/metalsmith-mermaid)
 [![License](https://badgen.net/github/license/emmercm/metalsmith-mermaid?color=grey)](https://github.com/emmercm/metalsmith-mermaid/blob/master/LICENSE)
 
-A Metalsmith plugin to render Mermaid diagrams.
+A Metalsmith plugin to render Mermaid diagrams in files.
 
 This plugin works by finding all [Mermaid](https://mermaid-js.github.io/mermaid/#/) code blocks in Markdown files, rendering them to SVG, and replacing them with the SVG in-place.
 
