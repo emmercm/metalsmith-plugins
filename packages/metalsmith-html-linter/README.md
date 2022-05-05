@@ -10,9 +10,9 @@
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-html-linter/purple?icon=github)](https://github.com/emmercm/metalsmith-html-linter)
 [![License](https://badgen.net/github/license/emmercm/metalsmith-html-linter?color=grey)](https://github.com/emmercm/metalsmith-html-linter/blob/master/LICENSE)
 
-A Metalsmith plugin to lint HTML.
+A Metalsmith plugin to lint HTML for syntax and semantics.
 
-This plugin will raise an exception and stop the build if any HTML files are found to be violating any configured [`htmllint`](https://www.npmjs.com/package/htmllint) rules. The goal is to catch any problems before they appear as errors in a browser.
+This plugin will raise an exception and stop the build if any HTML files are found to be violating any configured [`linthtml`](https://www.npmjs.com/package/@linthtml/linthtml) rules. The goal is to catch any problems before they appear as errors in a browser.
 
 ## Installation
 
