@@ -10,7 +10,7 @@
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-include-files/purple?icon=github)](https://github.com/emmercm/metalsmith-include-files)
 [![License](https://badgen.net/github/license/emmercm/metalsmith-include-files?color=grey)](https://github.com/emmercm/metalsmith-include-files/blob/master/LICENSE)
 
-A Metalsmith plugin to include external files.
+A Metalsmith plugin to include external files in your build.
 
 A common use case is wanting to include JavaScript, CSS, or font files from an installed NPM package such as [bootstrap](https://www.npmjs.com/package/bootstrap).
 
