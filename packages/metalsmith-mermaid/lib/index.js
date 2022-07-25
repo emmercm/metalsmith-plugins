@@ -84,7 +84,7 @@ const remarkMermaid = (mermaidOptions = {}) => async (tree) => {
   await Promise.all(promises);
 };
 
-export default (options) => {
+export default (options = {}) => {
   options = deepmerge({
     markdown: '**/*.md',
     mermaid: {

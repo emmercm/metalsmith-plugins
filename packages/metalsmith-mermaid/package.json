@@ -36,10 +36,10 @@
     "test:junit": "JEST_JUNIT_OUTPUT=reports/junit/results.xml node --experimental-vm-modules ./node_modules/.bin/jest --ci --runInBand --reporters=default --reporters=jest-junit"
   },
   "dependencies": {
-    "async": "^3.2.3",
+    "async": "^3.2.4",
     "deepmerge": "^4.2.2",
-    "mermaid": "^9.1.1",
-    "puppeteer": "^14.1.2",
+    "mermaid": "^9.1.3",
+    "puppeteer": "^15.5.0",
     "remark-parse": "^10.0.1",
     "remark-stringify": "^10.0.2",
     "unified": "^10.1.2",
@@ -50,12 +50,12 @@
   },
   "devDependencies": {
     "assert-dir-equal": "1.1.0",
-    "eslint": "8.8.0",
+    "eslint": "8.20.0",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-plugin-import": "2.25.4",
-    "jest": "27.4.7",
-    "jest-junit": "13.0.0",
-    "metalsmith": "2.4.2"
+    "eslint-plugin-import": "2.26.0",
+    "jest": "28.1.3",
+    "jest-junit": "14.0.0",
+    "metalsmith": "2.5.0"
   },
   "engines": {
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"

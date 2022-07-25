@@ -74,6 +74,67 @@ Type: `object` Default:
 
 An object of [Mermaid options](https://github.com/mermaid-js/mermaid/blob/develop/docs/Setup.md#configuration).
 
+## Examples
+
+Here are a few examples from the [official documentation](https://mermaid-js.github.io/mermaid/#/) to get an idea of what types of diagrams are possible.
+
+Flowcharts:
+
+`````markdown
+```mermaid
+flowchart LR
+   A -- text --> B -- text2 --> C
+```
+`````
+
+`````markdown
+```mermaid
+flowchart TD
+    A[Start] --> B{Is it?}
+    B -- Yes --> C[OK]
+    C --> D[Rethink]
+    D --> B
+    B -- No ----> E[End]
+```
+`````
+
+Sequence diagrams:
+
+`````markdown
+```mermaid
+sequenceDiagram
+    Alice->>John: Hello John, how are you?
+    John-->>Alice: Great!
+    Alice-)John: See you later!
+```
+`````
+
+`````markdown
+```mermaid
+sequenceDiagram
+    Alice->>Bob: Hello Bob, how are you?
+    alt is sick
+        Bob->>Alice: Not so good :(
+    else is well
+        Bob->>Alice: Feeling fresh like a daisy
+    end
+    opt Extra response
+        Bob->>Alice: Thanks for asking
+    end
+```
+`````
+
+Entity relationship diagrams (ERDs):
+
+`````markdown
+```mermaid
+erDiagram
+    CUSTOMER ||--o{ ORDER : places
+    ORDER ||--|{ LINE-ITEM : contains
+    CUSTOMER }|..|{ DELIVERY-ADDRESS : uses
+```
+`````
+
 ## Changelog
 
 [Changelog](./CHANGELOG.md)
