@@ -4,11 +4,11 @@
 [![npm Weekly Downloads](https://badgen.net/npm/dw/meatlsmith-vega)](https://www.npmjs.com/package/meatlsmith-vega)
 
 [![Known Vulnerabilities](https://snyk.io/test/npm/meatlsmith-vega/badge.svg)](https://snyk.io/test/npm/meatlsmith-vega)
-[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/meatlsmith-vega/master?icon=codecov)](https://codecov.io/gh/emmercm/meatlsmith-vega)
+[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/meatlsmith-vega/main?icon=codecov)](https://codecov.io/gh/emmercm/meatlsmith-vega)
 [![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/meatlsmith-vega?icon=codeclimate)](https://codeclimate.com/github/emmercm/meatlsmith-vega/maintainability)
 
 [![GitHub](https://badgen.net/badge/emmercm/meatlsmith-vega/purple?icon=github)](https://github.com/emmercm/meatlsmith-vega)
-[![License](https://badgen.net/github/license/emmercm/meatlsmith-vega?color=grey)](https://github.com/emmercm/meatlsmith-vega/blob/master/LICENSE)
+[![License](https://badgen.net/github/license/emmercm/meatlsmith-vega?color=grey)](https://github.com/emmercm/meatlsmith-vega/blob/main/LICENSE)
 
 A Metalsmith plugin to render Vega and Vega Lite visualizations in files.
 
