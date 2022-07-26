@@ -102,3 +102,8 @@ dist
 
 # TernJS port file
 .tern-port
+
+
+lib/fixtures/*/build/
+reports/
+junit.xml
