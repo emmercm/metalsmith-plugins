@@ -4,15 +4,21 @@
 [![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-mermaid)](https://www.npmjs.com/package/metalsmith-mermaid)
 
 [![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-mermaid/badge.svg)](https://snyk.io/test/npm/metalsmith-mermaid)
-[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/metalsmith-mermaid/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-mermaid)
+[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/metalsmith-mermaid/main?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-mermaid)
 [![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-mermaid?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-mermaid/maintainability)
 
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-mermaid/purple?icon=github)](https://github.com/emmercm/metalsmith-mermaid)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-mermaid?color=grey)](https://github.com/emmercm/metalsmith-mermaid/blob/master/LICENSE)
+[![License](https://badgen.net/github/license/emmercm/metalsmith-mermaid?color=grey)](https://github.com/emmercm/metalsmith-mermaid/blob/main/LICENSE)
 
 A Metalsmith plugin to render Mermaid diagrams in files.
 
-This plugin works by finding all [Mermaid](https://mermaid-js.github.io/mermaid/#/) code blocks in Markdown files, rendering them to SVG, and replacing them with the SVG in-place.
+From the official [Mermaid] documentation(https://mermaid-js.github.io/mermaid/#/):
+
+> Mermaid is a JavaScript based diagramming and charting tool that uses Markdown-inspired text definitions and a renderer to create and modify complex diagrams. The main purpose of Mermaid is to help documentation catch up with development.
+
+Mermaid supports a number of different diagrams including flowcharts, sequence diagrams, class diagrams, state diagrams, entity relationship diagrams (ERDs), user journeys, Gantt charts, pie charts, requirements diagrams, and more. See the examples section below for a few of these.
+
+This Metalsmith plugin works by finding all ```` ```mermaid ```` code blocks in Markdown files, rendering them to SVG, and replacing them with the SVG in-place.
 
 You should run this plugin before any Markdown rendering plugins such as [`@metalsmith/markdown`](https://www.npmjs.com/package/@metalsmith/markdown).
 
