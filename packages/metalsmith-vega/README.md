@@ -1,14 +1,14 @@
 # metalsmith-vega
 
-[![npm Version](https://badgen.net/npm/v/meatlsmith-vega?icon=npm)](https://www.npmjs.com/package/meatlsmith-vega)
-[![npm Weekly Downloads](https://badgen.net/npm/dw/meatlsmith-vega)](https://www.npmjs.com/package/meatlsmith-vega)
+[![npm Version](https://badgen.net/npm/v/metalsmith-vega?icon=npm)](https://www.npmjs.com/package/metalsmith-vega)
+[![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-vega)](https://www.npmjs.com/package/metalsmith-vega)
 
-[![Known Vulnerabilities](https://snyk.io/test/npm/meatlsmith-vega/badge.svg)](https://snyk.io/test/npm/meatlsmith-vega)
-[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/meatlsmith-vega/main?icon=codecov)](https://codecov.io/gh/emmercm/meatlsmith-vega)
-[![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/meatlsmith-vega?icon=codeclimate)](https://codeclimate.com/github/emmercm/meatlsmith-vega/maintainability)
+[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-vega/badge.svg)](https://snyk.io/test/npm/metalsmith-vega)
+[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/metalsmith-vega/main?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-vega)
+[![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-vega?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-vega/maintainability)
 
-[![GitHub](https://badgen.net/badge/emmercm/meatlsmith-vega/purple?icon=github)](https://github.com/emmercm/meatlsmith-vega)
-[![License](https://badgen.net/github/license/emmercm/meatlsmith-vega?color=grey)](https://github.com/emmercm/meatlsmith-vega/blob/main/LICENSE)
+[![GitHub](https://badgen.net/badge/emmercm/metalsmith-vega/purple?icon=github)](https://github.com/emmercm/metalsmith-vega)
+[![License](https://badgen.net/github/license/emmercm/metalsmith-vega?color=grey)](https://github.com/emmercm/metalsmith-vega/blob/main/LICENSE)
 
 A Metalsmith plugin to render Vega and Vega Lite visualizations in files.
 
@@ -25,7 +25,7 @@ You should run this plugin before any Markdown rendering plugins such as [`@meta
 ## Installation
 
 ```bash
-npm install --save meatlsmith-vega
+npm install --save metalsmith-vega
 ```
 
 ## JavaScript Usage
@@ -36,7 +36,7 @@ This plugin requires ES6 syntax:
 import path from 'path';
 
 import Metalsmith from 'metalsmith';
-import vega       from 'meatlsmith-vega';
+import vega       from 'metalsmith-vega';
 
 Metalsmith(path.resolve())
     .use(vega({
