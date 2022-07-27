@@ -57,6 +57,59 @@ Type: `string` Default: `**/*.md`
 
 A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern to find Markdown files.
 
+### `vega` (optional)
+
+Type: `object` Default:
+
+```json
+{
+  "autosize": "none",
+  "width": 200,
+  "height": 200,
+  "background": "white",
+  "padding": 5
+}
+```
+
+An object of [Vega options](https://vega.github.io/vega/docs/config/) that get passed to the `vega.parse()` function.
+
+Example:
+
+```json
+{
+  "vega": {
+    "background": "orange",
+    "width": 1280,
+    "height": 720,
+    "padding": 10
+  }
+}
+```
+
+### `vegaLite` (optional)
+
+Type: `object` Default: `undefined`
+
+If `vegaLite` isn't defined, then the `vega` option (above) will attempt to be used.
+
+An object of [Vega-Lite options](https://vega.github.io/vega-lite/docs/spec.html) that get passed to the `vegaLite.compile()` function.
+
+Example:
+
+```json
+{
+  "vegaLite": {
+    "background": "orange",
+    "padding": 10,
+    "view": {
+      "fill": "yellow",
+      "width": 1280,
+      "height": 720
+    }
+  }
+}
+```
+
 ## Examples
 
 Here are a few examples from the [Vega](https://vega.github.io/vega/examples/) and [Vega Lite](https://vega.github.io/vega-lite/examples/) official documentation to get an idea of what types of visualizations are possible.

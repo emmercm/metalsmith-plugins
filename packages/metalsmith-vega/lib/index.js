@@ -8,12 +8,14 @@ import deepmerge from 'deepmerge';
 import vega from 'vega';
 import vegaLite from 'vega-lite';
 
-const vegaToSvg = async (vegaBody) => {
-  const view = new vega.View(vega.parse(vegaBody), { renderer: 'none' });
+const vegaToSvg = async (vegaBody, vegaOptions) => {
+  const view = new vega.View(vega.parse(vegaBody, vegaOptions), {
+    renderer: 'none',
+  });
   return view.toSVG();
 };
 
-const remarkVegaLite = () => async (tree) => {
+const remarkVegaLite = (vegaLiteOptions = {}) => async (tree) => {
   await visit(tree, 'code', async (node, idx, parent) => {
     if ((node.lang || '').toLowerCase() !== 'vega-lite') {
       return node;
@@ -23,7 +25,7 @@ const remarkVegaLite = () => async (tree) => {
     }
 
     const jsonBody = JSON.parse(node.value);
-    const vegaBody = vegaLite.compile(jsonBody).spec;
+    const vegaBody = vegaLite.compile(jsonBody, vegaLiteOptions).spec;
     const newNode = {
       type: 'code',
       lang: 'vega',
@@ -34,7 +36,7 @@ const remarkVegaLite = () => async (tree) => {
   });
 };
 
-const remarkVega = () => async (tree) => {
+const remarkVega = (vegaOptions = {}) => async (tree) => {
   const promises = [];
   await visit(tree, 'code', async (node, idx, parent) => {
     if ((node.lang || '').toLowerCase() !== 'vega') {
@@ -45,7 +47,7 @@ const remarkVega = () => async (tree) => {
     }
 
     const jsonBody = JSON.parse(node.value);
-    const promise = vegaToSvg(jsonBody).then((svg) => {
+    const promise = vegaToSvg(jsonBody, vegaOptions).then((svg) => {
       const newNode = {
         type: 'html',
         value: svg,
@@ -62,6 +64,20 @@ const remarkVega = () => async (tree) => {
 export default (options) => {
   options = deepmerge({
     markdown: '**/*.md',
+    vega: {
+      // ----- make vega-lite consistent with vega -----
+      // autosize:'pad' can make the visualization grossly exceed the specified width
+      autosize: 'none',
+
+      // ----- make vega consistent with vega-lite -----
+      // the default size is 0x0 plus padding, so provide a default
+      width: 200,
+      height: 200,
+      // default the background color, other default colors assume a light background
+      background: 'white',
+      // without padding we lose some axis ticks
+      padding: 5,
+    },
   }, options || {});
 
   return (files, metalsmith, done) => {
@@ -71,9 +87,18 @@ export default (options) => {
 
       const tree = await unified()
         .use(remarkParse)
-        .use(remarkVegaLite)
-        .use(remarkVega)
-        .use(remarkStringify)
+        .use(remarkVegaLite, {
+          config: options.vegaLite || {
+            // vega's top-level options are "view" options, but vega-lite is inconsistent about
+            // whether those options belong at the top-level or under the 'view' key. Examples:
+            // background, padding, autosize, config, usermeta
+            ...options.vega,
+            // "Correctly" use vega's top-level view options for 'view'
+            view: options.vega,
+          },
+        })
+        .use(remarkVega, options.vega)
+        .use(remarkStringify, options.vega)
         .process(file.contents);
 
       file.contents = Buffer.from(tree.value);
