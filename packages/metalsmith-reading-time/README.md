@@ -37,7 +37,7 @@ Metalsmith(__dirname)
 
 ## File metadata
 
-This plugin adds a metadata field named `readingTime` to each file which can be used with templating engines, such as with [Handlebars](https://www.npmjs.com/package/handlebars):
+This plugin adds a metadata field named `readingTime` to each file which can be used with templating engines, such as with [`handlebars`](https://www.npmjs.com/package/handlebars):
 
 ```handlebars
 Reading time: {{ readingTime }}
@@ -45,7 +45,7 @@ Reading time: {{ readingTime }}
 The rest of the page content.
 ```
 
-Reading time will be reported in minutes in the form "# min read" per [reading-time](https://www.npmjs.com/package/reading-time).
+Reading time will be reported in minutes in the form "# min read" per [`reading-time`](https://www.npmjs.com/package/reading-time).
 
 ## Options
 
@@ -53,7 +53,19 @@ Reading time will be reported in minutes in the form "# min read" per [reading-t
 
 Type: `string` Default: `**/*`
 
-A [minimatch](https://www.npmjs.com/package/minimatch) glob pattern to find input files.
+A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern to find input files.
+
+### `stripHtml` (optional)
+
+Type: `boolean` Default: `true`
+
+Whether to strip HTML tags from content before evaluating the reading time or not.
+
+### `replacements` (optional)
+
+type: `(string|RegExp)[][]` Default: `[]`
+
+A list of tuples fed to `String.replace()` to get rid of meaningless content before evaluating the reading time.
 
 ### `readingTime` (optional)
 

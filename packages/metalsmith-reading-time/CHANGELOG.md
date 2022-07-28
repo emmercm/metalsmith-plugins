@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.2.0 / 2022-07-28
+
+- Added the `stripHtml` option, on by default.
+- Added the `replacements` option.
+
 ## v0.1.0 / 2022-02-23
 
 - Use Metalsmith v2.4's `metalsmith.match()` instead of [`minimatch`](https://www.npmjs.com/package/minimatch).

@@ -1,0 +1,9 @@
+{
+  "options": {
+    "stripHtml": false,
+    "replacements": [
+      ["/Lorem ipsum .+/si", ""],
+      ["foo", "bar"]
+    ]
+  }
+}
