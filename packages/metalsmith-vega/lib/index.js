@@ -7,16 +7,35 @@ import async from 'async';
 import deepmerge from 'deepmerge';
 import vega from 'vega';
 import vegaLite from 'vega-lite';
+import xml2js from 'xml2js';
 
-const vegaToSvg = async (vegaBody, vegaOptions) => {
+const vegaToSvg = async (vegaBody, vegaOptions = {}) => {
   const view = new vega.View(vega.parse(vegaBody, vegaOptions), {
     renderer: 'none',
   });
-  return view.toSVG();
+  const svg = await view.toSVG();
+
+  const xml = await new Promise((resolve, reject) => {
+    xml2js.parseString(svg, (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+  xml.svg.$.class = `vega ${xml.svg.$.class || ''}`.trim();
+
+  return (new xml2js.Builder({
+    renderOpts: {
+      pretty: false,
+    },
+  })).buildObject(xml);
 };
 
 const remarkVegaLite = (vegaLiteOptions = {}) => async (tree) => {
-  await visit(tree, 'code', async (node, idx, parent) => {
+  const promises = [];
+  visit(tree, 'code', (node, idx, parent) => {
     if ((node.lang || '').toLowerCase() !== 'vega-lite') {
       return node;
     }
@@ -24,21 +43,31 @@ const remarkVegaLite = (vegaLiteOptions = {}) => async (tree) => {
       return node;
     }
 
-    const jsonBody = JSON.parse(node.value);
-    const vegaBody = vegaLite.compile(jsonBody, vegaLiteOptions).spec;
-    const newNode = {
-      type: 'code',
-      lang: 'vega',
-      value: JSON.stringify(vegaBody),
-    };
-    parent.children.splice(idx, 1, newNode);
+    let nodeValue;
+    try {
+      nodeValue = JSON.parse(node.value);
+    } catch (e) {
+      throw new Error(`Failed to JSON parse '${node.value.replace(/\n +/g, '').trim()}' : ${e.message}`);
+    }
+
+    const vegaBody = vegaLite.compile(nodeValue, vegaLiteOptions).spec;
+
+    const promise = vegaToSvg(vegaBody).then((svg) => {
+      const newNode = {
+        type: 'html',
+        value: svg,
+      };
+      parent.children.splice(idx, 1, newNode);
+    });
+    promises.push(promise);
     return null;
   });
+  await Promise.all(promises);
 };
 
 const remarkVega = (vegaOptions = {}) => async (tree) => {
   const promises = [];
-  await visit(tree, 'code', async (node, idx, parent) => {
+  visit(tree, 'code', (node, idx, parent) => {
     if ((node.lang || '').toLowerCase() !== 'vega') {
       return node;
     }
@@ -46,13 +75,18 @@ const remarkVega = (vegaOptions = {}) => async (tree) => {
       return node;
     }
 
-    const jsonBody = JSON.parse(node.value);
-    const promise = vegaToSvg(jsonBody, vegaOptions).then((svg) => {
+    let nodeValue;
+    try {
+      nodeValue = JSON.parse(node.value);
+    } catch (e) {
+      throw new Error(`Failed to JSON parse '${node.value.replace(/\n +/g, '').trim()}' : ${e.message}`);
+    }
+
+    const promise = vegaToSvg(nodeValue, vegaOptions).then((svg) => {
       const newNode = {
         type: 'html',
         value: svg,
       };
-
       parent.children.splice(idx, 1, newNode);
     });
     promises.push(promise);
@@ -65,9 +99,8 @@ export default (options) => {
   options = deepmerge({
     markdown: '**/*.md',
     vega: {
-      // ----- make vega-lite consistent with vega -----
-      // autosize:'pad' can make the visualization grossly exceed the specified width
-      autosize: 'none',
+      // ----- general consistency -----
+      padding: 1,
 
       // ----- make vega consistent with vega-lite -----
       // the default size is 0x0 plus padding, so provide a default
@@ -75,13 +108,12 @@ export default (options) => {
       height: 200,
       // default the background color, other default colors assume a light background
       background: 'white',
-      // without padding we lose some axis ticks
-      padding: 5,
     },
   }, options || {});
 
   return (files, metalsmith, done) => {
     const markdownFiles = metalsmith.match(options.markdown, Object.keys(files));
+
     async.each(markdownFiles, async (filename) => {
       const file = files[filename];
 

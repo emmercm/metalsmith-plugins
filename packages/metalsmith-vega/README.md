@@ -63,11 +63,10 @@ Type: `object` Default:
 
 ```json
 {
-  "autosize": "none",
+  "padding": 1,
   "width": 200,
   "height": 200,
-  "background": "white",
-  "padding": 5
+  "background": "white"
 }
 ```
 

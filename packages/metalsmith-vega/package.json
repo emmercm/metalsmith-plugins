@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-vega",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "keywords": [
     "metalsmith",
@@ -43,7 +43,8 @@
     "unified": "^10.1.2",
     "unist-util-visit": "^4.1.0",
     "vega": "^5.22.1",
-    "vega-lite": "^5.4.0"
+    "vega-lite": "^5.4.0",
+    "xml2js": "^0.4.23"
   },
   "peerDependencies": {
     "metalsmith": "^2.5.0"
