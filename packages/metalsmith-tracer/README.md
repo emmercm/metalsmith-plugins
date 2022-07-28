@@ -40,13 +40,17 @@ npm install --save metalsmith-tracer
 
 ## JavaScript Usage
 
+This plugin requires ES6 syntax.
+
 `metalsmith-tracer` wraps the root `metalsmith` call:
 
 ```javascript
-const Metalsmith = require('metalsmith');
-const tracer     = require('metalsmith-tracer');
+import path from 'path';
 
-tracer(Metalsmith(__dirname), {
+import Metalsmith from 'metalsmith';
+import tracer     from 'metalsmith-tracer';
+
+tracer(Metalsmith(path.resolve()), {
         // options here
     })
     .build((err) => {
@@ -72,7 +76,7 @@ The logger function.
 
 - `metalsmith-if`
 
-  Using `metalsmith-if` will make the name of the plugin actually being used.
+  Using `metalsmith-if` will mask the name of the plugin actually being used.
 
 ## Changelog
 

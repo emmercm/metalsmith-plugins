@@ -5,7 +5,7 @@
     "strict": ["error", "global"]
   },
   "parserOptions": {
-    "sourceType": "script"
+    "sourceType": "module"
   },
   "overrides": [
     {

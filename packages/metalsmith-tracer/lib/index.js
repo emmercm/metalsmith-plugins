@@ -1,9 +1,7 @@
-'use strict';
-
-const deepmerge = require('deepmerge');
-const callsites = require('callsites');
-const chalk = require('chalk');
-const ora = require('ora');
+import deepmerge from 'deepmerge';
+import callsites from 'callsites';
+import chalk from 'chalk';
+import ora from 'ora';
 
 const LEFT_MARGIN = 7;
 
@@ -12,6 +10,11 @@ const IGNORED_JAVASCRIPT_FILES = [
   'next_tick.js',
   'task_queues.js',
   'timers.js',
+];
+const DEFAULT_PLUGIN_NAME = '(unnamed)';
+const UNKNOWN_PLUGIN_NAMES = [
+  DEFAULT_PLUGIN_NAME,
+  'metalsmith-if',
 ];
 
 const timePrefix = (milliseconds) => {
@@ -27,7 +30,7 @@ const timePrefix = (milliseconds) => {
   return ' '.repeat(LEFT_MARGIN - fixed.length - suffix.length) + fixed + suffix;
 };
 
-module.exports = (Metalsmith, options) => {
+export default (Metalsmith, options) => {
   options = deepmerge({
     log: console.log,
   }, options || {});
@@ -67,7 +70,9 @@ module.exports = (Metalsmith, options) => {
         // Find the call stack filenames
         const filenames = callsites()
           .slice(1)
-          .map((callsite) => callsite.getFileName());
+          .map((callsite) => callsite.getFileName())
+          // Fix URL-like file paths
+          .map((filename) => decodeURIComponent(filename).replace('file://', ''));
 
         // Find the first non-plugin file in the call stack. This is to prevent us from
         // mis-identifying plugins or anonymous functions.
@@ -99,6 +104,7 @@ module.exports = (Metalsmith, options) => {
           .filter((filename) => filename && filename.indexOf('metalsmith-tracer') === -1)
           .filter((val, idx, arr) => idx === 0 || arr[idx - 1] !== val);
 
+        // Find all eligible packages, potentially multiple if using metalsmith-branch
         let pkgStr = eligiblePackages
           .filter((eligiblePackage) => eligiblePackage !== 'metalsmith-branch')
           .reverse()
@@ -106,15 +112,19 @@ module.exports = (Metalsmith, options) => {
         let pkgColor = chalk.reset;
 
         if (!pkgStr) {
+          // If we didn't find any eligible packages, use the filename
           pkgColor = chalk.blackBright;
           pkgStr = (filenames
             .filter((filename) => filename.indexOf('/node_modules/') === -1)
             .find(() => true) || '')
-            .replace(Metalsmith.directory(), '').replace(/^[/\\]+/, '');
+            .replace(Metalsmith.directory(), '')
+            .replace(/^[/\\]+/, '');
         }
         if (!pkgStr || IGNORED_JAVASCRIPT_FILES.some((ignored) => pkgStr.indexOf(ignored) !== -1)) {
-          pkgColor = chalk.blackBright;
           pkgStr = '(unnamed)';
+        }
+        if (UNKNOWN_PLUGIN_NAMES.indexOf(pkgStr) !== -1) {
+          pkgColor = chalk.blackBright;
         }
 
         spinner.stop();

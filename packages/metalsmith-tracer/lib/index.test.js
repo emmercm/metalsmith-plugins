@@ -1,14 +1,12 @@
-'use strict';
-
-const {
+import {
   existsSync, mkdirSync, readdirSync, readFileSync, statSync,
-} = require('fs');
-const { join } = require('path');
+} from 'fs';
+import { join } from 'path';
 
-const Metalsmith = require('metalsmith');
-const assertDir = require('assert-dir-equal');
+import Metalsmith from 'metalsmith';
+import assertDir from 'assert-dir-equal';
 
-const tracer = require('./index');
+import tracer from './index';
 
 const test = (dir, config) => {
   describe(dir, () => {
@@ -48,21 +46,25 @@ const test = (dir, config) => {
           })
           // Test the output
           .build((err) => {
-            if (config.error) {
-              expect(err)
-                .toBe(config.error);
-            } else {
-              expect(err)
-                .toBeNull();
-            }
+            try {
+              if (config.error) {
+                expect(err)
+                  .toBe(config.error);
+              } else {
+                expect(err)
+                  .toBeNull();
+              }
 
-            if (err) {
+              if (err) {
+                testDone();
+                return;
+              }
+
+              assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
               testDone();
-              return;
+            } catch (assertionError) {
+              testDone(assertionError);
             }
-
-            assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
-            testDone();
           });
       });
     });

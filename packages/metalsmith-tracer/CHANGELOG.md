@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.0 / 2022-07-27
+
+- Convert to being an ES6 because both [callsites](https://www.npmjs.com/package/callsites) and [ora](https://www.npmjs.com/package/ora) are now.
+
+  This will require you to use ES6 modules as well, and will require Node.js `^12.20.0 || ^14.13.1 || >=16.0.0`.
+
 ## v0.5.0 / 2022-02-26
 
 - If multiple plugins are in the call stack (e.g. when using `metalsmith-branch`) all of them are printed.
