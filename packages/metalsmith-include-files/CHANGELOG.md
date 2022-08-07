@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.0 / 2022-08-07
+
+- Return an error when a file would be overwritten.
+
 ## v0.1.0 / 2019-05-31
 
 - Added Jest tests.

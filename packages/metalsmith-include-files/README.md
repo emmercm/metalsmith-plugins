@@ -12,7 +12,7 @@
 
 A Metalsmith plugin to include external files in your build.
 
-A common use case is wanting to include JavaScript, CSS, or font files from an installed NPM package such as [bootstrap](https://www.npmjs.com/package/bootstrap).
+A common use case is wanting to include JavaScript, CSS, or font files from an installed NPM package such as [`bootstrap`](https://www.npmjs.com/package/bootstrap).
 
 ## Installation
 
@@ -58,7 +58,7 @@ where you can define any number of output directories, and each of those can hav
 
 ## Example
 
-To include a number of static assets from [jquery](https://www.npmjs.com/package/jquery), [bootstrap](https://www.npmjs.com/package/bootstrap), and [@fortawesome/fontawesome-free](https://www.npmjs.com/package/@fortawesome/fontawesome-free) in your output files:
+To include a number of static assets from [`jquery`](https://www.npmjs.com/package/jquery), [`bootstrap`](https://www.npmjs.com/package/bootstrap), and [`@fortawesome/fontawesome-free`](https://www.npmjs.com/package/@fortawesome/fontawesome-free) in your output files:
 
 ```javascript
 const include = require('metalsmith-include-files');
