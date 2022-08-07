@@ -79,7 +79,7 @@ An array of regular expressions of links to be ignored.
 
 ### `timeout` (optional)
 
-Type: `number` Default: `15000`
+Type: `number` Default: `10000`
 
 The network timeout when checking external links, in milliseconds.
 

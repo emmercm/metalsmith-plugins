@@ -144,7 +144,7 @@ const validUrl = (link, options, callback, attempt = 1, method = 'HEAD') => {
   }
 
   const library = (link.slice(0, 5) === 'https' ? https : http);
-  library.request(link, {
+  const req = library.request(link, {
     method,
     headers: {
       // TODO: something to fix Pixabay
@@ -166,9 +166,23 @@ const validUrl = (link, options, callback, attempt = 1, method = 'HEAD') => {
     } else {
       cacheAndCallback(null, null);
     }
-  }).on('error', (err) => {
+  });
+
+  req.on('error', (err) => {
+    // Re-attempt HEAD errors as GETs
+    if (method !== 'GET') {
+      validUrl(link, options, callback, attempt, 'GET');
+      return;
+    }
+
     cacheAndCallback(null, err.message);
-  }).end();
+  });
+
+  req.on('timeout', () => {
+    req.destroy(); // cause an error
+  });
+
+  req.end();
 };
 
 /**
@@ -275,7 +289,7 @@ module.exports = (options) => {
       },
     },
     ignore: [],
-    timeout: 15 * 1000,
+    timeout: 10 * 1000,
     attempts: 3,
     userAgent,
     parallelism: 100,
