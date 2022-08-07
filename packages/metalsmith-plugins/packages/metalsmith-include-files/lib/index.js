@@ -9,23 +9,29 @@ const path = require('path');
 module.exports = (options) => (files, metalsmith, done) => {
   options = options || {};
 
-  Object.keys(options)
-    .forEach((folder) => {
-      let globs = options[folder];
-      if (!Array.isArray(globs)) {
-        globs = [globs];
-      }
+  const folders = Object.keys(options);
+  for (let i = 0; i < folders.length; i += 1) {
+    const folder = folders[i];
+    let globs = options[folder];
+    if (!Array.isArray(globs)) {
+      globs = [globs];
+    }
 
-      fg.sync(globs)
-        .forEach((file) => {
-          const contents = fs.readFileSync(file);
-          const key = path.join(folder, path.basename(file));
-          files[key] = {
-            contents,
-            mode: Mode(fs.statSync(file)).toOctal(),
-          };
-        });
-    });
+    const globbedFiles = fg.sync(globs);
+    for (let j = 0; j < globbedFiles.length; j += 1) {
+      const globbedFile = globbedFiles[j];
+      const contents = fs.readFileSync(globbedFile);
+      const key = path.join(folder, path.basename(globbedFile));
+      if (files[key]) {
+        done(`File already exists in build path: ${key}`);
+        return;
+      }
+      files[key] = {
+        contents,
+        mode: Mode(fs.statSync(globbedFile)).toOctal(),
+      };
+    }
+  }
 
   done();
 };
