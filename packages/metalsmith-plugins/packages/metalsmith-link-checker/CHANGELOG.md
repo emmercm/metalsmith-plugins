@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.4.0 / 2022-08-06
+
+- Fixed HTTP(S) timeouts preventing the plugin from stopping.
+- Lowered default timeout value from 15s to 10s.
+
 ## v0.3.0 / 2022-04-29
 
 - Add a retry mechanism for failed external links.

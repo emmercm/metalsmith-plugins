@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-link-checker",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "A Metalsmith plugin to check for broken links.",
   "keywords": [
     "metalsmith",
