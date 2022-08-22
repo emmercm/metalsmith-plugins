@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.6.0 / 2022-08-21
+
+- Fixed empty resource paths throwing exceptions.
+
 ## v0.5.0 / 2022-05-04
 
 - Use Metalsmith v2.4's `metalsmith.match()` instead of [`minimatch`](https://www.npmjs.com/package/minimatch).
