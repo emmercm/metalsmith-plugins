@@ -51,6 +51,11 @@ module.exports = (options) => {
                   return;
                 }
 
+                // Ignore empty patterns
+                if (!relativeGlob.trim()) {
+                  return;
+                }
+
                 // Find all input files matching the glob in the tag
                 const normalizedFilenames = Object.keys(files)
                   .map((resource) => resource.replace(/[/\\]/g, '/'));
