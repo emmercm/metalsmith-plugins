@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-include-files",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A Metalsmith plugin to include external files.",
   "keywords": [
     "metalsmith",
@@ -29,7 +29,7 @@
     "test:junit": "JEST_JUNIT_OUTPUT=reports/junit/results.xml jest --ci --runInBand --reporters=default --reporters=jest-junit"
   },
   "dependencies": {
-    "fast-glob": "^3.2.11",
+    "fast-glob": "^3.2.12",
     "stat-mode": "^1.0.0"
   },
   "devDependencies": {
