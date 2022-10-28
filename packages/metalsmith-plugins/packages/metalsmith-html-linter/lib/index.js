@@ -6,7 +6,7 @@ const async = require('async');
 const cheerio = require('cheerio');
 const codeFrame = require('@babel/code-frame');
 const deepmerge = require('deepmerge');
-const linthtml = require('@linthtml/linthtml');
+const linthtml = require('@linthtml/linthtml').default;
 
 const upgradeHtmllintConfig = (htmllint) => {
   const config = {};
@@ -40,7 +40,7 @@ const upgradeHtmllintConfig = (htmllint) => {
 };
 
 // Get the linthtml (written in  htmllint config) and upgrade it
-const linthtmlDefault = upgradeHtmllintConfig(require('@linthtml/linthtml/lib/presets/default'));
+const linthtmlDefault = upgradeHtmllintConfig(linthtml.presets.default);
 
 module.exports = (options = {}) => {
   // Upgrade any old htmllint config
