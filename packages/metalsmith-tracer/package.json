@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-tracer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A Metalsmith plugin to find related files within collections.",
   "keywords": [
     "metalsmith",
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "callsites": "^4.0.0",
-    "chalk": "^5.1.2",
+    "chalk": "^5.2.0",
     "deepmerge": "^4.2.2",
     "ora": "^6.1.2"
   },
