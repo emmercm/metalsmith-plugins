@@ -1,6 +1,0 @@
-{
-  "options": {
-    ".": ["**/fixtures/style.css"],
-    "./": "**/fixtures/script.js"
-  }
-}

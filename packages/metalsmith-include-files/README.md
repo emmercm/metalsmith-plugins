@@ -39,22 +39,34 @@ Metalsmith(__dirname)
 
 ## Options
 
-The option dictionary passed to the plugin is in the form:
+### `directories` (required)
+
+Type: `object`
+
+A dictionary where the keys are Metalsmith build output directories, and the values are an array of [micromatch](https://github.com/micromatch/micromatch) patterns for files on your filesystem.
+
+Example structure:
 
 ```json
 {
-  "[output directory one]": [
-    "[micromatch pattern]",
-    "[micromatch pattern]"
-  ],
-  "[output directory two]": [
-    "[micromatch pattern]",
-    "[micromatch pattern]"
-  ]
+  "directories": {
+    "[output directory 1]": [
+      "[micromatch pattern 1]",
+      "[micromatch pattern 2]"
+    ],
+    "[output directory 2]": [
+      "[micromatch pattern 3]",
+      "[micromatch pattern 4]"
+    ]
+  }
 }
 ```
 
-where you can define any number of output directories, and each of those can have any number of micromatch patterns of files to include.
+### `overwrite` (optional)
+
+Type: `boolean` Default: `false`
+
+Whether existing files in the Metalsmith build output can be overwritten or not. An exception will be raised if the option is `false` and there is a duplicate filename.
 
 ## Example
 
@@ -65,17 +77,19 @@ const include = require('metalsmith-include-files');
 
 Metalsmith(__dirname)
     .use(include({
-        'static/css': [
-            './node_modules/bootstrap/dist/css/bootstrap.min.css',
-            './node_modules/@fortawesome/fontawesome-free/css/all.min.css'
-        ],
-        'static/js': [
-            './node_modules/jquery/dist/jquery.slim.js',
-            './node_modules/bootstrap/dist/js/bootstrap.min.js'
-        ],
-        'static/webfonts': [
-            './node_modules/@fortawesome/fontawesome-free/webfonts/*'
-        ]
+        directories: {
+            'static/css': [
+                './node_modules/bootstrap/dist/css/bootstrap.min.css',
+                './node_modules/@fortawesome/fontawesome-free/css/all.min.css'
+            ],
+            'static/js': [
+                './node_modules/jquery/dist/jquery.slim.js',
+                './node_modules/bootstrap/dist/js/bootstrap.min.js'
+            ],
+            'static/webfonts': [
+                './node_modules/@fortawesome/fontawesome-free/webfonts/*'
+            ]
+        }
     }))
 ```
 

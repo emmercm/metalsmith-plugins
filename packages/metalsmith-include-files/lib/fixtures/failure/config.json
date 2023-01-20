@@ -1,7 +1,9 @@
 {
   "options": {
-    ".": ["**/fixtures/style.css"],
-    "./": "**/fixtures/style.css"
+    "directories": {
+      ".": ["**/fixtures/style.css"],
+      "./": "**/fixtures/style.css"
+    }
   },
   "error": "File already exists in build path: style.css"
 }
