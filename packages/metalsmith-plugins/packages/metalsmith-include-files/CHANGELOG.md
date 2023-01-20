@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.0 / 2023-01-19
+
+- Added an option to overwrite files, false by default.
+
 ## v0.2.0 / 2022-08-07
 
 - Return an error when a file would be overwritten.

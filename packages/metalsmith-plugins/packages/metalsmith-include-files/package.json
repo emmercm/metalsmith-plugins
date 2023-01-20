@@ -29,6 +29,7 @@
     "test:junit": "JEST_JUNIT_OUTPUT=reports/junit/results.xml jest --ci --runInBand --reporters=default --reporters=jest-junit"
   },
   "dependencies": {
+    "deepmerge": "^4.2.2",
     "fast-glob": "^3.2.12",
     "stat-mode": "^1.0.0"
   },
