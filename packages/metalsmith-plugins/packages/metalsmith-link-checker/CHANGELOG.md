@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.5.0 / 2023-01-31
+
+- Fixed ignoring of `/` forward slashes in `#` fragment identifiers.
+
 ## v0.4.0 / 2022-08-06
 
 - Fixed HTTP(S) timeouts preventing the plugin from stopping.
