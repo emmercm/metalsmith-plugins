@@ -243,7 +243,7 @@ const validTel = (link) => {
 const validLocal = (files, src, dest) => {
   // TODO: anchor validation
   // Strip trailing anchor link
-  dest = dest.replace(/#[^/\\]*$/, '');
+  dest = dest.replace(/#.*$/, '');
 
   // Reference to self is always valid
   if (dest === '' || dest === '.' || dest === './') {
