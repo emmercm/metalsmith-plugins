@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-css-unused",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A Metalsmith plugin to remove unused CSS rules.",
   "keywords": [
     "metalsmith",
@@ -29,7 +29,7 @@
     "test:junit": "JEST_JUNIT_OUTPUT=reports/junit/results.xml jest --ci --runInBand --reporters=default --reporters=jest-junit"
   },
   "dependencies": {
-    "deepmerge": "^4.2.2",
+    "deepmerge": "^4.3.0",
     "purgecss": "^5.0.0"
   },
   "peerDependencies": {
