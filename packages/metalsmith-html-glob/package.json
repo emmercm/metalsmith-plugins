@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-html-glob",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "A Metalsmith plugin to apply glob patterns within HTML.",
   "keywords": [
     "metalsmith",
@@ -33,7 +33,7 @@
     "@popperjs/core": "^2.11.6",
     "bootstrap": "^5.2.3",
     "cheerio": "^1.0.0-rc.12",
-    "deepmerge": "^4.2.2"
+    "deepmerge": "^4.3.0"
   },
   "peerDependencies": {
     "metalsmith": "^2.5.1"
