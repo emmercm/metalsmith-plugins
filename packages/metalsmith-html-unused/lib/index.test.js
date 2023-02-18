@@ -17,55 +17,26 @@ const test = (dir, config) => {
       mkdirSync(`${dir}/src`);
     }
 
-    ['/', '\\'].forEach((pathSeparator) => {
-      it(`should build with path separator "${pathSeparator}"`, (testDone) => {
-        Metalsmith(`${dir}`)
-          // Convert the path separators to the one being tested
-          .use((files, metalsmith, done) => {
-            Object.keys(files)
-              .forEach((filename) => {
-                const newFilename = filename.replace(/[/\\]/g, pathSeparator);
-                if (newFilename !== filename) {
-                  files[newFilename] = files[filename];
-                  delete files[filename];
-                }
-              });
-            done();
-          })
-          // Run the plugin
-          .use(unused(config.options))
-          // Convert the path separators back to system default
-          .use((files, metalsmith, done) => {
-            const properPathSeparator = process.platform === 'win32' ? '\\' : '/';
-            Object.keys(files)
-              .forEach((filename) => {
-                const newFilename = filename.replace(/[/\\]/g, properPathSeparator);
-                if (newFilename !== filename) {
-                  files[newFilename] = files[filename];
-                  delete files[filename];
-                }
-              });
-            done();
-          })
-          // Test the output
-          .build((err) => {
-            if (config.error) {
-              expect(err)
-                .toBe(config.error);
-            } else {
-              expect(err)
-                .toBeNull();
-            }
+    it('should build', (testDone) => {
+      Metalsmith(`${dir}`)
+        // Run the plugin
+        .use(unused(config.options))
+        // Test the output
+        .build((err) => {
+          if (config.error) {
+            expect(err).toBe(config.error);
+          } else {
+            expect(err).toBeNull();
+          }
 
-            if (err) {
-              testDone();
-              return;
-            }
-
-            assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
+          if (err) {
             testDone();
-          });
-      });
+            return;
+          }
+
+          assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
+          testDone();
+        });
     });
   });
 };

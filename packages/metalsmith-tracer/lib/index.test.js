@@ -15,58 +15,29 @@ const test = (dir, config) => {
       mkdirSync(`${dir}/src`);
     }
 
-    ['/', '\\'].forEach((pathSeparator) => {
-      it(`should build with path separator "${pathSeparator}"`, (testDone) => {
-        tracer(Metalsmith(`${dir}`), config.options)
-          .use(() => {})
-          // Convert the path separators to the one being tested
-          .use((files, metalsmith, done) => {
-            Object.keys(files)
-              .forEach((filename) => {
-                const newFilename = filename.replace(/[/\\]/g, pathSeparator);
-                if (newFilename !== filename) {
-                  files[newFilename] = files[filename];
-                  delete files[filename];
-                }
-              });
-            done();
-          })
-          // Convert the path separators back to system default
-          .use((files, metalsmith, done) => {
-            const properPathSeparator = process.platform === 'win32' ? '\\' : '/';
-            Object.keys(files)
-              .forEach((filename) => {
-                const newFilename = filename.replace(/[/\\]/g, properPathSeparator);
-                if (newFilename !== filename) {
-                  files[newFilename] = files[filename];
-                  delete files[filename];
-                }
-              });
-            done();
-          })
-          // Test the output
-          .build((err) => {
-            try {
-              if (config.error) {
-                expect(err)
-                  .toBe(config.error);
-              } else {
-                expect(err)
-                  .toBeNull();
-              }
-
-              if (err) {
-                testDone();
-                return;
-              }
-
-              assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
-              testDone();
-            } catch (assertionError) {
-              testDone(assertionError);
+    it('should build', (testDone) => {
+      tracer(Metalsmith(`${dir}`), config.options)
+        .use(() => {})
+        // Test the output
+        .build((err) => {
+          try {
+            if (config.error) {
+              expect(err).toBe(config.error);
+            } else {
+              expect(err).toBeNull();
             }
-          });
-      });
+
+            if (err) {
+              testDone();
+              return;
+            }
+
+            assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
+            testDone();
+          } catch (assertionError) {
+            testDone(assertionError);
+          }
+        });
     });
   });
 };

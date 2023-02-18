@@ -38,6 +38,7 @@
     "metalsmith": "^2.5.1"
   },
   "devDependencies": {
+    "@jest/globals": "^29.4.3",
     "assert-dir-equal": "1.1.0",
     "eslint": "8.33.0",
     "eslint-config-airbnb-base": "15.0.0",
