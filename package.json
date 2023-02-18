@@ -5,7 +5,8 @@
     "packages/*"
   ],
   "scripts": {
-    "clean": "../../node_modules/.bin/lerna clean --yes"
+    "clean": "lerna clean --yes",
+    "test": "lerna run test"
   },
   "devDependencies": {
     "lerna": "^6.5.1"
