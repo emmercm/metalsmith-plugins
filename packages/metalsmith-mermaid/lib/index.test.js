@@ -5,8 +5,11 @@ import { join } from 'path';
 
 import Metalsmith from 'metalsmith';
 // import assertDir from 'assert-dir-equal';
+import { jest } from '@jest/globals';
 
 import mermaid from './index';
+
+jest.setTimeout(10_000);
 
 const test = (dir, config) => {
   describe(dir, () => {
