@@ -28,7 +28,7 @@
 ## v0.1.0 / 2021-11-24
 
 - Print the error next to failed links.
-- Use https://postman-echo.com instead of https://urlecho.appspot.com for tests.
+- Use [https://postman-echo.com](https://postman-echo.com) instead of [https://urlecho.appspot.com](https://urlecho.appspot.com) for tests.
 - Switch to the WHATWG URL API.
 - Significant JSDoc updates.
 
