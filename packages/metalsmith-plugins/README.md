@@ -1,2 +1,0 @@
-# metalsmith-plugins
-🔩 metalsmith-plugins
