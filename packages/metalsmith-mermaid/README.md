@@ -12,7 +12,7 @@
 
 A Metalsmith plugin to render Mermaid diagrams in files.
 
-From the official [Mermaid] documentation(https://mermaid-js.github.io/mermaid/#/):
+From the official [Mermaid](https://mermaid-js.github.io/mermaid/#/) documentation:
 
 > Mermaid is a JavaScript based diagramming and charting tool that uses Markdown-inspired text definitions and a renderer to create and modify complex diagrams. The main purpose of Mermaid is to help documentation catch up with development.
 
