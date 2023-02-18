@@ -8,7 +8,7 @@
 [![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-vega?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-vega/maintainability)
 
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-vega/purple?icon=github)](https://github.com/emmercm/metalsmith-vega)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-vega?color=grey)](https://github.com/emmercm/metalsmith-vega/blob/main/LICENSE)
+[![License](https://badgen.net/github/license/emmercm/metalsmith-vega?color=grey)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
 A Metalsmith plugin to render Vega and Vega Lite visualizations in files.
 

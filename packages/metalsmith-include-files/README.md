@@ -8,7 +8,7 @@
 [![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-include-files?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-include-files/maintainability)
 
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-include-files/purple?icon=github)](https://github.com/emmercm/metalsmith-include-files)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-include-files?color=grey)](https://github.com/emmercm/metalsmith-include-files/blob/master/LICENSE)
+[![License](https://badgen.net/github/license/emmercm/metalsmith-include-files?color=grey)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
 A Metalsmith plugin to include external files in your build.
 

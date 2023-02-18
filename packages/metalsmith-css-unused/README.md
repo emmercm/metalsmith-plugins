@@ -8,7 +8,7 @@
 [![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-css-unused?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-css-unused/maintainability)
 
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-css-unused/purple?icon=github)](https://github.com/emmercm/metalsmith-css-unused)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-css-unused?color=grey)](https://github.com/emmercm/metalsmith-css-unused/blob/master/LICENSE)
+[![License](https://badgen.net/github/license/emmercm/metalsmith-css-unused?color=grey)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
 A Metalsmith plugin to remove unused CSS rules.
 

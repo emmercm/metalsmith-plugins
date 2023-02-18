@@ -8,7 +8,7 @@
 [![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-html-linter?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-html-linter/maintainability)
 
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-html-linter/purple?icon=github)](https://github.com/emmercm/metalsmith-html-linter)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-html-linter?color=grey)](https://github.com/emmercm/metalsmith-html-linter/blob/master/LICENSE)
+[![License](https://badgen.net/github/license/emmercm/metalsmith-html-linter?color=grey)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
 A Metalsmith plugin to lint HTML for syntax and semantics.
 

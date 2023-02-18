@@ -7,9 +7,9 @@
     "metalsmith-plugin",
     "plugin"
   ],
-  "homepage": "https://github.com/emmercm/metalsmith-css-unused#readme",
+  "homepage": "https://github.com/emmercm/metalsmith-plugins/tree/main/packages/metalsmith-css-unused#readme",
   "bugs": {
-    "url": "https://github.com/emmercm/metalsmith-css-unused/issues"
+    "url": "https://github.com/emmercm/metalsmith-plugins/issues"
   },
   "license": "GPL-3.0-or-later",
   "author": "Christian Emmer",
@@ -19,7 +19,7 @@
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/emmercm/metalsmith-css-unused.git"
+    "url": "git+https://github.com/emmercm/metalsmith-plugins.git"
   },
   "scripts": {
     "lint": "eslint . --fix || true",

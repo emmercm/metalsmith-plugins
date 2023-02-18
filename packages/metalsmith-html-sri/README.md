@@ -8,7 +8,7 @@
 [![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-html-sri?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-html-sri/maintainability)
 
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-html-sri/purple?icon=github)](https://github.com/emmercm/metalsmith-html-sri)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-html-sri?color=grey)](https://github.com/emmercm/metalsmith-html-sri/blob/master/LICENSE)
+[![License](https://badgen.net/github/license/emmercm/metalsmith-html-sri?color=grey)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
 A Metalsmith plugin to add subresource integrity attributes to HTML.
 

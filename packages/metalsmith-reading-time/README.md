@@ -8,7 +8,7 @@
 [![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-reading-time?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-reading-time/maintainability)
 
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-reading-time/purple?icon=github)](https://github.com/emmercm/metalsmith-reading-time)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-reading-time?color=grey)](https://github.com/emmercm/metalsmith-reading-time/blob/master/LICENSE)
+[![License](https://badgen.net/github/license/emmercm/metalsmith-reading-time?color=grey)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
 A Metalsmith plugin to estimate pages' reading times.
 

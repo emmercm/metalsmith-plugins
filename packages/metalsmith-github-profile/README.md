@@ -8,7 +8,7 @@
 [![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-github-profile?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-github-profile/maintainability)
 
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-github-profile/purple?icon=github)](https://github.com/emmercm/metalsmith-github-profile)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-github-profile?color=grey)](https://github.com/emmercm/metalsmith-github-profile/blob/main/LICENSE)
+[![License](https://badgen.net/github/license/emmercm/metalsmith-github-profile?color=grey)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
 A Metalsmith plugin to fetch GitHub profile information as global metadata.
 

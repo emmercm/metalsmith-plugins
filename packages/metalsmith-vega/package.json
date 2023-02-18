@@ -7,9 +7,9 @@
     "metalsmith-plugin",
     "plugin"
   ],
-  "homepage": "https://github.com/emmercm/metalsmith-vega#readme",
+  "homepage": "https://github.com/emmercm/metalsmith-plugins/tree/main/packages/metalsmith-vega#readme",
   "bugs": {
-    "url": "https://github.com/emmercm/metalsmith-vega/issues"
+    "url": "https://github.com/emmercm/metalsmith-plugins/issues"
   },
   "license": "GPL-3.0-or-later",
   "author": "Christian Emmer",
@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/emmercm/metalsmith-vega.git"
+    "url": "git+https://github.com/emmercm/metalsmith-plugins.git"
   },
   "scripts": {
     "lint": "eslint . --fix || true",

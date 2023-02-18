@@ -8,7 +8,7 @@
 [![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-tracer?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-tracer/maintainability)
 
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-tracer/purple?icon=github)](https://github.com/emmercm/metalsmith-tracer)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-tracer?color=grey)](https://github.com/emmercm/metalsmith-tracer/blob/master/LICENSE)
+[![License](https://badgen.net/github/license/emmercm/metalsmith-tracer?color=grey)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
 A tool to automatically trace and measure Metalsmith build time.
 

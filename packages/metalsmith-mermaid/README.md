@@ -8,7 +8,7 @@
 [![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-mermaid?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-mermaid/maintainability)
 
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-mermaid/purple?icon=github)](https://github.com/emmercm/metalsmith-mermaid)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-mermaid?color=grey)](https://github.com/emmercm/metalsmith-mermaid/blob/main/LICENSE)
+[![License](https://badgen.net/github/license/emmercm/metalsmith-mermaid?color=grey)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
 A Metalsmith plugin to render Mermaid diagrams in files.
 
