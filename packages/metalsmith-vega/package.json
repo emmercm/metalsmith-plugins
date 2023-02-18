@@ -30,10 +30,10 @@
   },
   "scripts": {
     "lint": "eslint . --fix || true",
-    "test": "node --experimental-vm-modules ./node_modules/.bin/jest --verbose && eslint .",
-    "test:update": "node --experimental-vm-modules ./node_modules/.bin/jest --verbose --updateSnapshot",
-    "test:watch": "node --experimental-vm-modules ./node_modules/.bin/jest --verbose --watch",
-    "test:junit": "JEST_JUNIT_OUTPUT=reports/junit/results.xml node --experimental-vm-modules ./node_modules/.bin/jest --ci --runInBand --reporters=default --reporters=jest-junit"
+    "test": "node --experimental-vm-modules ../../node_modules/.bin/jest --verbose && eslint .",
+    "test:update": "node --experimental-vm-modules ../../node_modules/.bin/jest --verbose --updateSnapshot",
+    "test:watch": "node --experimental-vm-modules ../../node_modules/.bin/jest --verbose --watch",
+    "test:junit": "JEST_JUNIT_OUTPUT=reports/junit/results.xml node --experimental-vm-modules ../../node_modules/.bin/jest --ci --runInBand --reporters=default --reporters=jest-junit"
   },
   "dependencies": {
     "async": "^3.2.4",
