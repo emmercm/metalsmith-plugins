@@ -1,0 +1,66 @@
+name: Project CI
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize  # HEAD has changed, e.g. a push happened
+      - reopened
+
+jobs:
+  node-lint:
+    runs-on: ubuntu-latest
+    steps:
+      # Setup and install
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          cache: 'npm'
+      - run: npm ci
+
+      # Lint the source files
+      - run: npm run lint
+  
+  node-unit:
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      matrix:
+        os: [ ubuntu, macos, windows ]
+        node-version: [ lts/*, lts/-1, lts/-2 ]
+    steps:
+      # Setup and install
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
+
+      # Test the source files
+      - run: npm run test
+
+  markdown-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker run -v $PWD:/workdir ghcr.io/igorshubovych/markdownlint-cli:latest --disable MD013 MD033 MD041 -- "**/*.md"
+
+  renovate-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: rinchsan/renovate-config-validator@v0.0.12
+        with:
+          pattern: 'renovate.json5'
+
+  # !!! This check should be required by GitHub !!!
+  test-status-check:
+    needs:
+      - node-lint
+      - node-unit
+      - markdown-lint
+      - renovate-lint
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
