@@ -49,7 +49,10 @@ const mermaidToSvg = async (mermaid, options) => {
     svg.setAttribute('class', 'mermaid');
 
     // Keep a consistent line height
-    svg.querySelector('style').textContent += css;
+    const svgStyle = svg.querySelector('style');
+    if (svgStyle) {
+      svgStyle.textContent += css;
+    }
 
     // Remove attributes that restrict size
     svg.removeAttribute('style');
