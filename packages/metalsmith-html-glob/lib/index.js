@@ -60,6 +60,7 @@ module.exports = (options) => {
                 const normalizedFilenames = Object.keys(files)
                   .map((resource) => resource.replace(/[/\\]/g, '/'));
                 const resources = metalsmith.match(relativeGlob, normalizedFilenames)
+                  .map((resource) => resource.replace(/[/\\]/g, '/'))
                   .sort()
                   .map((resource) => $(elem).clone().attr(attribute, `/${resource}`));
 
