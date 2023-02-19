@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.5.2 / 2023-02-18
+
+- Fixed validation failures of local files in Windows.
+
 ## v0.5.0 / 2023-01-31
 
 - Fixed ignoring of `/` forward slashes in `#` fragment identifiers.
