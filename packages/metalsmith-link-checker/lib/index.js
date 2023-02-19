@@ -250,13 +250,13 @@ const validLocal = (files, src, dest) => {
     return true;
   }
 
-  const linkPath = path.join(path.dirname(src), dest);
+  const linkPath = path.join(path.dirname(src), dest).replace(/[/\\]/g, '/');
   // Reference to self is always valid
   if (linkPath === '' || linkPath === '.' || linkPath === './') {
     return true;
   }
 
-  return linkPath in files || path.join(linkPath, 'index.html') in files;
+  return linkPath in files || path.join(linkPath, 'index.html').replace(/[/\\]/g, '/') in files;
 };
 
 /**

@@ -9,8 +9,11 @@ const Metalsmith = require('metalsmith');
 const hbtmd = require('metalsmith-hbt-md');
 const handlebars = require('handlebars');
 const assertDir = require('assert-dir-equal');
+const { jest: requiredJest } = require('@jest/globals');
 
 const githubProfile = require('./index');
+
+requiredJest.setTimeout(30 * 1000);
 
 const test = (dir, config) => {
   describe(dir, () => {
@@ -19,60 +22,31 @@ const test = (dir, config) => {
       mkdirSync(`${dir}/src`);
     }
 
-    ['/', '\\'].forEach((pathSeparator) => {
-      it(`should build with path separator "${pathSeparator}"`, (testDone) => {
-        Metalsmith(`${dir}`)
-          // Convert the path separators to the one being tested
-          .use((files, metalsmith, done) => {
-            Object.keys(files)
-              .forEach((filename) => {
-                const newFilename = filename.replace(/[/\\]/g, pathSeparator);
-                if (newFilename !== filename) {
-                  files[newFilename] = files[filename];
-                  delete files[filename];
-                }
-              });
-            done();
-          })
-          // Run the plugin
-          .use(githubProfile(config.options))
-          .use(hbtmd(handlebars))
-          // Convert the path separators back to system default
-          .use((files, metalsmith, done) => {
-            const properPathSeparator = process.platform === 'win32' ? '\\' : '/';
-            Object.keys(files)
-              .forEach((filename) => {
-                const newFilename = filename.replace(/[/\\]/g, properPathSeparator);
-                if (newFilename !== filename) {
-                  files[newFilename] = files[filename];
-                  delete files[filename];
-                }
-              });
-            done();
-          })
-          // Test the output
-          .build((err) => {
-            try {
-              if (config.error) {
-                expect(err)
-                  .toBe(config.error);
-              } else {
-                expect(err)
-                  .toBeNull();
-              }
-
-              if (err) {
-                testDone();
-                return;
-              }
-
-              assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
-              testDone();
-            } catch (assertionError) {
-              testDone(assertionError);
+    it('should build', (testDone) => {
+      Metalsmith(`${dir}`)
+        // Run the plugin
+        .use(githubProfile(config.options))
+        .use(hbtmd(handlebars))
+        // Test the output
+        .build((err) => {
+          try {
+            if (config.error) {
+              expect(err).toBe(config.error);
+            } else {
+              expect(err).toBeNull();
             }
-          });
-      }, 30 * 1000);
+
+            if (err) {
+              testDone();
+              return;
+            }
+
+            assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
+            testDone();
+          } catch (assertionError) {
+            testDone(assertionError);
+          }
+        });
     });
   });
 };

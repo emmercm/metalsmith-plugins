@@ -1,9 +1,0 @@
-{
-  "options": {
-    "purgecss": {
-      "safelist": [
-        "ignored"
-      ]
-    }
-  }
-}

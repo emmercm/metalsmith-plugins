@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.5.2 / 2023-02-18
+
+- Fixed validation failures of local files in Windows.
+
 ## v0.5.0 / 2023-01-31
 
 - Fixed ignoring of `/` forward slashes in `#` fragment identifiers.
@@ -28,7 +32,7 @@
 ## v0.1.0 / 2021-11-24
 
 - Print the error next to failed links.
-- Use https://postman-echo.com instead of https://urlecho.appspot.com for tests.
+- Use [https://postman-echo.com](https://postman-echo.com) instead of [https://urlecho.appspot.com](https://urlecho.appspot.com) for tests.
 - Switch to the WHATWG URL API.
 - Significant JSDoc updates.
 

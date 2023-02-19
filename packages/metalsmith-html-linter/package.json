@@ -23,9 +23,9 @@
   },
   "scripts": {
     "lint": "eslint . --fix || true",
-    "test": "jest --verbose --coverage && eslint .",
-    "test:update": "jest --verbose --coverage --updateSnapshot",
-    "test:watch": "jest --verbose --watch",
+    "test": "jest --coverage && eslint .",
+    "test:update": "jest --coverage --updateSnapshot",
+    "test:watch": "jest --watch",
     "test:junit": "JEST_JUNIT_OUTPUT=reports/junit/results.xml jest --ci --runInBand --reporters=default --reporters=jest-junit"
   },
   "dependencies": {

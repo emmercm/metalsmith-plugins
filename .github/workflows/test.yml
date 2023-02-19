@@ -1,0 +1,54 @@
+name: Project CI
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize  # HEAD has changed, e.g. a push happened
+      - reopened
+
+jobs:
+  node-unit:
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      matrix:
+        os: [ ubuntu, macos, windows ]
+        # Note: npm workspaces requires npm v7+ = Node.js v15+
+        node-version: [ lts/*, lts/-1 ]
+    steps:
+      # Setup and install
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: 'packages/**/package-lock.json'
+      - run: npm ci
+
+      # Test the source files
+      - run: npm test
+
+  markdown-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker run -v $PWD:/workdir ghcr.io/igorshubovych/markdownlint-cli:latest --ignore "packages/*/lib/fixtures/**/*.md" --disable MD013 -- "**/*.md"
+
+  renovate-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: rinchsan/renovate-config-validator@v0.0.12
+        with:
+          pattern: 'renovate.json5'
+
+  # !!! This check should be required by GitHub !!!
+  test-status-check:
+    needs:
+      - node-unit
+      - markdown-lint
+      - renovate-lint
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
