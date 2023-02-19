@@ -38,5 +38,5 @@ jobs:
       - run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov && chmod +x codecov
           for dir in packages/*; do
-            ./codecov --flags "$(basename "${dir}")" --verbose
+            ./codecov --rootDir "${dir}" --flags "$(basename "${dir}")" --verbose
           done
