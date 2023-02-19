@@ -7,6 +7,7 @@ const { join } = require('path');
 
 const Metalsmith = require('metalsmith');
 const collect = require('metalsmith-auto-collections');
+const paths = require('metalsmith-paths');
 const hbtmd = require('metalsmith-hbt-md');
 const handlebars = require('handlebars');
 const assertDir = require('assert-dir-equal');
@@ -22,8 +23,9 @@ const test = (dir, config) => {
 
     it('should build', (testDone) => {
       Metalsmith(`${dir}`)
-        .use(collect({})) // needs to be before the path separator change
+        .use(collect({}))
         // Run the plugin
+        .use(paths())
         .use(related(config.options))
         .use(hbtmd(handlebars))
         // Test the output
