@@ -1,8 +1,0 @@
-{
-  "options": {
-    "mermaid": {
-      "deterministicIds": true
-    }
-  },
-  "mermaidError": false
-}

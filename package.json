@@ -4,6 +4,10 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "clean": "lerna clean --yes",
+    "test": "lerna run test"
+  },
   "devDependencies": {
     "lerna": "^6.5.1"
   }
