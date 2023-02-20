@@ -1,14 +1,11 @@
 # metalsmith-html-linter
 
-[![npm Version](https://badgen.net/npm/v/metalsmith-html-linter?icon=npm)](https://www.npmjs.com/package/metalsmith-html-linter)
-[![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-html-linter)](https://www.npmjs.com/package/metalsmith-html-linter)
+[![npm: version](https://img.shields.io/npm/v/metalsmith-html-linter?color=%23cc3534&label=version&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-html-linter)
+[![npm: downloads](https://img.shields.io/npm/dw/metalsmith-html-linter?color=%23cc3534&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-html-linter)
 
-[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-html-linter/badge.svg)](https://snyk.io/test/npm/metalsmith-html-linter)
+[![Snyk: vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/metalsmith-html-linter?logo=snyk&logoColor=white)](https://snyk.io/test/npm/metalsmith-html-linter)
 [![codecov: coverage](https://img.shields.io/codecov/c/github/emmercm/metalsmith-plugins?flag=metalsmith-html-linter&logo=codecov&logoColor=white)](https://codecov.io/gh/emmercm/metalsmith-html-linter)
-[![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-html-linter?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-html-linter/maintainability)
-
-[![GitHub](https://badgen.net/badge/emmercm/metalsmith-html-linter/purple?icon=github)](https://github.com/emmercm/metalsmith-html-linter)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-html-linter?color=grey)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
+[![license](https://img.shields.io/github/license/emmercm/metalsmith-plugins?color=blue)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
 A Metalsmith plugin to lint HTML for syntax and semantics.
 

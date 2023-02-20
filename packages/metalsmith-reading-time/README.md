@@ -1,14 +1,11 @@
 # metalsmith-reading-time
 
-[![npm Version](https://badgen.net/npm/v/metalsmith-reading-time?icon=npm)](https://www.npmjs.com/package/metalsmith-reading-time)
-[![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-reading-time)](https://www.npmjs.com/package/metalsmith-reading-time)
+[![npm: version](https://img.shields.io/npm/v/metalsmith-reading-time?color=%23cc3534&label=version&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-reading-time)
+[![npm: downloads](https://img.shields.io/npm/dw/metalsmith-reading-time?color=%23cc3534&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-reading-time)
 
-[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-reading-time/badge.svg)](https://snyk.io/test/npm/metalsmith-reading-time)
+[![Snyk: vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/metalsmith-reading-time?logo=snyk&logoColor=white)](https://snyk.io/test/npm/metalsmith-reading-time)
 [![codecov: coverage](https://img.shields.io/codecov/c/github/emmercm/metalsmith-plugins?flag=metalsmith-reading-time&logo=codecov&logoColor=white)](https://codecov.io/gh/emmercm/metalsmith-reading-time)
-[![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-reading-time?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-reading-time/maintainability)
-
-[![GitHub](https://badgen.net/badge/emmercm/metalsmith-reading-time/purple?icon=github)](https://github.com/emmercm/metalsmith-reading-time)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-reading-time?color=grey)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
+[![license](https://img.shields.io/github/license/emmercm/metalsmith-plugins?color=blue)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
 A Metalsmith plugin to estimate pages' reading times.
 

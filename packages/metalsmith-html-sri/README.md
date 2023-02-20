@@ -1,14 +1,11 @@
 # metalsmith-html-sri
 
-[![npm Version](https://badgen.net/npm/v/metalsmith-html-sri?icon=npm)](https://www.npmjs.com/package/metalsmith-html-sri)
-[![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-html-sri)](https://www.npmjs.com/package/metalsmith-html-sri)
+[![npm: version](https://img.shields.io/npm/v/metalsmith-html-sri?color=%23cc3534&label=version&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-html-sri)
+[![npm: downloads](https://img.shields.io/npm/dw/metalsmith-html-sri?color=%23cc3534&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-html-sri)
 
-[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-html-sri/badge.svg)](https://snyk.io/test/npm/metalsmith-html-sri)
+[![Snyk: vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/metalsmith-html-sri?logo=snyk&logoColor=white)](https://snyk.io/test/npm/metalsmith-html-sri)
 [![codecov: coverage](https://img.shields.io/codecov/c/github/emmercm/metalsmith-plugins?flag=metalsmith-html-sri&logo=codecov&logoColor=white)](https://codecov.io/gh/emmercm/metalsmith-html-sri)
-[![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-html-sri?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-html-sri/maintainability)
-
-[![GitHub](https://badgen.net/badge/emmercm/metalsmith-html-sri/purple?icon=github)](https://github.com/emmercm/metalsmith-html-sri)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-html-sri?color=grey)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
+[![license](https://img.shields.io/github/license/emmercm/metalsmith-plugins?color=blue)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
 A Metalsmith plugin to add subresource integrity attributes to HTML.
 
