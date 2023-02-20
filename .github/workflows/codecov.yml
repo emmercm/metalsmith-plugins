@@ -37,11 +37,10 @@ jobs:
 
       # Run test coverage
       - run: npm run test:coverage
-      - run: tree packages
       - run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov && chmod +x codecov
           for dir in packages/*; do
-            ./codecov --rootDir "${dir}" --flags "$(basename "${dir}")" --token "${CODECOV_TOKEN}" --verbose
+            ./codecov --dir "${dir}" --flags "$(basename "${dir}")" --token "${CODECOV_TOKEN}" --verbose
           done
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
