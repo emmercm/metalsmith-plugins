@@ -12,14 +12,14 @@ module.exports = (options) => {
 
   return (files, metalsmith, done) => {
     // Build list of HTML content
-    options.purgecss.content = metalsmith.match(options.html)
+    options.purgecss.content = metalsmith.match(options.html, Object.keys(files))
       .map((filename) => ({
         raw: files[filename].contents.toString(),
         extension: 'html',
       }));
 
     // Build list of CSS content
-    const cssFiles = metalsmith.match(options.css);
+    const cssFiles = metalsmith.match(options.css, Object.keys(files));
     options.purgecss.css = cssFiles
       .map((filename) => ({
         raw: files[filename].contents.toString(),

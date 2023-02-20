@@ -19,7 +19,7 @@ module.exports = (options) => {
 
   return (files, metalsmith, done) => {
     // For each HTML file that matches the given pattern
-    metalsmith.match(options.html)
+    metalsmith.match(options.html, Object.keys(files))
       .forEach((filename) => {
         const file = files[filename];
         const normalizedFilename = filename.replace(/[/\\]/g, path.sep);

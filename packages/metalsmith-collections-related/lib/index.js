@@ -24,7 +24,7 @@ module.exports = (options) => {
 
   return (files, metalsmith, done) => {
     // Filter files to be considered
-    const keywordFiles = metalsmith.match(options.pattern)
+    const keywordFiles = metalsmith.match(options.pattern, Object.keys(files))
       .filter((filename) => files[filename].collection);
 
     // Create a map of collection->files
