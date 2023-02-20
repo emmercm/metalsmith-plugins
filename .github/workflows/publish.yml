@@ -23,6 +23,12 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'packages/**/package-lock.json'
       - run: npm ci
-      - run: lerna publish --yes from-package
+      - name: npm publish
+        # https://github.com/bitwarden/clients/pull/3272
+        run: |
+          echo 'registry="https://registry.npmjs.org/"' > ./.npmrc
+          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" >> ./.npmrc
+          npm publish --regsitry=https://registry.npmjs.org/ --userconfig=./.npmrc
+          lerna publish --yes from-package
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
