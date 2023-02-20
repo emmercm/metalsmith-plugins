@@ -1,0 +1,28 @@
+# Requires repo secret: NPM_TOKEN ("automation" access token)
+
+name: Publish npm
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize  # HEAD has changed, e.g. a push happened
+      - reopened
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  node-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: 'npm'
+          cache-dependency-path: 'packages/**/package-lock.json'
+      - run: npm ci
+      - run: lerna publish --yes from-package
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
