@@ -1,14 +1,11 @@
 # metalsmith-collections-related
 
-[![npm Version](https://badgen.net/npm/v/metalsmith-collections-related?icon=npm)](https://www.npmjs.com/package/metalsmith-collections-related)
-[![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-collections-related)](https://www.npmjs.com/package/metalsmith-collections-related)
+[![npm: version](https://img.shields.io/npm/v/metalsmith-collections-related?color=%23cc3534&label=version&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-collections-related)
+[![npm: downloads](https://img.shields.io/npm/dw/metalsmith-collections-related?color=%23cc3534&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-collections-related)
 
-[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-collections-related/badge.svg)](https://snyk.io/test/npm/metalsmith-collections-related)
-[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/metalsmith-collections-related/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-collections-related)
-[![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-collections-related?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-collections-related/maintainability)
-
-[![GitHub](https://badgen.net/badge/emmercm/metalsmith-collections-related/purple?icon=github)](https://github.com/emmercm/metalsmith-collections-related)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-collections-related?color=grey)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
+[![Snyk: vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/metalsmith-collections-related?logo=snyk&logoColor=white)](https://snyk.io/test/npm/metalsmith-collections-related)
+[![codecov: coverage](https://img.shields.io/codecov/c/github/emmercm/metalsmith-plugins?flag=metalsmith-collections-related&logo=codecov&logoColor=white)](https://codecov.io/gh/emmercm/metalsmith-collections-related)
+[![license](https://img.shields.io/github/license/emmercm/metalsmith-plugins?color=blue)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
 A Metalsmith plugin to find related files within collections.
 

@@ -1,14 +1,11 @@
 # metalsmith-tracer
 
-[![npm Version](https://badgen.net/npm/v/metalsmith-tracer?icon=npm)](https://www.npmjs.com/package/metalsmith-tracer)
-[![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-tracer)](https://www.npmjs.com/package/metalsmith-tracer)
+[![npm: version](https://img.shields.io/npm/v/metalsmith-tracer?color=%23cc3534&label=version&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-tracer)
+[![npm: downloads](https://img.shields.io/npm/dw/metalsmith-tracer?color=%23cc3534&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-tracer)
 
-[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-tracer/badge.svg)](https://snyk.io/test/npm/metalsmith-tracer)
-[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/metalsmith-tracer/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-tracer)
-[![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-tracer?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-tracer/maintainability)
-
-[![GitHub](https://badgen.net/badge/emmercm/metalsmith-tracer/purple?icon=github)](https://github.com/emmercm/metalsmith-tracer)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-tracer?color=grey)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
+[![Snyk: vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/metalsmith-tracer?logo=snyk&logoColor=white)](https://snyk.io/test/npm/metalsmith-tracer)
+[![codecov: coverage](https://img.shields.io/codecov/c/github/emmercm/metalsmith-plugins?flag=metalsmith-tracer&logo=codecov&logoColor=white)](https://codecov.io/gh/emmercm/metalsmith-tracer)
+[![license](https://img.shields.io/github/license/emmercm/metalsmith-plugins?color=blue)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
 A tool to automatically trace and measure Metalsmith build time.
 

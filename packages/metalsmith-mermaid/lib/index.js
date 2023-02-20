@@ -23,6 +23,7 @@ const mermaidToSvg = async (mermaid, options) => {
     path: require.resolve('mermaid/dist/mermaid.min.js'),
   });
 
+  /* istanbul ignore next */
   const html = await page.$eval('#container', (container, mermaidBody, mermaidOptions, css) => {
     /* eslint-env browser */
     container.textContent = mermaidBody;

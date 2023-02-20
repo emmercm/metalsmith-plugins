@@ -1,14 +1,11 @@
 # metalsmith-htaccess
 
-[![npm Version](https://badgen.net/npm/v/metalsmith-htaccess?icon=npm)](https://www.npmjs.com/package/metalsmith-htaccess)
-[![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-htaccess)](https://www.npmjs.com/package/metalsmith-htaccess)
+[![npm: version](https://img.shields.io/npm/v/metalsmith-htaccess?color=%23cc3534&label=version&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-htaccess)
+[![npm: downloads](https://img.shields.io/npm/dw/metalsmith-htaccess?color=%23cc3534&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-htaccess)
 
-[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-htaccess/badge.svg)](https://snyk.io/test/npm/metalsmith-htaccess)
-[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/metalsmith-htaccess/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-htaccess)
-[![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-htaccess?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-htaccess/maintainability)
-
-[![GitHub](https://badgen.net/badge/emmercm/metalsmith-htaccess/purple?icon=github)](https://github.com/emmercm/metalsmith-htaccess)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-htaccess?color=grey)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
+[![Snyk: vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/metalsmith-htaccess?logo=snyk&logoColor=white)](https://snyk.io/test/npm/metalsmith-htaccess)
+[![codecov: coverage](https://img.shields.io/codecov/c/github/emmercm/metalsmith-plugins?flag=metalsmith-htaccess&logo=codecov&logoColor=white)](https://codecov.io/gh/emmercm/metalsmith-htaccess)
+[![license](https://img.shields.io/github/license/emmercm/metalsmith-plugins?color=blue)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
 A Metalsmith plugin to create an Apache HTTP Server `.htaccess` configuration file.
 

@@ -1,14 +1,11 @@
 # metalsmith-css-unused
 
-[![npm Version](https://badgen.net/npm/v/metalsmith-css-unused?icon=npm)](https://www.npmjs.com/package/metalsmith-css-unused)
-[![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-css-unused)](https://www.npmjs.com/package/metalsmith-css-unused)
+[![npm: version](https://img.shields.io/npm/v/metalsmith-css-unused?color=%23cc3534&label=version&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-css-unused)
+[![npm: downloads](https://img.shields.io/npm/dw/metalsmith-css-unused?color=%23cc3534&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-css-unused)
 
-[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-css-unused/badge.svg)](https://snyk.io/test/npm/metalsmith-css-unused)
-[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/metalsmith-css-unused/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-css-unused)
-[![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-css-unused?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-css-unused/maintainability)
-
-[![GitHub](https://badgen.net/badge/emmercm/metalsmith-css-unused/purple?icon=github)](https://github.com/emmercm/metalsmith-css-unused)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-css-unused?color=grey)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
+[![Snyk: vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/metalsmith-css-unused?logo=snyk&logoColor=white)](https://snyk.io/test/npm/metalsmith-css-unused)
+[![codecov: coverage](https://img.shields.io/codecov/c/github/emmercm/metalsmith-plugins?flag=metalsmith-css-unused&logo=codecov&logoColor=white)](https://codecov.io/gh/emmercm/metalsmith-css-unused)
+[![license](https://img.shields.io/github/license/emmercm/metalsmith-plugins?color=blue)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
 A Metalsmith plugin to remove unused CSS rules.
 

@@ -1,14 +1,11 @@
 # metalsmith-link-checker
 
-[![npm Version](https://badgen.net/npm/v/metalsmith-link-checker?icon=npm)](https://www.npmjs.com/package/metalsmith-link-checker)
-[![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-link-checker)](https://www.npmjs.com/package/metalsmith-link-checker)
+[![npm: version](https://img.shields.io/npm/v/metalsmith-link-checker?color=%23cc3534&label=version&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-link-checker)
+[![npm: downloads](https://img.shields.io/npm/dw/metalsmith-link-checker?color=%23cc3534&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-link-checker)
 
-[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-link-checker/badge.svg)](https://snyk.io/test/npm/metalsmith-link-checker)
-[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/metalsmith-link-checker/main?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-link-checker)
-[![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-link-checker?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-link-checker/maintainability)
-
-[![GitHub](https://badgen.net/badge/emmercm/metalsmith-link-checker/purple?icon=github)](https://github.com/emmercm/metalsmith-link-checker)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-link-checker?color=grey)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
+[![Snyk: vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/metalsmith-link-checker?logo=snyk&logoColor=white)](https://snyk.io/test/npm/metalsmith-link-checker)
+[![codecov: coverage](https://img.shields.io/codecov/c/github/emmercm/metalsmith-plugins?flag=metalsmith-link-checker&logo=codecov&logoColor=white)](https://codecov.io/gh/emmercm/metalsmith-link-checker)
+[![license](https://img.shields.io/github/license/emmercm/metalsmith-plugins?color=blue)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
 A Metalsmith plugin to check for local and remote broken links.
 

@@ -33,7 +33,7 @@
     "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --verbose --coverage && eslint .",
     "test:update": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --verbose --coverage --updateSnapshot",
     "test:watch": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --verbose --watch",
-    "test:junit": "JEST_JUNIT_OUTPUT=reports/junit/results.xml node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --ci --runInBand --reporters=default --reporters=jest-junit"
+    "test:coverage": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --verbose --coverage"
   },
   "dependencies": {
     "callsites": "^4.0.0",

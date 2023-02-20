@@ -1,14 +1,11 @@
 # metalsmith-mermaid
 
-[![npm Version](https://badgen.net/npm/v/metalsmith-mermaid?icon=npm)](https://www.npmjs.com/package/metalsmith-mermaid)
-[![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-mermaid)](https://www.npmjs.com/package/metalsmith-mermaid)
+[![npm: version](https://img.shields.io/npm/v/metalsmith-mermaid?color=%23cc3534&label=version&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-mermaid)
+[![npm: downloads](https://img.shields.io/npm/dw/metalsmith-mermaid?color=%23cc3534&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-mermaid)
 
-[![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-mermaid/badge.svg)](https://snyk.io/test/npm/metalsmith-mermaid)
-[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/metalsmith-mermaid/main?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-mermaid)
-[![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-mermaid?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-mermaid/maintainability)
-
-[![GitHub](https://badgen.net/badge/emmercm/metalsmith-mermaid/purple?icon=github)](https://github.com/emmercm/metalsmith-mermaid)
-[![License](https://badgen.net/github/license/emmercm/metalsmith-mermaid?color=grey)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
+[![Snyk: vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/metalsmith-mermaid?logo=snyk&logoColor=white)](https://snyk.io/test/npm/metalsmith-mermaid)
+[![codecov: coverage](https://img.shields.io/codecov/c/github/emmercm/metalsmith-plugins?flag=metalsmith-mermaid&logo=codecov&logoColor=white)](https://codecov.io/gh/emmercm/metalsmith-mermaid)
+[![license](https://img.shields.io/github/license/emmercm/metalsmith-plugins?color=blue)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
 A Metalsmith plugin to render Mermaid diagrams in files.
 

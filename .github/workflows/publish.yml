@@ -1,0 +1,28 @@
+# Requires repo secret: NPM_TOKEN ("automation" access token)
+
+name: Publish npm
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  node-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: 'npm'
+          cache-dependency-path: 'packages/**/package-lock.json'
+      - run: npm ci
+      - name: npm publish
+        # https://github.com/bitwarden/clients/pull/3272
+        run: |
+          echo 'registry="https://registry.npmjs.org/"' > ./.npmrc
+          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" >> ./.npmrc
+          lerna publish --yes from-package
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
