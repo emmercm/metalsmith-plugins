@@ -28,7 +28,6 @@ jobs:
         run: |
           echo 'registry="https://registry.npmjs.org/"' > ./.npmrc
           echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" >> ./.npmrc
-          npm publish --regsitry=https://registry.npmjs.org/ --userconfig=./.npmrc
-          lerna publish --regsitry=https://registry.npmjs.org/ --yes from-package
+          lerna publish --yes from-package
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
