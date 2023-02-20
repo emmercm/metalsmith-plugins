@@ -46,7 +46,7 @@
     "unist-util-visit": "^4.1.2"
   },
   "peerDependencies": {
-    "metalsmith": "^2.5.1"
+    "metalsmith": "^2.4.0"
   },
   "devDependencies": {
     "@jest/globals": "^29.4.3",
