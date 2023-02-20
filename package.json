@@ -6,7 +6,8 @@
   ],
   "scripts": {
     "clean": "lerna clean --yes",
-    "test": "lerna run test"
+    "test": "lerna run test",
+    "test:coverage": "lerna run test:coverage"
   },
   "devDependencies": {
     "lerna": "^6.5.1"

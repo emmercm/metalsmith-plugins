@@ -4,7 +4,7 @@
 [![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-html-relative)](https://www.npmjs.com/package/metalsmith-html-relative)
 
 [![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-html-relative/badge.svg)](https://snyk.io/test/npm/metalsmith-html-relative)
-[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/metalsmith-html-relative/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-html-relative)
+[![codecov: coverage](https://img.shields.io/codecov/c/github/emmercm/metalsmith-plugins?flag=metalsmith-html-relative&logo=codecov&logoColor=white)](https://codecov.io/gh/emmercm/metalsmith-html-relative)
 [![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-html-relative?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-html-relative/maintainability)
 
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-html-relative/purple?icon=github)](https://github.com/emmercm/metalsmith-html-relative)

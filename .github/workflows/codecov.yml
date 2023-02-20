@@ -1,0 +1,47 @@
+# Requires repo secret: CODECOV_TOKEN ("repository upload token")
+
+name: Codecov
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize  # HEAD has changed, e.g. a push happened
+      - reopened
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  codecov-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: formsort/action-check-codecov-config@v1
+
+  # !!! The codecov/project check should be required by GitHub !!!
+  # See ../../codecov.yml for the configuration that drives the check
+  codecov:
+    needs:
+      - codecov-lint
+    runs-on: ubuntu-latest
+    steps:
+      # Setup and install
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: 'npm'
+          cache-dependency-path: 'packages/**/package-lock.json'
+      - run: npm ci
+
+      # Run test coverage
+      - run: npm run test:coverage
+      - run: tree packages
+      - run: |
+          curl -Os https://uploader.codecov.io/latest/linux/codecov && chmod +x codecov
+          for dir in packages/*; do
+            ./codecov --rootDir "${dir}" --flags "$(basename "${dir}")" --token "${CODECOV_TOKEN}" --verbose
+          done
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
