@@ -1,6 +1,21 @@
 {
-  "name": "root",
   "private": true,
+  "name": "metalsmith-plugins",
+  "description": "🔩 A collection of many plugins for Metalsmith, the plugin-driven static site generator.",
+  "keywords": [
+    "metalsmith",
+    "metalsmith-plugin"
+  ],
+  "homepage": "https://github.com/emmercm/metalsmith-plugins#readme",
+  "bugs": {
+    "url": "https://github.com/emmercm/metalsmith-plugins/issues"
+  },
+  "license": "GPL-3.0-or-later",
+  "author": "Christian Emmer",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emmercm/igir.git"
+  },
   "workspaces": [
     "packages/*"
   ],
