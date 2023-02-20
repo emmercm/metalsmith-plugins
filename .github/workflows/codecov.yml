@@ -1,3 +1,5 @@
+# Requires repo secret: CODECOV_TOKEN ("repository upload token")
+
 name: Codecov
 
 on:
@@ -40,6 +42,8 @@ jobs:
           curl -Os https://uploader.codecov.io/latest/linux/codecov && chmod +x codecov
           exec 5>&1
           for dir in packages/*; do
-            OUTPUT=$(./codecov --rootDir "${dir}" --flags "$(basename "${dir}")" --verbose | tee /dev/fd/5)
+            OUTPUT=$(./codecov --rootDir "${dir}" --flags "$(basename "${dir}")" --token "${CODECOV_TOKEN}" --verbose | tee /dev/fd/5)
             echo "${OUTPUT}" | grep --quiet 'error' && exit 1
           done
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
