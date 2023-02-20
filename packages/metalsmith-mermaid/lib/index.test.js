@@ -9,7 +9,7 @@ import { jest } from '@jest/globals';
 
 import mermaid from './index';
 
-jest.setTimeout(30_000);
+jest.setTimeout(15_000);
 
 const test = (dir, config) => {
   describe(dir, () => {

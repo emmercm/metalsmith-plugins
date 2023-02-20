@@ -6,15 +6,15 @@
         "cacheableOperations": [
           "lint",
           "test",
-          "test:junit"
+          "test:coverage"
         ]
       }
     }
   },
   "targetDefaults": {
-    "test:junit": {
+    "test:coverage": {
       "outputs": [
-        "{projectRoot}/junit.xml"
+        "{projectRoot}/coverage"
       ]
     }
   }

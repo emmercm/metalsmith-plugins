@@ -26,7 +26,7 @@
     "test": "jest --coverage && eslint .",
     "test:update": "jest --coverage --updateSnapshot",
     "test:watch": "jest --watch",
-    "test:junit": "JEST_JUNIT_OUTPUT=reports/junit/results.xml jest --ci --runInBand --reporters=default --reporters=jest-junit"
+    "test:coverage": "jest --verbose --coverage"
   },
   "dependencies": {
     "deepmerge": "^4.3.0"
