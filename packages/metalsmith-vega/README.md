@@ -4,7 +4,7 @@
 [![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-vega)](https://www.npmjs.com/package/metalsmith-vega)
 
 [![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-vega/badge.svg)](https://snyk.io/test/npm/metalsmith-vega)
-[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/metalsmith-vega/main?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-vega)
+[![codecov: coverage](https://img.shields.io/codecov/c/github/emmercm/metalsmith-plugins?flag=metalsmith-vega&logo=codecov&logoColor=white)](https://codecov.io/gh/emmercm/metalsmith-vega)
 [![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-vega?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-vega/maintainability)
 
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-vega/purple?icon=github)](https://github.com/emmercm/metalsmith-vega)

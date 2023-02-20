@@ -4,7 +4,7 @@
 [![npm Weekly Downloads](https://badgen.net/npm/dw/metalsmith-reading-time)](https://www.npmjs.com/package/metalsmith-reading-time)
 
 [![Known Vulnerabilities](https://snyk.io/test/npm/metalsmith-reading-time/badge.svg)](https://snyk.io/test/npm/metalsmith-reading-time)
-[![Test Coverage](https://badgen.net/codecov/c/github/emmercm/metalsmith-reading-time/master?icon=codecov)](https://codecov.io/gh/emmercm/metalsmith-reading-time)
+[![codecov: coverage](https://img.shields.io/codecov/c/github/emmercm/metalsmith-plugins?flag=metalsmith-reading-time&logo=codecov&logoColor=white)](https://codecov.io/gh/emmercm/metalsmith-reading-time)
 [![Maintainability](https://badgen.net/codeclimate/maintainability/emmercm/metalsmith-reading-time?icon=codeclimate)](https://codeclimate.com/github/emmercm/metalsmith-reading-time/maintainability)
 
 [![GitHub](https://badgen.net/badge/emmercm/metalsmith-reading-time/purple?icon=github)](https://github.com/emmercm/metalsmith-reading-time)
