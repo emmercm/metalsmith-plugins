@@ -35,10 +35,11 @@ jobs:
 
       # Run test coverage
       - run: npm run test:junit
+      - run: tree .
       - run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov && chmod +x codecov
           exec 5>&1
           for dir in packages/*; do
-            OUTPUT=$(./codecov --file "${dir}/coverage/lcov.info" --flags "$(basename "${dir}")" --verbose | tee /dev/fd/5)
+            OUTPUT=$(./codecov --file "${PWD}/${dir}/coverage/lcov.info" --flags "$(basename "${dir}")" --verbose | tee /dev/fd/5)
             echo "${OUTPUT}" | grep --quiet 'error' && exit 1
           done
