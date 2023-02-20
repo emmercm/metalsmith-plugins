@@ -8,11 +8,6 @@ on:
       - opened
       - synchronize  # HEAD has changed, e.g. a push happened
       - reopened
-  pull_request:
-    types:
-      - opened
-      - synchronize  # HEAD has changed, e.g. a push happened
-      - reopened
   push:
     branches:
       - 'main'
