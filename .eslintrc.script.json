@@ -1,18 +1,29 @@
 {
-  "extends": "airbnb-base",
-  "rules": {
-    "no-param-reassign": "off",
-    "strict": ["error", "global"]
-  },
+  "extends": [
+    "eslint:recommended",
+    "airbnb-base"
+  ],
+  "plugins": [],
+
   "parserOptions": {
     "sourceType": "script"
   },
+
+  "rules": {
+    "strict": ["error", "global"],
+    "import/order": ["error", {
+      "alphabetize": {
+        "order": "asc"
+      },
+      "newlines-between": "always"
+    }]
+  },
+
   "overrides": [
     {
       "files": ["**/*.test.js"],
-      "env": {
-        "jest": true
-      }
+      "plugins": ["jest"],
+      "extends": ["plugin:jest/recommended"]
     },
     {
       "files": ["**/fixtures/**/*.js"],
