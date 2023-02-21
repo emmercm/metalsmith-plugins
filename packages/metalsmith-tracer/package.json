@@ -33,7 +33,9 @@
     "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --verbose --coverage && eslint .",
     "test:update": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --verbose --coverage --updateSnapshot",
     "test:watch": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --verbose --watch",
-    "test:coverage": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --verbose --coverage"
+    "test:coverage": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --verbose --coverage",
+    "prepack": "cp -f ../../LICENSE ./",
+    "postpack": "rm ./LICENSE"
   },
   "dependencies": {
     "callsites": "^4.0.0",
