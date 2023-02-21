@@ -1,0 +1,36 @@
+<Files .htaccess>
+	Order Allow,Deny
+	Deny from all
+</Files>
+Options -FollowSymlinks
+Options -Indexes
+Options -MultiViews
+ServerSignature Off
+FileETag none
+<IfModule mod_deflate.c>
+	BrowserMatch ^Mozilla/4 gzip-only-text/html
+	BrowserMatch ^Mozilla/4\.0[678] no-gzip
+	BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+	Header append Vary User-Agent
+</IfModule>
+<IfModule mod_dir.c>
+</IfModule>
+<IfModule mod_expires.c>
+	ExpiresActive On
+</IfModule>
+<IfModule mod_gzip.c>
+	mod_gzip_on Yes
+	mod_gzip_can_negotiate No
+	mod_gzip_dechunk No
+</IfModule>
+<IfModule mod_headers.c>
+	Header unset ETag
+</IfModule>
+<IfModule mod_mime.c>
+</IfModule>
+<IfModule mod_rewrite.c>
+	RewriteEngine on
+</IfModule>
+<IfModule mod_speling.c>
+	CheckSpelling off
+</IfModule>

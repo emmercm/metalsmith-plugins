@@ -1,0 +1,59 @@
+{
+  "core": {
+    "options": {
+      "followSymlinks": false,
+      "indexes": false,
+      "multiViews": false
+    },
+    "defaultCharset": "",
+    "serverSignature": false,
+    "errorDocuments": {}
+  },
+
+  "deflate": {
+    "mimeTypes": []
+  },
+
+  "dir": {
+    "index": ""
+  },
+
+  "environment": {
+    "serverAdminEmail": "",
+    "timezone": ""
+  },
+
+  "expires": {
+    "default": "",
+    "types": []
+  },
+
+  "gzip": {
+    "canNegotiate": false,
+    "dechunk": false,
+    "include": [],
+    "exclude": []
+  },
+
+  "headers": {
+    "etag": false
+  },
+
+  "mime": {
+    "defaultLanguage": "",
+    "languages": {},
+    "charsets": {},
+    "types": {}
+  },
+
+  "rewrite": {
+    "options": "",
+    "allowedMethods": [],
+    "404": "",
+    "httpsRedirect": false
+  },
+
+  "spelling": {
+    "check": false
+  }
+}

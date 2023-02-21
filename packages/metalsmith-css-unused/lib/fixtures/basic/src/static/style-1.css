@@ -1,0 +1,11 @@
+body {
+  color: black;
+}
+
+.unused {
+  color: white;
+}
+
+.ignored {
+  color: red;
+}

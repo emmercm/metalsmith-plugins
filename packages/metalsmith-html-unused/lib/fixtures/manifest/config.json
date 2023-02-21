@@ -1,0 +1,5 @@
+{
+  "options": {
+    "pattern": "**/*.@(json|png)"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "options": {
+    "ignoreResources": [
+      "dummy\\.site\\.com",
+      "fonts\\.googleapis\\.com",
+      "dummy\\.site\\.com"
+    ],
+    "algorithm": [
+      "sha256",
+      "sha384",
+      "sha512"
+    ]
+  }
+}
