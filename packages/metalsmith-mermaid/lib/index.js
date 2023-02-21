@@ -1,13 +1,12 @@
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkStringify from 'remark-stringify';
-import { visit } from 'unist-util-visit';
+import { createRequire } from 'module';
 
 import async from 'async';
 import deepmerge from 'deepmerge';
 import puppeteer from 'puppeteer';
-
-import { createRequire } from 'module';
+import remarkParse from 'remark-parse';
+import remarkStringify from 'remark-stringify';
+import { unified } from 'unified';
+import { visit } from 'unist-util-visit';
 
 const require = createRequire(import.meta.url);
 

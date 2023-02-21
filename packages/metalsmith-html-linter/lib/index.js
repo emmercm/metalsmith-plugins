@@ -2,9 +2,9 @@
 
 const os = require('os');
 
+const codeFrame = require('@babel/code-frame');
 const async = require('async');
 const cheerio = require('cheerio');
-const codeFrame = require('@babel/code-frame');
 const deepmerge = require('deepmerge');
 const linthtml = require('@linthtml/linthtml').default;
 

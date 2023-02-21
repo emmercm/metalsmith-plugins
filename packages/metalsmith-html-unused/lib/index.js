@@ -1,8 +1,9 @@
 'use strict';
 
+const path = require('path');
+
 const cheerio = require('cheerio');
 const deepmerge = require('deepmerge');
-const path = require('path');
 
 module.exports = (options) => {
   options = deepmerge({

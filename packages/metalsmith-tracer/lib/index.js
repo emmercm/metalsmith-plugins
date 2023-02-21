@@ -1,6 +1,6 @@
-import deepmerge from 'deepmerge';
 import callsites from 'callsites';
 import chalk from 'chalk';
+import deepmerge from 'deepmerge';
 import ora from 'ora';
 
 const LEFT_MARGIN = 7;

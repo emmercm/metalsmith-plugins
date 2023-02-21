@@ -3,8 +3,8 @@ import {
 } from 'fs';
 import { join } from 'path';
 
-import Metalsmith from 'metalsmith';
 import assertDir from 'assert-dir-equal';
+import Metalsmith from 'metalsmith';
 
 import tracer from './index';
 

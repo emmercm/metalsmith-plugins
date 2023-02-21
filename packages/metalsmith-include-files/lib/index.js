@@ -1,11 +1,11 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
+
 const deepmerge = require('deepmerge');
 const fg = require('fast-glob');
 const Mode = require('stat-mode');
-
-const fs = require('fs');
-const path = require('path');
 
 module.exports = (options) => (files, metalsmith, done) => {
   options = deepmerge.all([

@@ -1,8 +1,9 @@
 'use strict';
 
+const url = require('url');
+
 const cheerio = require('cheerio');
 const deepmerge = require('deepmerge');
-const url = require('url');
 
 module.exports = (options) => {
   options = deepmerge({

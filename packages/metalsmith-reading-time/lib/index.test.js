@@ -5,10 +5,10 @@ const {
 } = require('fs');
 const { join } = require('path');
 
+const assertDir = require('assert-dir-equal');
+const handlebars = require('handlebars');
 const Metalsmith = require('metalsmith');
 const hbtmd = require('metalsmith-hbt-md');
-const handlebars = require('handlebars');
-const assertDir = require('assert-dir-equal');
 
 const readingTime = require('./index');
 

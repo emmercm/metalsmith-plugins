@@ -3,9 +3,9 @@ import {
 } from 'fs';
 import { join } from 'path';
 
+import { jest } from '@jest/globals';
 import Metalsmith from 'metalsmith';
 // import assertDir from 'assert-dir-equal';
-import { jest } from '@jest/globals';
 
 import mermaid from './index';
 

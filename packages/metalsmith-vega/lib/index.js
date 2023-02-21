@@ -1,10 +1,9 @@
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkStringify from 'remark-stringify';
-import { visit } from 'unist-util-visit';
-
 import async from 'async';
 import deepmerge from 'deepmerge';
+import remarkParse from 'remark-parse';
+import remarkStringify from 'remark-stringify';
+import { unified } from 'unified';
+import { visit } from 'unist-util-visit';
 import vega from 'vega';
 import vegaLite from 'vega-lite';
 import xml2js from 'xml2js';

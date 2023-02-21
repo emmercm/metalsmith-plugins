@@ -5,9 +5,9 @@ const {
 } = require('fs');
 const { join } = require('path');
 
-const Metalsmith = require('metalsmith');
-const assertDir = require('assert-dir-equal');
 const { jest: requiredJest } = require('@jest/globals');
+const assertDir = require('assert-dir-equal');
+const Metalsmith = require('metalsmith');
 
 const linkChecker = require('./index');
 

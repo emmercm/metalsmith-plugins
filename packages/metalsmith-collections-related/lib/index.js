@@ -2,8 +2,8 @@
 
 const deepmerge = require('deepmerge');
 const htmlEscaper = require('html-escaper');
-const sanitizeHtml = require('sanitize-html');
 const natural = require('natural');
+const sanitizeHtml = require('sanitize-html');
 
 const { TfIdf } = natural;
 
