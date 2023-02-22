@@ -22,6 +22,7 @@
   "scripts": {
     "clean": "lerna clean --yes",
     "lint": "lerna run lint",
+    "lint:fix": "lerna run lint:fix",
     "test": "lerna run test",
     "test:coverage": "lerna run test:coverage"
   },

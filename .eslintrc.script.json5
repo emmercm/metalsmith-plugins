@@ -23,7 +23,12 @@
     {
       "files": ["**/*.test.js"],
       "plugins": ["jest"],
-      "extends": ["plugin:jest/recommended"]
+      "extends": ["plugin:jest/recommended"],
+      "rules": {
+        "jest/no-conditional-expect": "off",
+        "jest/no-done-callback": "off", // TODO(cemmer)
+        "jest/valid-title": "off" // TODO(cemmer)
+      }
     },
     {
       "files": ["**/fixtures/**/*.js"],

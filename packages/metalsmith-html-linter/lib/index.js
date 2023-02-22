@@ -3,10 +3,10 @@
 const os = require('os');
 
 const codeFrame = require('@babel/code-frame');
+const linthtml = require('@linthtml/linthtml').default;
 const async = require('async');
 const cheerio = require('cheerio');
 const deepmerge = require('deepmerge');
-const linthtml = require('@linthtml/linthtml').default;
 
 const upgradeHtmllintConfig = (htmllint) => {
   const config = {};

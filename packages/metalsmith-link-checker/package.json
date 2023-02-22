@@ -22,7 +22,8 @@
     "url": "git+https://github.com/emmercm/metalsmith-plugins.git"
   },
   "scripts": {
-    "lint": "eslint . --fix || true",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "jest --coverage && eslint .",
     "test:update": "jest --coverage --updateSnapshot",
     "test:watch": "jest --watch",
