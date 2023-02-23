@@ -20,11 +20,15 @@
     "packages/*"
   ],
   "scripts": {
+    "lock:regen": "rm -f package-lock.json packages/*/package-lock.json && npm install",
     "clean": "lerna clean --yes",
     "test": "lerna run test",
     "test:coverage": "lerna run test:coverage"
   },
   "devDependencies": {
     "lerna": "^6.5.1"
+  },
+  "engines": {
+    "node": ">=15"
   }
 }
