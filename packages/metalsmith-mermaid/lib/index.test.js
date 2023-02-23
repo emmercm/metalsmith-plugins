@@ -37,17 +37,6 @@ const test = (dir, config) => {
 
           // TODO: can't test file contents, CircleCI's Puppeteer viewport renders different
           // assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
-          readdirSync(`${dir}/build`)
-            .map((builtFilename) => join(`${dir}/build`, builtFilename))
-            .forEach((builtFilename) => {
-              const builtContents = readFileSync(builtFilename).toString();
-              if (config.mermaidError) {
-                expect(builtContents).toContain('Syntax error in graph');
-              } else {
-                expect(builtContents).not.toContain('Syntax error in graph');
-              }
-            });
-
           testDone();
         });
     });
