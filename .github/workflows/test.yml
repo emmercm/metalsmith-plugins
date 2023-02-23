@@ -23,7 +23,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-          cache-dependency-path: 'packages/**/package-lock.json'
       - run: npm ci
 
       # Test the source files

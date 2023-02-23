@@ -14,9 +14,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: lts/*
+          node-version-file: '.nvmrc'
           cache: 'npm'
-          cache-dependency-path: 'packages/**/package-lock.json'
       - run: npm ci
       - name: npm publish
         # https://github.com/bitwarden/clients/pull/3272
