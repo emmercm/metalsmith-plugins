@@ -37,6 +37,18 @@ const test = (dir, config) => {
 
           // TODO: can't test file contents, CircleCI's Puppeteer viewport renders different
           // assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
+          readdirSync(`${dir}/build`)
+            .map((builtFilename) => join(`${dir}/build`, builtFilename))
+            .forEach((builtFilename) => {
+              const builtContents = readFileSync(builtFilename).toString();
+
+              // metalsmith-mermaid@0.0.10 / mermaid@9.3.0 style errors
+              expect(builtContents).not.toContain('Syntax error in graph');
+
+              // metalsmith-mermaid@0.0.10 blank rendering issue
+              expect(builtContents).not.toContain('<g></g></svg>');
+            });
+
           testDone();
         });
     });
