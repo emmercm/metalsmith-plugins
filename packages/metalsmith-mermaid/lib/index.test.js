@@ -25,7 +25,7 @@ const test = (dir, config) => {
         // Test the output
         .build((err) => {
           if (config.error) {
-            expect(err).toBe(config.error);
+            expect(err.toString()).toMatch(config.error);
           } else {
             expect(err).toBeNull();
           }
@@ -41,11 +41,12 @@ const test = (dir, config) => {
             .map((builtFilename) => join(`${dir}/build`, builtFilename))
             .forEach((builtFilename) => {
               const builtContents = readFileSync(builtFilename).toString();
-              if (config.mermaidError) {
-                expect(builtContents).toContain('Syntax error in graph');
-              } else {
-                expect(builtContents).not.toContain('Syntax error in graph');
-              }
+
+              // metalsmith-mermaid@0.0.10 / mermaid@9.3.0 style errors
+              expect(builtContents).not.toContain('Syntax error in graph');
+
+              // metalsmith-mermaid@0.0.10 blank rendering issue
+              expect(builtContents).not.toContain('<g></g></svg>');
             });
 
           testDone();

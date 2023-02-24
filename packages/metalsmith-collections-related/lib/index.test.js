@@ -31,7 +31,7 @@ const test = (dir, config) => {
         // Test the output
         .build((err) => {
           if (config.error) {
-            expect(err).toBe(config.error);
+            expect(err.toString()).toMatch(config.error);
           } else {
             expect(err).toBeNull();
           }
