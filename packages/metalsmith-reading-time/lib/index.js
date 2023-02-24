@@ -3,8 +3,8 @@
 const deepmerge = require('deepmerge');
 const readingTime = require('reading-time');
 
-module.exports = (options) => {
-  options = deepmerge({
+module.exports = (options = {}) => {
+  const defaultedOptions = deepmerge({
     pattern: '**/*',
     stripHtml: true,
     replacements: [],
@@ -13,11 +13,11 @@ module.exports = (options) => {
 
   return (files, metalsmith, done) => {
     // For each file that matches the given pattern
-    metalsmith.match(options.pattern, Object.keys(files))
+    metalsmith.match(defaultedOptions.pattern, Object.keys(files))
       .forEach((filename) => {
         let contents = files[filename].contents.toString();
 
-        if (options.stripHtml) {
+        if (defaultedOptions.stripHtml) {
           contents = contents
             // XML
             .replace(/<\?xml[^>]+\?>/gs, ' ') // namespaces
@@ -28,8 +28,8 @@ module.exports = (options) => {
             .trim();
         }
 
-        if (options.replacements && options.replacements.length) {
-          options.replacements.forEach((replacement) => {
+        if (defaultedOptions.replacements && defaultedOptions.replacements.length) {
+          defaultedOptions.replacements.forEach((replacement) => {
             let pattern = replacement[0];
             const matches = pattern.match(/^\/(.+)\/([a-z]*)/);
             if (matches) {
@@ -40,7 +40,7 @@ module.exports = (options) => {
           });
         }
 
-        files[filename].readingTime = readingTime(contents, options.readingTime).text;
+        files[filename].readingTime = readingTime(contents, defaultedOptions.readingTime).text;
       });
 
     done();

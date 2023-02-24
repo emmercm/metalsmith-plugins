@@ -7,8 +7,8 @@ const sanitizeHtml = require('sanitize-html');
 
 const { TfIdf } = natural;
 
-module.exports = (options) => {
-  options = deepmerge({
+module.exports = (options = {}) => {
+  const defaultedOptions = deepmerge({
     pattern: '**/*',
     maxRelated: 3,
     natural: {
@@ -24,7 +24,7 @@ module.exports = (options) => {
 
   return (files, metalsmith, done) => {
     // Filter files to be considered
-    const keywordFiles = metalsmith.match(options.pattern, Object.keys(files))
+    const keywordFiles = metalsmith.match(defaultedOptions.pattern, Object.keys(files))
       .filter((filename) => files[filename].collection);
 
     // Create a map of collection->files
@@ -59,16 +59,16 @@ module.exports = (options) => {
               .forEach((documentFilename) => {
                 const contents = files[documentFilename].contents.toString();
                 const sanitized = htmlEscaper
-                  .unescape(sanitizeHtml(contents, options.sanitizeHtml))
+                  .unescape(sanitizeHtml(contents, defaultedOptions.sanitizeHtml))
                   .trim();
                 tfidf.addDocument(sanitized);
               });
 
             // Find key terms
             const terms = tfidf.listTerms(0)
-              .filter((term) => term.tfidf >= options.natural.minTfIdf)
+              .filter((term) => term.tfidf >= defaultedOptions.natural.minTfIdf)
               .map((term) => term.term)
-              .slice(0, options.natural.maxTerms);
+              .slice(0, defaultedOptions.natural.maxTerms);
 
             // Find related files
             let relatedFiles = [];
@@ -91,7 +91,7 @@ module.exports = (options) => {
                 // Sort by filename ascending second
                 return a.filename > b.filename ? 1 : -1;
               })
-              .slice(0, options.maxRelated)
+              .slice(0, defaultedOptions.maxRelated)
               .map((related) => files[related.filename]);
 
             // Set related info in the file's metadata

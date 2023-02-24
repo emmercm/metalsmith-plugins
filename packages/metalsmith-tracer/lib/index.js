@@ -30,8 +30,8 @@ const timePrefix = (milliseconds) => {
   return ' '.repeat(LEFT_MARGIN - fixed.length - suffix.length) + fixed + suffix;
 };
 
-export default (Metalsmith, options) => {
-  options = deepmerge({
+export default (Metalsmith, options = {}) => {
+  const defaultedOptions = deepmerge({
     log: console.log,
   }, options || {});
 
@@ -43,6 +43,7 @@ export default (Metalsmith, options) => {
   let count = 0;
 
   const { use } = Metalsmith;
+  // eslint-disable-next-line no-param-reassign
   Metalsmith.use = (plugin) => {
     count += 1;
 
@@ -128,7 +129,7 @@ export default (Metalsmith, options) => {
         }
 
         spinner.stop();
-        options.log(`${elapsedColor(timePrefix(elapsedMs))} ${pkgColor(pkgStr)}`);
+        defaultedOptions.log(`${elapsedColor(timePrefix(elapsedMs))} ${pkgColor(pkgStr)}`);
 
         done(...args);
       };
@@ -146,8 +147,8 @@ export default (Metalsmith, options) => {
 
   const { build } = Metalsmith;
   Metalsmith.build = (func) => {
-    options.log(`${'-'.repeat(LEFT_MARGIN)} ${chalk.bold('Build process started')} ${'-'.repeat(LEFT_MARGIN)}`);
-    options.log();
+    defaultedOptions.log(`${'-'.repeat(LEFT_MARGIN)} ${chalk.bold('Build process started')} ${'-'.repeat(LEFT_MARGIN)}`);
+    defaultedOptions.log();
 
     const start = process.hrtime();
 
@@ -156,9 +157,9 @@ export default (Metalsmith, options) => {
       const elapsedMs = (elapsed[0] * 1e9 + elapsed[1]) / 1000000;
 
       spinner.stop();
-      options.log();
-      options.log(`${chalk.bold(timePrefix(elapsedMs))} Total build time`);
-      options.log();
+      defaultedOptions.log();
+      defaultedOptions.log(`${chalk.bold(timePrefix(elapsedMs))} Total build time`);
+      defaultedOptions.log();
 
       func(...args);
     }]);

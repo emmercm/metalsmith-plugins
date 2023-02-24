@@ -254,7 +254,7 @@ const generate = (options) => {
   return htaccess;
 };
 
-module.exports = (options) => {
+module.exports = (options = {}) => {
   /**
    * Defaults are set with recommendations from the following websites:
    *  - https://htaccessbook.com/useful-htaccess-rules
@@ -263,7 +263,7 @@ module.exports = (options) => {
    *  - https://help.dreamhost.com/hc/en-us/articles/216363157-How-can-I-cache-my-site-with-an-htaccess-file-
    *  - https://help.dreamhost.com/hc/en-us/articles/215747758-Force-your-site-to-load-securely-with-an-htaccess-file
    */
-  options = deepmerge({
+  const defaultedOptions = deepmerge({
     core: {
       options: {
         followSymlinks: true,
@@ -327,7 +327,7 @@ module.exports = (options) => {
   }, options || {}, { arrayMerge: (destinationArray, sourceArray) => sourceArray });
 
   return (files, metalsmith, done) => {
-    const htaccess = generate(options);
+    const htaccess = generate(defaultedOptions);
 
     files['.htaccess'] = {
       contents: Buffer.from(htaccess),

@@ -82,17 +82,17 @@ const getUser = (username) => (options, callback) => {
   retryJsonGet(`https://api.github.com/users/${username}`, options, callback);
 };
 
-const getRepos = (username, page = 1, results = []) => (options, callback) => {
+const getRepos = (username, page = 1, prevResults = []) => (options, callback) => {
   retryJsonGet(`https://api.github.com/users/${username}/repos?per_page=100&page=${page}`, options, (err, data) => {
     // Recurse to get all pages
     if (data && data.length) {
-      results = [...results, ...data];
+      const results = [...prevResults, ...data];
       getRepos(username, page + 1, results)(options, callback);
       return;
     }
 
     // Key the results by repo name
-    results = results.reduce((obj, repo) => {
+    const results = prevResults.reduce((obj, repo) => {
       delete repo.owner; // large, duplicate info
       obj[repo.name] = repo;
       return obj;
@@ -107,8 +107,8 @@ const getRepos = (username, page = 1, results = []) => (options, callback) => {
  * @param {Object} options
  * @returns {function(Object.<string, Object>, Object, function)}
  */
-module.exports = (options) => {
-  options = deepmerge({
+module.exports = (options = {}) => {
+  const defaultedOptions = deepmerge({
     timeout: 5 * 1000,
     authorization: {},
     retries: 3,
@@ -117,11 +117,11 @@ module.exports = (options) => {
 
   return (files, metalsmith, done) => {
     const methods = {
-      user: getUser(options.username),
-      repos: getRepos(options.username),
+      user: getUser(defaultedOptions.username),
+      repos: getRepos(defaultedOptions.username),
     };
     async.mapValues(methods, (value, key, callback) => {
-      value(options, callback);
+      value(defaultedOptions, callback);
     }, (err, result) => {
       if (err) {
         done(err);

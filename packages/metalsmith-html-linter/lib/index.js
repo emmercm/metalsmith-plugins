@@ -49,7 +49,7 @@ module.exports = (options = {}) => {
     delete options.htmllint;
   }
 
-  options = deepmerge.all(
+  const defaultedOptions = deepmerge.all(
     [
       {
         linthtml: {
@@ -97,11 +97,11 @@ module.exports = (options = {}) => {
   );
 
   return (files, metalsmith, done) => {
-    const htmlFiles = metalsmith.match(options.html, Object.keys(files));
+    const htmlFiles = metalsmith.match(defaultedOptions.html, Object.keys(files));
 
     const failures = [];
 
-    async.eachLimit(htmlFiles, options.parallelism, (filename, complete) => {
+    async.eachLimit(htmlFiles, defaultedOptions.parallelism, (filename, complete) => {
       const file = files[filename];
       const $ = cheerio.load(file.contents, {
         _useHtmlParser2: true, // https://github.com/cheeriojs/cheerio/issues/1198
@@ -109,11 +109,11 @@ module.exports = (options = {}) => {
       });
 
       // Remove ignored tags
-      $(options.ignoreTags.join(', ')).remove();
+      $(defaultedOptions.ignoreTags.join(', ')).remove();
 
       const contents = $.html();
 
-      linthtml(contents, options.linthtml)
+      linthtml(contents, defaultedOptions.linthtml)
         .then((results) => {
           if (results.length) {
             const codeFrames = results

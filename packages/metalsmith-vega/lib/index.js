@@ -94,8 +94,8 @@ const remarkVega = (vegaOptions = {}) => async (tree) => {
   await Promise.all(promises);
 };
 
-export default (options) => {
-  options = deepmerge({
+export default (options = {}) => {
+  const defaultedOptions = deepmerge({
     markdown: '**/*.md',
     vega: {
       // ----- general consistency -----
@@ -111,7 +111,7 @@ export default (options) => {
   }, options || {});
 
   return (files, metalsmith, done) => {
-    const markdownFiles = metalsmith.match(options.markdown, Object.keys(files));
+    const markdownFiles = metalsmith.match(defaultedOptions.markdown, Object.keys(files));
 
     async.each(markdownFiles, async (filename) => {
       const file = files[filename];
@@ -119,17 +119,17 @@ export default (options) => {
       const tree = await unified()
         .use(remarkParse)
         .use(remarkVegaLite, {
-          config: options.vegaLite || {
+          config: defaultedOptions.vegaLite || {
             // vega's top-level options are "view" options, but vega-lite is inconsistent about
             // whether those options belong at the top-level or under the 'view' key. Examples:
             // background, padding, autosize, config, usermeta
-            ...options.vega,
+            ...defaultedOptions.vega,
             // "Correctly" use vega's top-level view options for 'view'
-            view: options.vega,
+            view: defaultedOptions.vega,
           },
         })
-        .use(remarkVega, options.vega)
-        .use(remarkStringify, options.vega)
+        .use(remarkVega, defaultedOptions.vega)
+        .use(remarkStringify, defaultedOptions.vega)
         .process(file.contents);
 
       file.contents = Buffer.from(tree.value);

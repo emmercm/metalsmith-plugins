@@ -11,6 +11,7 @@
 
   "rules": {
     "strict": ["error", "global"],
+    "no-param-reassign": ["error", { "props": false }],
     "import/order": ["error", {
       "alphabetize": {
         "order": "asc"

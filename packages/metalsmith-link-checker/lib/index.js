@@ -243,14 +243,14 @@ const validTel = (link) => {
 const validLocal = (files, src, dest) => {
   // TODO: anchor validation
   // Strip trailing anchor link
-  dest = dest.replace(/#.*$/, '');
+  const destNormalized = dest.replace(/#.*$/, '');
 
   // Reference to self is always valid
-  if (dest === '' || dest === '.' || dest === './') {
+  if (destNormalized === '' || destNormalized === '.' || destNormalized === './') {
     return true;
   }
 
-  const linkPath = path.join(path.dirname(src), dest).replace(/[/\\]/g, '/');
+  const linkPath = path.join(path.dirname(src), destNormalized).replace(/[/\\]/g, '/');
   // Reference to self is always valid
   if (linkPath === '' || linkPath === '.' || linkPath === './') {
     return true;
@@ -274,11 +274,11 @@ const protocolValidators = {
 
 /**
  * Plugin entrypoint.
- * @param {Object} options
+ * @param {Object} defaultedOptions
  * @returns {function(Object.<string, Object>, Object, function)}
  */
-module.exports = (options) => {
-  options = deepmerge({
+module.exports = (options = {}) => {
+  const defaultedOptions = deepmerge({
     html: {
       pattern: '**/*.html',
       tags: {
@@ -303,9 +303,9 @@ module.exports = (options) => {
       }, {});
 
     // Gather a list of filename + link combinations, and remove ignored links
-    options.ignore = options.ignore.map((pattern) => new RegExp(pattern));
+    defaultedOptions.ignore = defaultedOptions.ignore.map((pattern) => new RegExp(pattern));
     const filenamesAndLinks = [
-      ...htmlLinks(metalsmith, files, options),
+      ...htmlLinks(metalsmith, files, defaultedOptions),
       // TODO: CSS files
       // TODO: manifest files
     ]
@@ -317,13 +317,13 @@ module.exports = (options) => {
     // Filter this out if any ignore regex matches
       .filter((filenameAndLink) => {
         const comparator = (re) => re.test(filenameAndLink.link);
-        return !options.ignore.some(comparator);
+        return !defaultedOptions.ignore.some(comparator);
       })
     // Shuffle to try to disperse checking the same domain concurrently
       .sort(() => Math.random() - 0.5);
 
     // For each link, find the files it is broken for
-    async.mapLimit(filenamesAndLinks, options.parallelism, (filenameAndLink, callback) => {
+    async.mapLimit(filenamesAndLinks, defaultedOptions.parallelism, (filenameAndLink, callback) => {
       const callbackResult = (err, result) => callback(err, { ...filenameAndLink, result });
       const { filename, link } = filenameAndLink;
 
@@ -331,7 +331,11 @@ module.exports = (options) => {
       const linkUrl = urlParse(link);
       if (linkUrl.protocol) {
         if (protocolValidators[linkUrl.protocol] !== undefined) {
-          const result = protocolValidators[linkUrl.protocol](link, options, callbackResult);
+          const result = protocolValidators[linkUrl.protocol](
+            link,
+            defaultedOptions,
+            callbackResult,
+          );
           if (result === undefined) {
             // Validation function didn't return anything, it will call the callback for us
             return;

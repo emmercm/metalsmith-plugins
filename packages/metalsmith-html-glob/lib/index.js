@@ -5,8 +5,8 @@ const url = require('url');
 const cheerio = require('cheerio');
 const deepmerge = require('deepmerge');
 
-module.exports = (options) => {
-  options = deepmerge({
+module.exports = (options = {}) => {
+  const defaultedOptions = deepmerge({
     html: '**/*.html',
     tags: {
       a: 'href',
@@ -18,15 +18,15 @@ module.exports = (options) => {
 
   return (files, metalsmith, done) => {
     // For each HTML file that matches the given pattern
-    metalsmith.match(options.html, Object.keys(files))
+    metalsmith.match(defaultedOptions.html, Object.keys(files))
       .forEach((filename) => {
         const file = files[filename];
         const $ = cheerio.load(file.contents);
 
         // For each given tag
-        Object.keys(options.tags)
+        Object.keys(defaultedOptions.tags)
           .forEach((tag) => {
-            let attributes = options.tags[tag];
+            let attributes = defaultedOptions.tags[tag];
             if (!Array.isArray(attributes)) {
               attributes = [attributes];
             }

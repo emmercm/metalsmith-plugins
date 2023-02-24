@@ -1,14 +1,12 @@
-import { createRequire } from 'module';
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkStringify from 'remark-stringify';
-import { visit } from 'unist-util-visit';
 // eslint-disable-next-line import/no-unresolved
 import { renderMermaid } from '@mermaid-js/mermaid-cli';
-
 import async from 'async';
 import deepmerge from 'deepmerge';
 import puppeteer from 'puppeteer';
+import remarkParse from 'remark-parse';
+import remarkStringify from 'remark-stringify';
+import { unified } from 'unified';
+import { visit } from 'unist-util-visit';
 
 const CONSISTENT_CSS = '.mermaid{line-height:1.2;}';
 
@@ -73,7 +71,7 @@ const remarkMermaid = (browser, mermaidOptions = {}) => async (tree) => {
 };
 
 export default (options = {}) => {
-  options = deepmerge({
+  const defaultedOptions = deepmerge({
     markdown: '**/*.md',
     mermaid: {
       theme: 'neutral',
@@ -94,13 +92,13 @@ export default (options = {}) => {
   return async (files, metalsmith, done) => {
     const browser = await puppeteer.launch();
 
-    const markdownFiles = metalsmith.match(options.markdown, Object.keys(files));
+    const markdownFiles = metalsmith.match(defaultedOptions.markdown, Object.keys(files));
     async.eachLimit(markdownFiles, 1, async (filename) => {
       const file = files[filename];
 
       const tree = await unified()
         .use(remarkParse)
-        .use(remarkMermaid, browser, options.mermaid)
+        .use(remarkMermaid, browser, defaultedOptions.mermaid)
         .use(remarkStringify)
         .process(file.contents);
 
