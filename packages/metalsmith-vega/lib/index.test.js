@@ -2,8 +2,8 @@ import {
   existsSync, mkdirSync, readdirSync, readFileSync, statSync,
 } from 'fs';
 import { join } from 'path';
-import { jest } from '@jest/globals';
 
+import { jest } from '@jest/globals';
 import Metalsmith from 'metalsmith';
 // const assertDir = require('assert-dir-equal');
 

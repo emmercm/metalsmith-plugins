@@ -5,8 +5,8 @@ const {
 } = require('fs');
 const { join } = require('path');
 
-const Metalsmith = require('metalsmith');
 const assertDir = require('assert-dir-equal');
+const Metalsmith = require('metalsmith');
 
 const htaccess = require('./index');
 

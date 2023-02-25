@@ -1,26 +1,25 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
+
 const deepmerge = require('deepmerge');
 const fg = require('fast-glob');
 const Mode = require('stat-mode');
 
-const fs = require('fs');
-const path = require('path');
-
-module.exports = (options) => (files, metalsmith, done) => {
-  options = deepmerge.all([
+module.exports = (options = {}) => (files, metalsmith, done) => {
+  const defaultedOptions = deepmerge.all([
     {
       directories: {},
       overwrite: false,
     },
-    options,
+    options || {},
   ], { arrayMerge: (destinationArray, sourceArray) => sourceArray });
-  options = options || {};
 
-  const folders = Object.keys(options.directories);
+  const folders = Object.keys(defaultedOptions.directories);
   for (let i = 0; i < folders.length; i += 1) {
     const folder = folders[i];
-    let globs = options.directories[folder];
+    let globs = defaultedOptions.directories[folder];
     if (!Array.isArray(globs)) {
       globs = [globs];
     }
@@ -30,7 +29,7 @@ module.exports = (options) => (files, metalsmith, done) => {
       const globbedFile = globbedFiles[j];
       const contents = fs.readFileSync(globbedFile);
       const key = path.join(folder, path.basename(globbedFile));
-      if (!options.overwrite && files[key]) {
+      if (!defaultedOptions.overwrite && files[key]) {
         done(`File already exists in build path: ${key}`);
         return;
       }

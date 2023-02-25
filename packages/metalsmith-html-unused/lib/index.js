@@ -1,11 +1,12 @@
 'use strict';
 
-const cheerio = require('cheerio');
-const deepmerge = require('deepmerge');
 const path = require('path');
 
-module.exports = (options) => {
-  options = deepmerge({
+const cheerio = require('cheerio');
+const deepmerge = require('deepmerge');
+
+module.exports = (options = {}) => {
+  const defaultedOptions = deepmerge({
     pattern: '',
     ignore: '',
     html: '**/*.html',
@@ -20,14 +21,14 @@ module.exports = (options) => {
   return (files, metalsmith, done) => {
     const resources = [].concat(
       // For each HTML file that matches the given pattern
-      ...metalsmith.match(options.html, Object.keys(files))
+      ...metalsmith.match(defaultedOptions.html, Object.keys(files))
         .map((filename) => {
           const file = files[filename];
 
           const $ = cheerio.load(file.contents);
           return [].concat(
             // For each given attribute
-            ...options.attributes
+            ...defaultedOptions.attributes
               .map((attribute) => {
                 // For each matching element for the tag in the file
                 const selector = `[${attribute}!=""]`;
@@ -76,10 +77,10 @@ module.exports = (options) => {
       .filter((x, i, a) => a.indexOf(x) === i);
 
     // For each file that matches the given pattern
-    const ignoredFilenames = options.ignore
-      ? metalsmith.match(options.ignore, Object.keys(files)) : [];
-    const consideredFilenames = options.pattern
-      ? metalsmith.match(options.pattern, Object.keys(files)) : [];
+    const ignoredFilenames = defaultedOptions.ignore
+      ? metalsmith.match(defaultedOptions.ignore, Object.keys(files)) : [];
+    const consideredFilenames = defaultedOptions.pattern
+      ? metalsmith.match(defaultedOptions.pattern, Object.keys(files)) : [];
     consideredFilenames
       // Filter "ignore"
       .filter((filename) => ignoredFilenames.indexOf(filename) === -1)
