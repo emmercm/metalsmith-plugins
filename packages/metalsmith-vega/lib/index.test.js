@@ -2,8 +2,8 @@ import {
   existsSync, mkdirSync, readdirSync, readFileSync, statSync,
 } from 'fs';
 import { join } from 'path';
-import { jest } from '@jest/globals';
 
+import { jest } from '@jest/globals';
 import Metalsmith from 'metalsmith';
 // const assertDir = require('assert-dir-equal');
 
@@ -25,7 +25,7 @@ const test = (dir, config) => {
         // Test the output
         .build((err) => {
           if (config.error) {
-            expect(err).toBe(config.error);
+            expect(err.toString()).toMatch(config.error);
           } else {
             expect(err).toBeNull();
           }

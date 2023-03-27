@@ -1,0 +1,41 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "airbnb-base"
+  ],
+  "plugins": [],
+
+  "parserOptions": {
+    "sourceType": "script"
+  },
+
+  "rules": {
+    "strict": ["error", "global"],
+    "no-param-reassign": ["error", { "props": false }],
+    "import/order": ["error", {
+      "alphabetize": {
+        "order": "asc"
+      },
+      "newlines-between": "always"
+    }]
+  },
+
+  "overrides": [
+    {
+      "files": ["**/*.test.js"],
+      "plugins": ["jest"],
+      "extends": ["plugin:jest/recommended"],
+      "rules": {
+        "jest/no-conditional-expect": "off",
+        "jest/no-done-callback": "off", // TODO(cemmer)
+        "jest/valid-title": "off" // TODO(cemmer)
+      }
+    },
+    {
+      "files": ["**/fixtures/**/*.js"],
+      "rules": {
+        "strict": "off"
+      }
+    }
+  ]
+}

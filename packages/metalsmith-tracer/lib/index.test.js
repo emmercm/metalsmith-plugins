@@ -3,8 +3,8 @@ import {
 } from 'fs';
 import { join } from 'path';
 
-import Metalsmith from 'metalsmith';
 import assertDir from 'assert-dir-equal';
+import Metalsmith from 'metalsmith';
 
 import tracer from './index';
 
@@ -22,7 +22,7 @@ const test = (dir, config) => {
         .build((err) => {
           try {
             if (config.error) {
-              expect(err).toBe(config.error);
+              expect(err.toString()).toMatch(config.error);
             } else {
               expect(err).toBeNull();
             }

@@ -5,12 +5,12 @@ const {
 } = require('fs');
 const { join } = require('path');
 
+const assertDir = require('assert-dir-equal');
+const handlebars = require('handlebars');
 const Metalsmith = require('metalsmith');
 const collect = require('metalsmith-auto-collections');
-const paths = require('metalsmith-paths');
 const hbtmd = require('metalsmith-hbt-md');
-const handlebars = require('handlebars');
-const assertDir = require('assert-dir-equal');
+const paths = require('metalsmith-paths');
 
 const related = require('./index');
 
@@ -31,7 +31,7 @@ const test = (dir, config) => {
         // Test the output
         .build((err) => {
           if (config.error) {
-            expect(err).toBe(config.error);
+            expect(err.toString()).toMatch(config.error);
           } else {
             expect(err).toBeNull();
           }
