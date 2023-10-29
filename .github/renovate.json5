@@ -39,11 +39,12 @@
 //  schedule: 'on the 1st day of the month',
   prCreation: 'immediate', // default
   prHourlyLimit: 0, // no limit
-  automerge: true,
-  platformAutomerge: true, // default
+  automerge: false,
+  platformAutomerge: false, // default
 
   // Allow some post-upgrade commands that may be used below
   allowedPostUpgradeCommands: [
+    '^npm run bump:patch$',
     '^npm ci --ignore-scripts$',
     '^npm run lint:fix$',
   ],
@@ -74,6 +75,10 @@
         // Group dependencies together
         groupName: 'dependencies',
         matchDepTypes: ['dependencies'],
+        postUpgradeTasks: {
+          // Pseudo bumpVersion:patch
+          commands: ['npm run bump:patch']
+        }
       },
 
       // Dev dependencies
