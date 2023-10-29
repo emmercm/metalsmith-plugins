@@ -88,6 +88,8 @@
         // Group devDependencies together
         matchDepTypes: ['devDependencies'],
         groupName: 'dev dependencies',
+        // Only group non-major updates
+        matchUpdateTypes: ['patch', 'minor']
       },
       {
         // Group ESLint together so files can be fixed automatically
