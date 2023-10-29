@@ -36,7 +36,7 @@
   separateMinorPatch: false, // default
 
   // Allow auto-merging of PRs, but reduce their spam on the commit log
-  schedule: 'on the 1st day of the month',
+//  schedule: 'on the 1st day of the month',
   prCreation: 'immediate', // default
   prHourlyLimit: 0, // no limit
   automerge: true,
@@ -107,6 +107,12 @@
           'ts-jest',
         ],
         groupName: 'Jest',
+      },
+      {
+        // Separate Lerna
+        matchPackageNames: ['lerna'],
+        groupName: 'Lerna',
+        prPriority: -10,
       },
 
       // Group/separate all dependency pinning, perform it immediately
