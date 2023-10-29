@@ -36,11 +36,12 @@
   separateMinorPatch: false, // default
 
   // Allow auto-merging of PRs, but reduce their spam on the commit log
-//  schedule: 'on the 1st day of the month',
+  schedule: 'at any time', // DEBUG
   prCreation: 'immediate', // default
+  prConcurrentLimit: 5, // DEBUG
   prHourlyLimit: 0, // no limit
-  automerge: false,
-  platformAutomerge: false, // default
+  automerge: false, // DEBUG
+  platformAutomerge: false, // DEBUG
 
   // Allow some post-upgrade commands that may be used below
   allowedPostUpgradeCommands: [
