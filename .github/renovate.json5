@@ -79,7 +79,8 @@
         matchUpdateTypes: ['patch', 'minor'],
         postUpgradeTasks: {
           // Pseudo bumpVersion:patch
-          commands: ['npm run bump:patch']
+          commands: ['npm run bump:patch'],
+          executionMode: 'branch'
         }
       },
 
@@ -103,7 +104,8 @@
             'npm ci --ignore-scripts',
             'npm run lint:fix',
           ],
-          fileFilters: ['**/*.js']
+          fileFilters: ['**/*.js'],
+          executionMode: 'branch'
         },
       },
       {
