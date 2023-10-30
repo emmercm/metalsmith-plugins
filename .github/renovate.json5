@@ -79,6 +79,7 @@
       },
       {
         // Dependency updates bump the patch version
+        matchDepTypes: ['dependencies'],
         bumpVersion: 'patch',
         automerge: false, // DEBUG
       },
