@@ -72,16 +72,14 @@
     packageRules: [
       // Dependencies
       {
-        // Group dependencies together
+        // Group non-major dependency updates together
         groupName: 'dependencies',
         matchDepTypes: ['dependencies'],
-        // Only group non-major updates
-        matchUpdateTypes: ['patch', 'minor'],
-        postUpgradeTasks: {
-          // Pseudo bumpVersion:'patch'
-          commands: ['npm run bump:patch'],
-          executionMode: 'branch'
-        },
+        matchUpdateTypes: ['patch', 'minor']
+      },
+      {
+        // Dependency updates bump the patch version
+        bumpVersion: 'patch',
         automerge: false, // DEBUG
       },
 
