@@ -40,8 +40,8 @@
   prCreation: 'immediate', // default
   prConcurrentLimit: 5, // DEBUG
   prHourlyLimit: 0, // no limit
-  automerge: false, // DEBUG
-  platformAutomerge: false, // DEBUG
+  automerge: true,
+  platformAutomerge: true,
 
   // Allow some post-upgrade commands that may be used below
   allowedPostUpgradeCommands: [
@@ -81,7 +81,8 @@
           // Pseudo bumpVersion:patch
           commands: ['npm run bump:patch'],
           executionMode: 'branch'
-        }
+        },
+        automerge: false, // DEBUG
       },
 
       // Dev dependencies
