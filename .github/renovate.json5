@@ -78,7 +78,7 @@
         // Only group non-major updates
         matchUpdateTypes: ['patch', 'minor'],
         postUpgradeTasks: {
-          // Pseudo bumpVersion:patch
+          // Pseudo bumpVersion:'patch'
           commands: ['npm run bump:patch'],
           executionMode: 'branch'
         },
