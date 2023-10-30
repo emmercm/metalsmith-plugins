@@ -66,7 +66,6 @@
 
     // Stability settings: don't raise a PR until a dependency is at least 3 days old
     rangeStrategy: 'bump',
-    commitMessageAction: 'update', // same as above, don't use `rangeStrategy` as the action
     minimumReleaseAge: '3 days',
     internalChecksFilter: 'strict',
 
@@ -128,7 +127,6 @@
       // Group/separate all dependency pinning, perform it immediately
       {
         matchUpdateTypes: ['pin'],
-        commitMessageAction: 'pin',
         groupName: 'dependency ranges',
         // Renovate's defaults for these options
         schedule: 'at any time',
