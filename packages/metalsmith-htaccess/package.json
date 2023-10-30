@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-htaccess",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A Metalsmith plugin to create an htaccess configuration file.",
   "keywords": [
     "metalsmith",
@@ -32,7 +32,7 @@
     "postpack": "rm ./LICENSE"
   },
   "dependencies": {
-    "deepmerge": "^4.3.0"
+    "deepmerge": "^4.3.1"
   },
   "devDependencies": {
     "assert-dir-equal": "1.1.0",

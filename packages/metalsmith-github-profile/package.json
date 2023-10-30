@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-github-profile",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A Metalsmith plugin to fetch GitHub profile information. ",
   "keywords": [
     "metalsmith",
@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "async": "^3.2.4",
-    "deepmerge": "^4.2.2"
+    "deepmerge": "^4.3.1"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
