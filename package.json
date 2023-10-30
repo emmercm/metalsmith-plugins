@@ -29,7 +29,7 @@
     "bump:patch": "lerna ls --parseable --since main --no-private --loglevel silent | while read -r package; do npm --prefix \"${package}\" version patch --no-git-tag-version; done && npm run lock:regen"
   },
   "devDependencies": {
-    "lerna": "^6.5.1"
+    "lerna": "^6.6.2"
   },
   "engines": {
     "node": ">=15"
