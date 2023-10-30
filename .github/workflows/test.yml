@@ -17,9 +17,9 @@ jobs:
         node-version: [ lts/*, lts/-1 ]
     steps:
       # Setup and install
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -31,13 +31,13 @@ jobs:
   markdown-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: docker run -v $PWD:/workdir ghcr.io/igorshubovych/markdownlint-cli:latest --ignore "packages/*/lib/fixtures/**/*.md" --disable MD013 -- "**/*.md"
 
   renovate-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: rinchsan/renovate-config-validator@v0.0.12
         with:
           pattern: 'renovate.json5'
