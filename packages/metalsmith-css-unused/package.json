@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-css-unused",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "A Metalsmith plugin to remove unused CSS rules.",
   "keywords": [
     "metalsmith",
@@ -32,7 +32,7 @@
     "postpack": "rm ./LICENSE"
   },
   "dependencies": {
-    "deepmerge": "^4.3.0",
+    "deepmerge": "^4.3.1",
     "purgecss": "^5.0.0"
   },
   "peerDependencies": {

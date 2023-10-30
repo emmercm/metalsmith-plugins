@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-mermaid",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A Metalsmith plugin to remove unused CSS rules.",
   "keywords": [
     "metalsmith",
@@ -39,12 +39,12 @@
     "postpack": "rm ./LICENSE"
   },
   "dependencies": {
-    "@mermaid-js/mermaid-cli": "^9.3.0",
+    "@mermaid-js/mermaid-cli": "^9.4.0",
     "async": "^3.2.4",
-    "deepmerge": "^4.3.0",
-    "puppeteer": "^19.6.2",
-    "remark-parse": "^10.0.1",
-    "remark-stringify": "^10.0.2",
+    "deepmerge": "^4.3.1",
+    "puppeteer": "^19.11.1",
+    "remark-parse": "^10.0.2",
+    "remark-stringify": "^10.0.3",
     "unified": "^10.1.2",
     "unist-util-visit": "^4.1.2"
   },
