@@ -62,7 +62,11 @@
     "jest-junit": "15.0.0",
     "metalsmith": "2.5.1"
   },
+  "//engines": [
+    "Requires ^12.20.0 || ^14.13.1 || >=16.0.0 for ES6 modules.",
+    "Requires >=17.0.0 for structuredClone()."
+  ],
   "engines": {
-    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+    "node": ">=17.0.0"
   }
 }
