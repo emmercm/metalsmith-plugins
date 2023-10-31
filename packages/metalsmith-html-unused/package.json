@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-html-unused",
-  "version": "0.5.4",
+  "version": "0.6.0",
   "description": "A Metalsmith plugin to exclude files unused in HTML.",
   "keywords": [
     "metalsmith",
@@ -36,7 +36,7 @@
     "deepmerge": "^4.3.1"
   },
   "peerDependencies": {
-    "metalsmith": "^2.4.0"
+    "metalsmith": "^2.5.0"
   },
   "devDependencies": {
     "assert-dir-equal": "1.1.0",

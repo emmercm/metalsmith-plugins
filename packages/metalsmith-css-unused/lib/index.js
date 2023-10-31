@@ -11,6 +11,9 @@ module.exports = (options = {}) => {
   }, options || {});
 
   return (files, metalsmith, done) => {
+    const debug = metalsmith.debug('metalsmith-css-unused');
+    debug('running with options: %O', defaultedOptions);
+
     // Build list of HTML content
     defaultedOptions.purgecss.content = metalsmith.match(defaultedOptions.html, Object.keys(files))
       .map((filename) => ({
@@ -32,6 +35,10 @@ module.exports = (options = {}) => {
         }
 
         done();
+      })
+      .catch((err) => {
+        debug.error('purgecss error: %s', err);
+        done(err);
       });
   };
 };

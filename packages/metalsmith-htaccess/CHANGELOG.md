@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.0 / 2023-10-3
+
+- Added `Metalsmith#debug()` calls.
+
 ## v0.2.0 / 2020-06-30
 
 - Set default for `expires.default`.

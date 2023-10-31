@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.0 / 2023-10-30
+
+- Added `Metalsmith#debug()` calls.
+
 ## v0.0.3 / 2022-07-27
 
 - Generated SVGs now all have the `vega` class added to them.

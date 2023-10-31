@@ -32,7 +32,7 @@ const vegaToSvg = async (vegaBody, vegaOptions = {}) => {
   })).buildObject(xml);
 };
 
-const remarkVegaLite = (vegaLiteOptions = {}) => async (tree) => {
+const remarkVegaLite = (vegaLiteOptions, debug) => async (tree) => {
   const promises = [];
   visit(tree, 'code', (node, idx, parent) => {
     if ((node.lang || '').toLowerCase() !== 'vega-lite') {
@@ -42,6 +42,7 @@ const remarkVegaLite = (vegaLiteOptions = {}) => async (tree) => {
       return node;
     }
 
+    debug('rendering %s beginning with: %s', node.lang, node.value.slice(0, 100));
     let nodeValue;
     try {
       nodeValue = JSON.parse(node.value);
@@ -64,7 +65,7 @@ const remarkVegaLite = (vegaLiteOptions = {}) => async (tree) => {
   await Promise.all(promises);
 };
 
-const remarkVega = (vegaOptions = {}) => async (tree) => {
+const remarkVega = (vegaOptions, debug) => async (tree) => {
   const promises = [];
   visit(tree, 'code', (node, idx, parent) => {
     if ((node.lang || '').toLowerCase() !== 'vega') {
@@ -74,6 +75,7 @@ const remarkVega = (vegaOptions = {}) => async (tree) => {
       return node;
     }
 
+    debug('rendering %s beginning with: %s', node.lang, node.value.slice(0, 100));
     let nodeValue;
     try {
       nodeValue = JSON.parse(node.value);
@@ -111,6 +113,9 @@ export default (options = {}) => {
   }, options || {});
 
   return (files, metalsmith, done) => {
+    const debug = metalsmith.debug('metalsmith-vega');
+    debug('running with options: %O', defaultedOptions);
+
     const markdownFiles = metalsmith.match(defaultedOptions.markdown, Object.keys(files));
 
     async.each(markdownFiles, async (filename) => {
@@ -127,8 +132,8 @@ export default (options = {}) => {
             // "Correctly" use vega's top-level view options for 'view'
             view: defaultedOptions.vega,
           },
-        })
-        .use(remarkVega, defaultedOptions.vega)
+        }, debug)
+        .use(remarkVega, defaultedOptions.vega, debug)
         .use(remarkStringify, defaultedOptions.vega)
         .process(file.contents);
 

@@ -1,8 +1,12 @@
 # Changelog
 
+## v1.1.0 / 2023-10-30
+
+- Added `Metalsmith#debug()` calls.
+
 ## v1.0.0 / 2023-01-19
 
-- Added an option to overwrite files, false by default.
+- Added an option to overwrite files, now false by default.
 
 ## v0.2.0 / 2022-08-07
 

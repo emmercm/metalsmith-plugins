@@ -12,9 +12,14 @@ module.exports = (options = {}) => {
   }, options || {});
 
   return (files, metalsmith, done) => {
+    const debug = metalsmith.debug('metalsmith-reading time');
+    debug('running with options: %O', defaultedOptions);
+
     // For each file that matches the given pattern
     metalsmith.match(defaultedOptions.pattern, Object.keys(files))
       .forEach((filename) => {
+        debug('processing file: %s', filename);
+
         let contents = files[filename].contents.toString();
 
         if (defaultedOptions.stripHtml) {

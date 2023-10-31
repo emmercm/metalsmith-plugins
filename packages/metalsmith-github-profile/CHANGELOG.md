@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.0 / 2023-10-30
+
+- Added `Metalsmith#debug()` calls.
+
 ## v0.2.0 / 2022-08-07
 
 - Fixed HTTP(S) timeouts preventing the plugin from stopping.
