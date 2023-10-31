@@ -17,9 +17,14 @@ module.exports = (options = {}) => {
   }, options || {});
 
   return (files, metalsmith, done) => {
+    const debug = metalsmith.debug('metalsmith-github-profile');
+    debug('running with options: %O', defaultedOptions);
+
     // For each HTML file that matches the given pattern
     metalsmith.match(defaultedOptions.html, Object.keys(files))
       .forEach((filename) => {
+        debug('processing file: %s', filename);
+
         const file = files[filename];
         const $ = cheerio.load(file.contents);
 
@@ -67,6 +72,7 @@ module.exports = (options = {}) => {
 
                 // If files are found, add them and remove the original tag
                 if (resources.length) {
+                  debug('  "%s" with value "%s" found: %O', selector, resourceGlob, resources);
                   resources
                     .forEach((resource) => {
                       resource.insertBefore($(elem));

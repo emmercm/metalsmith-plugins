@@ -327,6 +327,9 @@ module.exports = (options = {}) => {
   }, options || {}, { arrayMerge: (destinationArray, sourceArray) => sourceArray });
 
   return (files, metalsmith, done) => {
+    const debug = metalsmith.debug('metalsmith-htaccess');
+    debug('running with options: %O', defaultedOptions);
+
     const htaccess = generate(defaultedOptions);
 
     files['.htaccess'] = {

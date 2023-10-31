@@ -16,6 +16,9 @@ module.exports = (options = {}) => (files, metalsmith, done) => {
     options || {},
   ], { arrayMerge: (destinationArray, sourceArray) => sourceArray });
 
+  const debug = metalsmith.debug('metalsmith-include-files');
+  debug('running with options: %O', defaultedOptions);
+
   const folders = Object.keys(defaultedOptions.directories);
   for (let i = 0; i < folders.length; i += 1) {
     const folder = folders[i];
@@ -33,6 +36,7 @@ module.exports = (options = {}) => (files, metalsmith, done) => {
         done(`File already exists in build path: ${key}`);
         return;
       }
+      debug('including "%s" -> "%s"', globbedFile, key);
       files[key] = {
         contents,
         mode: Mode(fs.statSync(globbedFile)).toOctal(),

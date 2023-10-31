@@ -35,9 +35,14 @@ module.exports = (options = {}) => {
   const remoteResources = {};
 
   return (files, metalsmith, done) => {
+    const debug = metalsmith.debug('metalsmith-html-sri');
+    debug('running with options: %O', defaultedOptions);
+
     // For each HTML file that matches the given pattern
     metalsmith.match(defaultedOptions.html, Object.keys(files))
       .forEach((filename) => {
+        debug('processing file: %s', filename);
+
         const file = files[filename];
         const normalizedFilename = filename.replace(/[/\\]/g, path.sep);
 
@@ -84,6 +89,7 @@ module.exports = (options = {}) => {
                     .join(' ');
                 }
 
+                debug('  %s: %s', resource, files[resource].integrity);
                 $(elem).attr('integrity', files[resource].integrity);
               } else {
                 // Add integrity attribute to remote resources
@@ -101,12 +107,14 @@ module.exports = (options = {}) => {
 
                 // Only calculate resource hash once
                 if (!Object.prototype.hasOwnProperty.call(remoteResources, uri)) {
+                  debug('fetching file: %s', uri);
                   const response = request('GET', uri);
                   remoteResources[uri] = defaultedOptions.algorithm
                     .map((algorithm) => `${algorithm}-${crypto.createHash(algorithm).update(response.body).digest('base64')}`)
                     .join(' ');
                 }
 
+                debug('  %s: %s', uri, remoteResources[uri]);
                 $(elem).attr('integrity', remoteResources[uri]);
 
                 // Enforce crossorigin attribute for non-local resources with integrity attribute

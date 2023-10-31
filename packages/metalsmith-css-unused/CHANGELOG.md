@@ -1,9 +1,13 @@
 # Changelog
 
+## v0.5.0 / 2023-10-30
+
+- Added `Metalsmith#debug()` calls.
+
 ## v0.4.0 / 2022-02-25
 
 - Use Metalsmith v2.4's `metalsmith.match()` instead of [`minimatch`](https://www.npmjs.com/package/minimatch).
-- Major README update
+- Major README update.
 
 ## v0.3.1 / 2020-12-03
 

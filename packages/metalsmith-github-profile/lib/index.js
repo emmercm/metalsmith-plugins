@@ -78,16 +78,18 @@ const retryJsonGet = (link, options, callback, attempt = 1) => {
   req.end();
 };
 
-const getUser = (username) => (options, callback) => {
+const getUser = (username, debug) => (options, callback) => {
+  debug('fetching user: %s', username);
   retryJsonGet(`https://api.github.com/users/${username}`, options, callback);
 };
 
-const getRepos = (username, page = 1, prevResults = []) => (options, callback) => {
+const getRepos = (username, debug, page = 1, prevResults = []) => (options, callback) => {
+  debug('fetching repos for user: %s, page %i', username, page);
   retryJsonGet(`https://api.github.com/users/${username}/repos?per_page=100&page=${page}`, options, (err, data) => {
     // Recurse to get all pages
     if (data && data.length) {
       const results = [...prevResults, ...data];
-      getRepos(username, page + 1, results)(options, callback);
+      getRepos(username, debug, page + 1, results)(options, callback);
       return;
     }
 
@@ -116,9 +118,12 @@ module.exports = (options = {}) => {
   }, options || {});
 
   return (files, metalsmith, done) => {
+    const debug = metalsmith.debug('metalsmith-github-profile');
+    debug('running with options: %O', defaultedOptions);
+
     const methods = {
-      user: getUser(defaultedOptions.username),
-      repos: getRepos(defaultedOptions.username),
+      user: getUser(defaultedOptions.username, debug),
+      repos: getRepos(defaultedOptions.username, debug),
     };
     async.mapValues(methods, (value, key, callback) => {
       value(defaultedOptions, callback);

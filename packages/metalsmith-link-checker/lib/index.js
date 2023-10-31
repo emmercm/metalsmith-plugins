@@ -84,6 +84,7 @@ const htmlLinks = (metalsmith, files, options) => {
  * @typedef {function} validator
  * @param {string} link
  * @param {Object} options Plugin options
+ * @param {Object} debug Debug function
  * @param {validatorCallback} asyncCallback
  */
 
@@ -125,12 +126,12 @@ const validUrlCache = {};
  * Validate a remote HTTP or HTTPS URL.
  * @type {validator}
  */
-const validUrl = (link, options, callback, attempt = 1, method = 'HEAD') => {
+const validUrl = (link, options, debug, callback, attempt = 1, method = 'HEAD') => {
   const cacheAndCallback = (err, result) => {
     // Retry failures if we haven't reached the retry limit
     if (result && attempt <= options.attempts) {
       setTimeout(() => {
-        validUrl(link, options, callback, attempt + 1, method);
+        validUrl(link, options, debug, callback, attempt + 1, method);
       }, Math.min(1000, 100 * 2 ** attempt));
       return;
     }
@@ -143,6 +144,7 @@ const validUrl = (link, options, callback, attempt = 1, method = 'HEAD') => {
     return;
   }
 
+  debug('checking URL with %s: %s, attempt %i', method, link, attempt);
   const library = (link.slice(0, 5) === 'https' ? https : http);
   const req = library.request(link, {
     method,
@@ -153,9 +155,10 @@ const validUrl = (link, options, callback, attempt = 1, method = 'HEAD') => {
     timeout: options.timeout,
     rejectUnauthorized: false,
   }, (res) => {
+    debug('%s %s (%s)', method, link, res.statusCode);
     // Re-attempt HEAD 405s as GETs
     if (res.statusCode === 405 && method !== 'GET') {
-      validUrl(link, options, callback, attempt, 'GET');
+      validUrl(link, options, debug, callback, attempt, 'GET');
       return;
     }
 
@@ -171,14 +174,16 @@ const validUrl = (link, options, callback, attempt = 1, method = 'HEAD') => {
   req.on('error', (err) => {
     // Re-attempt HEAD errors as GETs
     if (method !== 'GET') {
-      validUrl(link, options, callback, attempt, 'GET');
+      validUrl(link, options, debug, callback, attempt, 'GET');
       return;
     }
 
+    debug.error('failed to check URL "%s": %s', link, err);
     cacheAndCallback(null, err.message);
   });
 
   req.on('timeout', () => {
+    debug.error('failed to check URL "%s": timeout', link);
     req.destroy(); // cause an error
   });
 
@@ -296,6 +301,9 @@ module.exports = (options = {}) => {
   }, options || {});
 
   return (files, metalsmith, done) => {
+    const debug = metalsmith.debug('metalsmith-link-checker');
+    debug('running with options: %O', defaultedOptions);
+
     const normalizedFilenames = Object.keys(files)
       .reduce((reducer, filename) => {
         reducer[filename.replace(/[/\\]/g, '/')] = true;
@@ -309,17 +317,17 @@ module.exports = (options = {}) => {
       // TODO: CSS files
       // TODO: manifest files
     ]
-    // Filter this out if this a duplicate of an item earlier in the array
+      // Filter this out if this a duplicate of an item earlier in the array
       .filter((v1, idx, arr) => {
         const comparator = (v2) => JSON.stringify(v1) === JSON.stringify(v2);
         return arr.findIndex(comparator) === idx;
       })
-    // Filter this out if any ignore regex matches
+      // Filter this out if any ignore regex matches
       .filter((filenameAndLink) => {
         const comparator = (re) => re.test(filenameAndLink.link);
         return !defaultedOptions.ignore.some(comparator);
       })
-    // Shuffle to try to disperse checking the same domain concurrently
+      // Shuffle to try to disperse checking the same domain concurrently
       .sort(() => Math.random() - 0.5);
 
     // For each link, find the files it is broken for
@@ -334,6 +342,7 @@ module.exports = (options = {}) => {
           const result = protocolValidators[linkUrl.protocol](
             link,
             defaultedOptions,
+            debug,
             callbackResult,
           );
           if (result === undefined) {

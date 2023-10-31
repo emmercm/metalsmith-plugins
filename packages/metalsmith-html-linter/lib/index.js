@@ -97,11 +97,16 @@ module.exports = (options = {}) => {
   );
 
   return (files, metalsmith, done) => {
+    const debug = metalsmith.debug('metalsmith-html-linter');
+    debug('running with options: %O', defaultedOptions);
+
     const htmlFiles = metalsmith.match(defaultedOptions.html, Object.keys(files));
 
     const failures = [];
 
     async.eachLimit(htmlFiles, defaultedOptions.parallelism, (filename, complete) => {
+      debug('processing file: %s', filename);
+
       const file = files[filename];
       const $ = cheerio.load(file.contents, {
         _useHtmlParser2: true, // https://github.com/cheeriojs/cheerio/issues/1198
@@ -133,6 +138,11 @@ module.exports = (options = {}) => {
             failures.push(`${filename}:\n\n${codeFrames.replace(/^/gm, '  ')}`);
           }
 
+          complete();
+        })
+        .catch((err) => {
+          debug.error('linthtml error: %s', err);
+          failures.push(`${filename}:\n\n${err}`);
           complete();
         });
     }, () => {
