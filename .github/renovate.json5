@@ -36,9 +36,8 @@
   separateMinorPatch: false, // default
 
   // Allow auto-merging of PRs, but reduce their spam on the commit log
-  schedule: 'at any time', // DEBUG
+  schedule: 'on the 1st day of the month',
   prCreation: 'immediate', // default
-  prConcurrentLimit: 5, // DEBUG
   prHourlyLimit: 0, // no limit
   automerge: true,
   platformAutomerge: true,
