@@ -49,13 +49,14 @@ const mermaidToSvg = async (browser, mermaidData, mermaidOptions) => {
   }, CONSISTENT_CSS);
 };
 
-const remarkMermaid = (browser, mermaidOptions = {}) => async (tree) => {
+const remarkMermaid = (browser, mermaidOptions, debug) => async (tree) => {
   const promises = [];
   await visit(tree, 'code', async (node, idx, parent) => {
     if ((node.lang || '').toLowerCase() !== 'mermaid') {
       return node;
     }
 
+    debug('rendering %s beginning with: %s', node.lang, node.value.slice(0, 100));
     const promise = mermaidToSvg(browser, node.value, mermaidOptions).then((svg) => {
       const newNode = {
         type: 'html',
@@ -90,6 +91,9 @@ export default (options = {}) => {
   }, options || {});
 
   return async (files, metalsmith, done) => {
+    const debug = metalsmith.debug('metalsmith-mermaid');
+    debug('running with options: %O', defaultedOptions);
+
     const browser = await puppeteer.launch();
 
     const markdownFiles = metalsmith.match(defaultedOptions.markdown, Object.keys(files));
@@ -98,7 +102,7 @@ export default (options = {}) => {
 
       const tree = await unified()
         .use(remarkParse)
-        .use(remarkMermaid, browser, defaultedOptions.mermaid)
+        .use(remarkMermaid, browser, defaultedOptions.mermaid, debug)
         .use(remarkStringify)
         .process(file.contents);
 

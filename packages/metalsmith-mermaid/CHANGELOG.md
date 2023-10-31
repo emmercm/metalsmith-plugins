@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.0 / 2023-10-30
+
+- Added `Metalsmith#debug()` calls.
+
 ## v0.1.0 / 2023-02-23
 
 - Replaced [`mermaid`](https://www.npmjs.com/package/mermaid) with [`@mermaid-js/mermaid-cli`](https://www.npmjs.com/package/@mermaid-js/mermaid-cli) for reliability.

@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.5.0 / 2023-10-30
+
+- Added `Metalsmith#debug()` calls.
+
 ## v0.4.1 / 2022-02-27
 
 - Don't allow empty resource path (prevents `<a href="">` when linking to self).

@@ -23,9 +23,13 @@ module.exports = (options = {}) => {
   }, options || {});
 
   return (files, metalsmith, done) => {
+    const debug = metalsmith.debug('metalsmith-collections-related');
+    debug('running with options: %O', defaultedOptions);
+
     // Filter files to be considered
     const keywordFiles = metalsmith.match(defaultedOptions.pattern, Object.keys(files))
       .filter((filename) => files[filename].collection);
+    debug('processing files: %O', keywordFiles);
 
     // Create a map of collection->files
     const collections = {};
@@ -43,6 +47,8 @@ module.exports = (options = {}) => {
     // For each collection of files
     Object.keys(collections)
       .forEach((collection) => {
+        debug('processing collection: %s', collection);
+
         const collectionFiles = collections[collection];
 
         // For each file in the collection

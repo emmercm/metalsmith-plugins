@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.9.0 / 2023-10-30
+
+- Added `Metalsmith#debug()` calls.
+
 ## v0.8.0 / 2022-04-22
 
 - Replace the abandoned [`htmllint`](https://www.npmjs.com/package/htmllint) with [`linthtml`](https://www.npmjs.com/package/@linthtml/linthtml).

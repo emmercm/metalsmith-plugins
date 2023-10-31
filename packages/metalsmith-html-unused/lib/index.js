@@ -19,10 +19,15 @@ module.exports = (options = {}) => {
   }, options || {}, { arrayMerge: (destinationArray, sourceArray) => sourceArray });
 
   return (files, metalsmith, done) => {
+    const debug = metalsmith.debug('metalsmith-html-unused');
+    debug('running with options: %O', defaultedOptions);
+
     const resources = [].concat(
       // For each HTML file that matches the given pattern
       ...metalsmith.match(defaultedOptions.html, Object.keys(files))
         .map((filename) => {
+          debug('finding resources in file: %s', filename);
+
           const file = files[filename];
 
           const $ = cheerio.load(file.contents);
@@ -37,7 +42,11 @@ module.exports = (options = {}) => {
                   ...$(selector)
                     .map((i, elem) => path.join(path.dirname(filename), $(elem).attr(attribute)))
                     .get()
-                    .filter((resource) => resource in files),
+                    .filter((resource) => resource in files)
+                    .map((resource) => {
+                      debug('  found: %s', resource);
+                      return resource;
+                    }),
 
                   // Manifest-referenced resources
                   ...[].concat(
@@ -64,6 +73,10 @@ module.exports = (options = {}) => {
                             });
                         }
                         return [];
+                      })
+                      .map((resource) => {
+                        debug('  found: %s', resource);
+                        return resource;
                       }),
                   ),
                 ];
@@ -89,6 +102,7 @@ module.exports = (options = {}) => {
         const normalizedFilename = filename.replace(/[/\\]/g, '/');
         // Remove the file if it's unused
         if (resources.indexOf(normalizedFilename) === -1) {
+          debug('deleting from output: %s', filename);
           delete files[filename];
         }
       });

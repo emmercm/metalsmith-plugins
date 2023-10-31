@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.6.0 / 2023-10-30
+
+- Added `Metalsmith#debug()` calls.
+
 ## v0.5.2 / 2023-02-18
 
 - Fixed validation failures of local files in Windows.

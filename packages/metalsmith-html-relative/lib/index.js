@@ -19,9 +19,14 @@ module.exports = (options = {}) => {
   }, options || {});
 
   return (files, metalsmith, done) => {
+    const debug = metalsmith.debug('metalsmith-html-relative');
+    debug('running with options: %O', defaultedOptions);
+
     // For each HTML file that matches the given pattern
     metalsmith.match(defaultedOptions.html, Object.keys(files))
       .forEach((filename) => {
+        debug('processing file: %s', filename);
+
         const file = files[filename];
         const normalizedFilename = filename.replace(/[/\\]/g, path.sep);
         const $ = cheerio.load(file.contents);
@@ -63,6 +68,7 @@ module.exports = (options = {}) => {
                 // Find the relative path of the resource
                 const relativeResource = path.relative(path.dirname(normalizedFilename), absoluteResource).replace(/[/\\]/g, '/') || '.';
 
+                debug('  "%s" changed to: %s', resource, relativeResource);
                 $(elem).attr(attribute, relativeResource);
               });
             });

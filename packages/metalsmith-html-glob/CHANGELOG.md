@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.7.0 / 2023-10-30
+
+- Added `Metalsmith#debug()` calls.
+
 ## v0.6.0 / 2022-08-21
 
 - Fixed empty resource paths throwing exceptions.
