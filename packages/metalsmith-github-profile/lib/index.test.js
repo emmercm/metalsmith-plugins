@@ -1,17 +1,15 @@
-'use strict';
-
-const {
+import {
   existsSync, mkdirSync, readdirSync, readFileSync, statSync,
-} = require('fs');
-const { join } = require('path');
+} from 'fs';
+import { join } from 'path';
 
-const { jest: requiredJest } = require('@jest/globals');
-const assertDir = require('assert-dir-equal');
-const handlebars = require('handlebars');
-const Metalsmith = require('metalsmith');
-const hbtmd = require('metalsmith-hbt-md');
+import { jest as requiredJest } from '@jest/globals';
+import assertDir from 'assert-dir-equal';
+import handlebars from 'handlebars';
+import Metalsmith from 'metalsmith';
+import hbtmd from 'metalsmith-hbt-md';
 
-const githubProfile = require('./index');
+import githubProfile from './index';
 
 requiredJest.setTimeout(30 * 1000);
 

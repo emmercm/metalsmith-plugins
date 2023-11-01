@@ -1,6 +1,4 @@
-'use strict';
-
-const deepmerge = require('deepmerge');
+import deepmerge from 'deepmerge';
 
 const generate = (options) => {
   let htaccess = '';
@@ -254,7 +252,7 @@ const generate = (options) => {
   return htaccess;
 };
 
-module.exports = (options = {}) => {
+export default (options = {}) => {
   /**
    * Defaults are set with recommendations from the following websites:
    *  - https://htaccessbook.com/useful-htaccess-rules

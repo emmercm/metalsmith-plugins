@@ -1,14 +1,12 @@
-'use strict';
-
-const {
+import {
   existsSync, mkdirSync, readdirSync, readFileSync, statSync,
-} = require('fs');
-const { join } = require('path');
+} from 'fs';
+import { join } from 'path';
 
-const assertDir = require('assert-dir-equal');
-const Metalsmith = require('metalsmith');
+import assertDir from 'assert-dir-equal';
+import Metalsmith from 'metalsmith';
 
-const unused = require('./index');
+import unused from './index';
 
 const test = (dir, config) => {
   describe(dir, () => {

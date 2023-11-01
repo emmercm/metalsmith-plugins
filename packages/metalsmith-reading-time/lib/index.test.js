@@ -1,16 +1,14 @@
-'use strict';
-
-const {
+import {
   existsSync, mkdirSync, readdirSync, readFileSync, statSync,
-} = require('fs');
-const { join } = require('path');
+} from 'fs';
+import { join } from 'path';
 
-const assertDir = require('assert-dir-equal');
-const handlebars = require('handlebars');
-const Metalsmith = require('metalsmith');
-const hbtmd = require('metalsmith-hbt-md');
+import assertDir from 'assert-dir-equal';
+import handlebars from 'handlebars';
+import Metalsmith from 'metalsmith';
+import hbtmd from 'metalsmith-hbt-md';
 
-const readingTime = require('./index');
+import readingTime from './index';
 
 const test = (dir, config) => {
   describe(dir, () => {

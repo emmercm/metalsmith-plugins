@@ -1,11 +1,9 @@
-'use strict';
+import url from 'url';
 
-const url = require('url');
+import cheerio from 'cheerio';
+import deepmerge from 'deepmerge';
 
-const cheerio = require('cheerio');
-const deepmerge = require('deepmerge');
-
-module.exports = (options = {}) => {
+export default (options = {}) => {
   const defaultedOptions = deepmerge({
     html: '**/*.html',
     tags: {

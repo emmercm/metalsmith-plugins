@@ -1,10 +1,8 @@
-'use strict';
+import http from 'http';
+import https from 'https';
 
-const http = require('http');
-const https = require('https');
-
-const async = require('async');
-const deepmerge = require('deepmerge');
+import async from 'async';
+import deepmerge from 'deepmerge';
 
 const retryJsonGet = (link, options, callback, attempt = 1) => {
   const url = new URL(link);
@@ -109,7 +107,7 @@ const getRepos = (username, debug, page = 1, prevResults = []) => (options, call
  * @param {Object} options
  * @returns {function(Object.<string, Object>, Object, function)}
  */
-module.exports = (options = {}) => {
+export default (options = {}) => {
   const defaultedOptions = deepmerge({
     timeout: 5 * 1000,
     authorization: {},

@@ -1,9 +1,7 @@
-'use strict';
+import deepmerge from 'deepmerge';
+import { PurgeCSS } from 'purgecss';
 
-const deepmerge = require('deepmerge');
-const { PurgeCSS } = require('purgecss');
-
-module.exports = (options = {}) => {
+export default (options = {}) => {
   const defaultedOptions = deepmerge({
     html: '**/*.html',
     css: '**/*.css',
