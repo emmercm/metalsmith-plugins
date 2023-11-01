@@ -1,10 +1,9 @@
-import os from 'os';
-
 import codeFrame from '@babel/code-frame';
 import linthtml from '@linthtml/linthtml';
 import async from 'async';
 import cheerio from 'cheerio';
 import deepmerge from 'deepmerge';
+import os from 'os';
 
 const upgradeHtmllintConfig = (htmllint) => {
   const config = {};

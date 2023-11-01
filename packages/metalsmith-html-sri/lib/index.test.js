@@ -1,10 +1,9 @@
+import assertDir from 'assert-dir-equal';
 import {
   existsSync, mkdirSync, readdirSync, readFileSync, statSync,
 } from 'fs';
-import { join } from 'path';
-
-import assertDir from 'assert-dir-equal';
 import Metalsmith from 'metalsmith';
+import { join } from 'path';
 
 import sri from './index';
 
