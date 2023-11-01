@@ -1,8 +1,7 @@
-import fs from 'fs';
-import path from 'path';
-
 import deepmerge from 'deepmerge';
 import fg from 'fast-glob';
+import fs from 'fs';
+import path from 'path';
 import Mode from 'stat-mode';
 
 export default (options = {}) => (files, metalsmith, done) => {

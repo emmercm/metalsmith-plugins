@@ -1,12 +1,11 @@
+import { jest } from '@jest/globals';
 import {
   existsSync, mkdirSync, readdirSync, readFileSync, statSync,
 } from 'fs';
+import Metalsmith from 'metalsmith';
 import { join } from 'path';
 
-import { jest } from '@jest/globals';
-import Metalsmith from 'metalsmith';
 // const assertDir = require('assert-dir-equal');
-
 import vega from './index';
 
 jest.setTimeout(10_000);

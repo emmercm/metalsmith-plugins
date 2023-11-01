@@ -1,8 +1,7 @@
-import path from 'path';
-import url from 'url';
-
 import cheerio from 'cheerio';
 import deepmerge from 'deepmerge';
+import path from 'path';
+import url from 'url';
 
 export default (options = {}) => {
   const defaultedOptions = deepmerge({
