@@ -48,6 +48,7 @@
     "metalsmith": "^2.5.0"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.7",
     "assert-dir-equal": "1.1.0",
     "eslint": "8.52.0",
     "eslint-config-airbnb-base": "15.0.0",
@@ -60,6 +61,8 @@
     "metalsmith-auto-collections": "0.2.0",
     "metalsmith-hbt-md": "1.0.1",
     "metalsmith-paths": "^4.0.1",
+    "ts-jest": "^29.1.1",
+    "ts-migrate": "^0.1.35",
     "typescript": "^5.2.2"
   },
   "engines": {
