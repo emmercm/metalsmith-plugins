@@ -1,37 +1,35 @@
 {
   "extends": [
     "eslint:recommended",
-    "airbnb-base"
+    "airbnb-base",
+    "plugin:jest/recommended"
   ],
-  "plugins": [],
+  "plugins": [
+    "simple-import-sort",
+    "jest"
+  ],
 
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
 
+  "env": {
+    "jest/globals": true
+  },
+
   "rules": {
-    "strict": ["error", "global"],
-    "no-param-reassign": ["error", { "props": false }],
-    "import/order": ["error", {
-      "alphabetize": {
-        "order": "asc"
-      },
-      "newlines-between": "always"
-    }]
+    "simple-import-sort/exports": "error",
+    "simple-import-sort/imports": "error",
+
+    "jest/no-conditional-expect": "off",
+    "jest/no-done-callback": "off", // TODO(cemmer)
+    "jest/valid-title": "off", // TODO(cemmer)
+
+    "no-param-reassign": ["error", { "props": false }]
   },
 
   "overrides": [
-    {
-      "files": ["**/*.test.js"],
-      "plugins": ["jest"],
-      "extends": ["plugin:jest/recommended"],
-      "rules": {
-        "jest/no-conditional-expect": "off",
-        "jest/no-done-callback": "off", // TODO(cemmer)
-        "jest/valid-title": "off" // TODO(cemmer)
-      }
-    },
     {
       "files": ["**/fixtures/**/*.js"],
       "rules": {

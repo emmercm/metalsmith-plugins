@@ -1,10 +1,9 @@
-import http from 'http';
-import https from 'https';
-import path from 'path';
-
 import async from 'async';
 import cheerio from 'cheerio';
 import deepmerge from 'deepmerge';
+import http from 'http';
+import https from 'https';
+import path from 'path';
 import userAgents from 'top-user-agents';
 
 /**

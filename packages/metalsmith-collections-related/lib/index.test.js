@@ -1,14 +1,13 @@
+import assertDir from 'assert-dir-equal';
 import {
   existsSync, mkdirSync, readdirSync, readFileSync, statSync,
 } from 'fs';
-import { join } from 'path';
-
-import assertDir from 'assert-dir-equal';
 import handlebars from 'handlebars';
 import Metalsmith from 'metalsmith';
 import collect from 'metalsmith-auto-collections';
 import hbtmd from 'metalsmith-hbt-md';
 import paths from 'metalsmith-paths';
+import { join } from 'path';
 
 import related from './index';
 

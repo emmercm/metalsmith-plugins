@@ -1,8 +1,7 @@
-import http from 'http';
-import https from 'https';
-
 import async from 'async';
 import deepmerge from 'deepmerge';
+import http from 'http';
+import https from 'https';
 
 const retryJsonGet = (link, options, callback, attempt = 1) => {
   const url = new URL(link);

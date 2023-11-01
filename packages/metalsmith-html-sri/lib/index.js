@@ -1,10 +1,9 @@
-import crypto from 'crypto';
-import path from 'path';
-import url from 'url';
-
 import cheerio from 'cheerio';
+import crypto from 'crypto';
 import deepmerge from 'deepmerge';
+import path from 'path';
 import request from 'sync-request';
+import url from 'url';
 
 export default (options = {}) => {
   const defaultedOptions = deepmerge({
