@@ -1,13 +1,11 @@
-'use strict';
+import http from 'http';
+import https from 'https';
+import path from 'path';
 
-const http = require('http');
-const https = require('https');
-const path = require('path');
-
-const async = require('async');
-const cheerio = require('cheerio');
-const deepmerge = require('deepmerge');
-const userAgents = require('top-user-agents');
+import async from 'async';
+import cheerio from 'cheerio';
+import deepmerge from 'deepmerge';
+import userAgents from 'top-user-agents';
 
 /**
  * Return a fake user agent.
@@ -282,7 +280,7 @@ const protocolValidators = {
  * @param {Object} defaultedOptions
  * @returns {function(Object.<string, Object>, Object, function)}
  */
-module.exports = (options = {}) => {
+export default (options = {}) => {
   const defaultedOptions = deepmerge({
     html: {
       pattern: '**/*.html',

@@ -1,13 +1,11 @@
-'use strict';
+import fs from 'fs';
+import path from 'path';
 
-const fs = require('fs');
-const path = require('path');
+import deepmerge from 'deepmerge';
+import fg from 'fast-glob';
+import Mode from 'stat-mode';
 
-const deepmerge = require('deepmerge');
-const fg = require('fast-glob');
-const Mode = require('stat-mode');
-
-module.exports = (options = {}) => (files, metalsmith, done) => {
+export default (options = {}) => (files, metalsmith, done) => {
   const defaultedOptions = deepmerge.all([
     {
       directories: {},

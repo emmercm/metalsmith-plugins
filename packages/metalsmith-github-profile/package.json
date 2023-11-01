@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-github-profile",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "A Metalsmith plugin to fetch GitHub profile information. ",
   "keywords": [
     "metalsmith",
@@ -13,10 +13,17 @@
   },
   "license": "GPL-3.0-or-later",
   "author": "Christian Emmer",
+  "type": "module",
   "files": [
     "lib/index.js"
   ],
   "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./lib/index.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/emmercm/metalsmith-plugins.git"
@@ -24,10 +31,10 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "jest --coverage && eslint .",
-    "test:update": "jest --coverage --updateSnapshot",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --verbose --coverage",
+    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --coverage && eslint .",
+    "test:update": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --coverage --updateSnapshot",
+    "test:watch": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --watch",
+    "test:coverage": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --verbose --coverage",
     "prepack": "cp -f ../../LICENSE ./",
     "postpack": "rm ./LICENSE"
   },
@@ -50,5 +57,8 @@
     "jest-junit": "16.0.0",
     "metalsmith": "2.5.1",
     "metalsmith-hbt-md": "1.0.1"
+  },
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   }
 }

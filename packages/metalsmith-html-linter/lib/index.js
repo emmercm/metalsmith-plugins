@@ -1,12 +1,10 @@
-'use strict';
+import os from 'os';
 
-const os = require('os');
-
-const codeFrame = require('@babel/code-frame');
-const linthtml = require('@linthtml/linthtml').default;
-const async = require('async');
-const cheerio = require('cheerio');
-const deepmerge = require('deepmerge');
+import codeFrame from '@babel/code-frame';
+import linthtml from '@linthtml/linthtml';
+import async from 'async';
+import cheerio from 'cheerio';
+import deepmerge from 'deepmerge';
 
 const upgradeHtmllintConfig = (htmllint) => {
   const config = {};
@@ -40,9 +38,9 @@ const upgradeHtmllintConfig = (htmllint) => {
 };
 
 // Get the linthtml (written in  htmllint config) and upgrade it
-const linthtmlDefault = upgradeHtmllintConfig(linthtml.presets.default);
+const linthtmlDefault = upgradeHtmllintConfig(linthtml.default.presets.default);
 
-module.exports = (options = {}) => {
+export default (options = {}) => {
   // Upgrade any old htmllint config
   if (options.htmllint !== undefined) {
     options.linthtml = upgradeHtmllintConfig(options.htmllint);
@@ -118,7 +116,7 @@ module.exports = (options = {}) => {
 
       const contents = $.html();
 
-      linthtml(contents, defaultedOptions.linthtml)
+      linthtml.default(contents, defaultedOptions.linthtml)
         .then((results) => {
           if (results.length) {
             const codeFrames = results

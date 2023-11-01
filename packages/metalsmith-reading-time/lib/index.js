@@ -1,9 +1,7 @@
-'use strict';
+import deepmerge from 'deepmerge';
+import readingTime from 'reading-time';
 
-const deepmerge = require('deepmerge');
-const readingTime = require('reading-time');
-
-module.exports = (options = {}) => {
+export default (options = {}) => {
   const defaultedOptions = deepmerge({
     pattern: '**/*',
     stripHtml: true,

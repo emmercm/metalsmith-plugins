@@ -1,13 +1,11 @@
-'use strict';
-
-const deepmerge = require('deepmerge');
-const htmlEscaper = require('html-escaper');
-const natural = require('natural');
-const sanitizeHtml = require('sanitize-html');
+import deepmerge from 'deepmerge';
+import * as htmlEscaper from 'html-escaper';
+import natural from 'natural';
+import sanitizeHtml from 'sanitize-html';
 
 const { TfIdf } = natural;
 
-module.exports = (options = {}) => {
+export default (options = {}) => {
   const defaultedOptions = deepmerge({
     pattern: '**/*',
     maxRelated: 3,

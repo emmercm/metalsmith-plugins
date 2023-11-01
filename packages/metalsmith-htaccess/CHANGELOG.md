@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.0 / 2023-10-31
+
+- Converted to be an ES6 module.
+
 ## v0.3.0 / 2023-10-3
 
 - Added `Metalsmith#debug()` calls.

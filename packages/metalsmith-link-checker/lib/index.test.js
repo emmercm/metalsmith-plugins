@@ -1,15 +1,13 @@
-'use strict';
-
-const {
+import {
   existsSync, mkdirSync, readdirSync, readFileSync, statSync,
-} = require('fs');
-const { join } = require('path');
+} from 'fs';
+import { join } from 'path';
 
-const { jest: requiredJest } = require('@jest/globals');
-const assertDir = require('assert-dir-equal');
-const Metalsmith = require('metalsmith');
+import { jest as requiredJest } from '@jest/globals';
+import assertDir from 'assert-dir-equal';
+import Metalsmith from 'metalsmith';
 
-const linkChecker = require('./index');
+import linkChecker from './index';
 
 requiredJest.setTimeout(30 * 1000);
 
