@@ -42,6 +42,7 @@
   automerge: true,
   platformAutomerge: true,
 
+  // Don't update any Node.js versions (nvm, Volta, etc.)
   packageRules: [
     {
       matchCategories: ['node'],
@@ -89,15 +90,7 @@
           '^@typescript-eslint',
           '^eslint',
         ],
-        groupName: 'ESLint',
-        postUpgradeTasks: {
-          commands: [
-            'npm ci --ignore-scripts',
-            'npm run lint:fix',
-          ],
-          fileFilters: ['**/*.js'],
-          executionMode: 'branch'
-        },
+        groupName: 'ESLint'
       },
       {
         // Group Jest together because of peerDependencies
@@ -108,7 +101,7 @@
           'jest-junit',
           'ts-jest',
         ],
-        groupName: 'Jest',
+        groupName: 'Jest'
       },
       {
         // Separate Lerna
@@ -124,14 +117,14 @@
         // Renovate's defaults for these options
         schedule: 'at any time',
         prCreation: 'immediate',
-        platformAutomerge: true,
+        platformAutomerge: true
       },
 
       // Everything else
       {
         matchDepTypes: ['optionalDependencies', 'peerDependencies', 'engines'],
-        enabled: false,
-      },
-    ],
+        enabled: false
+      }
+    ]
   }
 }
