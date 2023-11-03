@@ -42,13 +42,6 @@
   automerge: true,
   platformAutomerge: true,
 
-  // Allow some post-upgrade commands that may be used below
-  allowedPostUpgradeCommands: [
-    '^npm run bump:patch$',
-    '^npm ci --ignore-scripts$',
-    '^npm run lint:fix$',
-  ],
-
   packageRules: [
     {
       matchCategories: ['node'],
