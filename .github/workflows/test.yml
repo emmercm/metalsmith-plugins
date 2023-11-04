@@ -10,6 +10,7 @@ on:
 jobs:
   node-unit:
     runs-on: ${{ matrix.os }}-latest
+    timeout-minutes: 5
     strategy:
       matrix:
         os: [ ubuntu, macos, windows ]
@@ -29,12 +30,14 @@ jobs:
 
   markdown-lint:
     runs-on: ubuntu-latest
+    timeout-minutes: 1
     steps:
       - uses: actions/checkout@v4
       - run: docker run -v $PWD:/workdir ghcr.io/igorshubovych/markdownlint-cli:latest --ignore "packages/*/lib/fixtures/**/*.md" --disable MD013 -- "**/*.md"
 
   renovate-lint:
     runs-on: ubuntu-latest
+    timeout-minutes: 1
     steps:
       - uses: actions/checkout@v4
       - uses: rinchsan/renovate-config-validator@v0.0.12
