@@ -10,6 +10,7 @@ on:
 jobs:
   repo-update:
     runs-on: ubuntu-latest
+    timeout-minutes: 1
     permissions:
       repository-projects: write
     steps:
