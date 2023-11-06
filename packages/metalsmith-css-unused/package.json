@@ -29,13 +29,14 @@
     "url": "git+https://github.com/emmercm/metalsmith-plugins.git"
   },
   "scripts": {
+    "build": "tsc",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --coverage && eslint .",
+    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --verbose && eslint .",
     "test:update": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --coverage --updateSnapshot",
     "test:watch": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --watch",
     "test:coverage": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --verbose --coverage",
-    "prepack": "cp -f ../../LICENSE ./",
+    "prepack": "npm run build && cp -f ../../LICENSE ./",
     "postpack": "rm ./LICENSE"
   },
   "dependencies": {
