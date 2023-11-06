@@ -1,8 +1,16 @@
 import cheerio from 'cheerio';
 import deepmerge from 'deepmerge';
 import path from 'path';
+import Metalsmith from "metalsmith";
 
-export default (options = {}) => {
+interface Options {
+    pattern?: string,
+    ignore?: string,
+    html?: string,
+    attributes?: string[],
+}
+
+export default (options: Options = {}): Metalsmith.Plugin => {
   const defaultedOptions = deepmerge({
     pattern: '',
     ignore: '',
@@ -22,7 +30,7 @@ export default (options = {}) => {
     const resources = [].concat(
       // For each HTML file that matches the given pattern
       ...metalsmith.match(defaultedOptions.html, Object.keys(files))
-        .map((filename) => {
+        .map((filename: any) => {
           debug('finding resources in file: %s', filename);
 
           const file = files[filename];
@@ -30,6 +38,7 @@ export default (options = {}) => {
           const $ = cheerio.load(file.contents);
           return [].concat(
             // For each given attribute
+            // @ts-expect-error TS(2769): No overload matches this call.
             ...defaultedOptions.attributes
               .map((attribute) => {
                 // For each matching element for the tag in the file
@@ -37,6 +46,7 @@ export default (options = {}) => {
                 return [
                   // Directly referenced resources
                   ...$(selector)
+                    // @ts-expect-error TS(2345): Argument of type 'string | undefined' is not assig... Remove this comment to see the full error message
                     .map((i, elem) => path.join(path.dirname(filename), $(elem).attr(attribute)))
                     .get()
                     .filter((resource) => resource in files)
@@ -48,15 +58,16 @@ export default (options = {}) => {
                   // Manifest-referenced resources
                   ...[].concat(
                     ...$(`${selector}[rel="manifest"]`)
+                      // @ts-expect-error TS(2345): Argument of type 'string | undefined' is not assig... Remove this comment to see the full error message
                       .map((i, elem) => path.join(path.dirname(filename), $(elem).attr(attribute)))
                       .get()
                       .filter((resource) => resource in files)
                       .map((resource) => {
-                        const contents = JSON.parse(files[resource].contents);
+                        const contents = JSON.parse(files[resource].contents.toString());
                         if (Object.prototype.hasOwnProperty.call(contents, 'icons')) {
                           return contents.icons
-                            .filter((icon) => Object.prototype.hasOwnProperty.call(icon, 'src'))
-                            .map((icon) => {
+                            .filter((icon: any) => Object.prototype.hasOwnProperty.call(icon, 'src'))
+                            .map((icon: any) => {
                               // Get rid of leading slash
                               const relative = icon.src.replace(/^\//, '');
 
@@ -82,6 +93,7 @@ export default (options = {}) => {
         }),
     )
       // Map to a consistent path separator
+      // @ts-expect-error TS(2339): Property 'replace' does not exist on type 'never'.
       .map((filename) => filename.replace(/[/\\]/g, '/'))
       // Get rid of duplicates
       .filter((x, i, a) => a.indexOf(x) === i);
@@ -93,8 +105,8 @@ export default (options = {}) => {
       ? metalsmith.match(defaultedOptions.pattern, Object.keys(files)) : [];
     consideredFilenames
       // Filter "ignore"
-      .filter((filename) => ignoredFilenames.indexOf(filename) === -1)
-      .forEach((filename) => {
+      .filter((filename: any) => ignoredFilenames.indexOf(filename) === -1)
+      .forEach((filename: any) => {
         // Map to a consistent path separator
         const normalizedFilename = filename.replace(/[/\\]/g, '/');
         // Remove the file if it's unused
@@ -104,6 +116,6 @@ export default (options = {}) => {
         }
       });
 
-    done();
+    done(null, files, metalsmith);
   };
 };

@@ -4,17 +4,28 @@ import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
-import vega from 'vega';
-import vegaLite from 'vega-lite';
+import vega, {Config as VegaConfig} from 'vega';
+import vegaLite, {Config as VegaLiteConfig} from 'vega-lite';
 import xml2js from 'xml2js';
+import Metalsmith from "metalsmith";
+import {CompileOptions} from "vega-lite/build/src/compile/compile.js";
+import {Root} from "mdast";
+import {Html} from "mdast";
+import {LayoutSizeMixins} from "vega-lite/src/spec/base.js";
 
-const vegaToSvg = async (vegaBody, vegaOptions = {}) => {
+interface Options {
+  markdown?: string,
+  vegaLite?: VegaLiteConfig,
+  vega?: VegaConfig & LayoutSizeMixins,
+}
+
+const vegaToSvg = async (vegaBody: vega.Spec, vegaOptions: VegaConfig = {}) => {
   const view = new vega.View(vega.parse(vegaBody, vegaOptions), {
     renderer: 'none',
   });
   const svg = await view.toSVG();
 
-  const xml = await new Promise((resolve, reject) => {
+  const xml: any = await new Promise((resolve, reject) => {
     xml2js.parseString(svg, (err, result) => {
       if (err) {
         reject(err);
@@ -32,14 +43,14 @@ const vegaToSvg = async (vegaBody, vegaOptions = {}) => {
   })).buildObject(xml);
 };
 
-const remarkVegaLite = (vegaLiteOptions, debug) => async (tree) => {
-  const promises = [];
+const remarkVegaLite = (vegaLiteOptions: CompileOptions, debug: Metalsmith.Debugger) => async (tree: Root) => {
+  const promises: Promise<unknown>[] = [];
   visit(tree, 'code', (node, idx, parent) => {
-    if ((node.lang || '').toLowerCase() !== 'vega-lite') {
-      return node;
+    if ((node.lang || '').toLowerCase() !== 'vega-lite' || idx === undefined || !parent) {
+      return;
     }
     if (!node.value) {
-      return node;
+      return;
     }
 
     debug('rendering %s beginning with: %s', node.lang, node.value.slice(0, 100));
@@ -47,13 +58,13 @@ const remarkVegaLite = (vegaLiteOptions, debug) => async (tree) => {
     try {
       nodeValue = JSON.parse(node.value);
     } catch (e) {
-      throw new Error(`Failed to JSON parse '${node.value.replace(/\n +/g, '').trim()}' : ${e.message}`);
+      throw new Error(`Failed to JSON parse '${node.value.replace(/\n +/g, '').trim()}' : ${e}`);
     }
 
     const vegaBody = vegaLite.compile(nodeValue, vegaLiteOptions).spec;
 
     const promise = vegaToSvg(vegaBody).then((svg) => {
-      const newNode = {
+      const newNode: Html = {
         type: 'html',
         value: svg,
       };
@@ -65,14 +76,14 @@ const remarkVegaLite = (vegaLiteOptions, debug) => async (tree) => {
   await Promise.all(promises);
 };
 
-const remarkVega = (vegaOptions, debug) => async (tree) => {
-  const promises = [];
+const remarkVega = (vegaOptions: VegaConfig, debug: Metalsmith.Debugger) => async (tree: Root) => {
+  const promises: Promise<unknown>[] = [];
   visit(tree, 'code', (node, idx, parent) => {
-    if ((node.lang || '').toLowerCase() !== 'vega') {
-      return node;
+    if ((node.lang || '').toLowerCase() !== 'vega' || idx === undefined || !parent) {
+      return;
     }
     if (!node.value) {
-      return node;
+      return;
     }
 
     debug('rendering %s beginning with: %s', node.lang, node.value.slice(0, 100));
@@ -80,11 +91,11 @@ const remarkVega = (vegaOptions, debug) => async (tree) => {
     try {
       nodeValue = JSON.parse(node.value);
     } catch (e) {
-      throw new Error(`Failed to JSON parse '${node.value.replace(/\n +/g, '').trim()}' : ${e.message}`);
+      throw new Error(`Failed to JSON parse '${node.value.replace(/\n +/g, '').trim()}' : ${e}`);
     }
 
     const promise = vegaToSvg(nodeValue, vegaOptions).then((svg) => {
-      const newNode = {
+      const newNode: Html = {
         type: 'html',
         value: svg,
       };
@@ -96,7 +107,7 @@ const remarkVega = (vegaOptions, debug) => async (tree) => {
   await Promise.all(promises);
 };
 
-export default (options = {}) => {
+export default (options: Options = {}): Metalsmith.Plugin => {
   const defaultedOptions = deepmerge({
     markdown: '**/*.md',
     vega: {
@@ -110,7 +121,7 @@ export default (options = {}) => {
       // default the background color, other default colors assume a light background
       background: 'white',
     },
-  }, options || {});
+  } satisfies Options, options || {});
 
   return (files, metalsmith, done) => {
     const debug = metalsmith.debug('metalsmith-vega');
@@ -134,12 +145,12 @@ export default (options = {}) => {
           },
         }, debug)
         .use(remarkVega, defaultedOptions.vega, debug)
-        .use(remarkStringify, defaultedOptions.vega)
+        .use(remarkStringify)
         .process(file.contents);
 
       file.contents = Buffer.from(tree.value);
     }, (err) => {
-      done(err);
+      done(err ?? null, files, metalsmith);
     });
 
     // TODO: html files?

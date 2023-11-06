@@ -3,6 +3,7 @@ import chalk from 'chalk';
 import deepmerge from 'deepmerge';
 import ora from 'ora';
 
+import Metalsmith, {Files} from 'metalsmith';
 const LEFT_MARGIN = 7;
 
 const IGNORED_JAVASCRIPT_FILES = [
@@ -17,7 +18,7 @@ const UNKNOWN_PLUGIN_NAMES = [
   'metalsmith-if',
 ];
 
-const timePrefix = (milliseconds) => {
+const timePrefix = (milliseconds: number) => {
   let value = milliseconds;
   let suffix = 'ms';
 
@@ -30,7 +31,7 @@ const timePrefix = (milliseconds) => {
   return ' '.repeat(LEFT_MARGIN - fixed.length - suffix.length) + fixed + suffix;
 };
 
-export default (Metalsmith, options = {}) => {
+export default (Metalsmith: Metalsmith, options = {}) => {
   const defaultedOptions = deepmerge({
     log: console.log,
   }, options || {});
@@ -44,7 +45,7 @@ export default (Metalsmith, options = {}) => {
 
   const { use } = Metalsmith;
   // eslint-disable-next-line no-param-reassign
-  Metalsmith.use = (plugin) => {
+  Metalsmith.use = (plugin: Metalsmith.Plugin) => {
     count += 1;
 
     return use.apply(Metalsmith, [(files, metalsmith, done) => {
@@ -56,7 +57,7 @@ export default (Metalsmith, options = {}) => {
       spinner.text = chalk.bold(`${index}/${count} (${((index / count) * 100).toFixed(1)}%)`);
       spinner.start();
 
-      const doneInterceptor = (...args) => {
+      const doneInterceptor = (err: Error | null) => {
         const elapsed = process.hrtime(start);
         const elapsedMs = (elapsed[0] * 1e9 + elapsed[1]) / 1000000;
 
@@ -72,6 +73,7 @@ export default (Metalsmith, options = {}) => {
         const filenames = callsites()
           .slice(1)
           .map((callsite) => callsite.getFileName())
+          .filter((filename): filename is string => filename !== null)
           // Fix URL-like file paths
           .map((filename) => decodeURIComponent(filename).replace('file://', ''));
 
@@ -131,7 +133,7 @@ export default (Metalsmith, options = {}) => {
         spinner.stop();
         defaultedOptions.log(`${elapsedColor(timePrefix(elapsedMs))} ${pkgColor(pkgStr)}`);
 
-        done(...args);
+        done(err, files, metalsmith);
       };
 
       // Run the plugin but give it our new "done" callback
@@ -140,13 +142,13 @@ export default (Metalsmith, options = {}) => {
       // If the plugin has fewer than 3 arguments then it can't call the "done"
       // callback, so assume it executed synchronously and call it manually.
       if (plugin.length < 3) {
-        doneInterceptor();
+        doneInterceptor(null);
       }
     }]);
   };
 
   const { build } = Metalsmith;
-  Metalsmith.build = (func) => {
+  Metalsmith.build = (callback?: Metalsmith.Callback) => new Promise((resolve, reject) => {
     defaultedOptions.log(`${'-'.repeat(LEFT_MARGIN)} ${chalk.bold('Build process started')} ${'-'.repeat(LEFT_MARGIN)}`);
     defaultedOptions.log();
 
@@ -161,9 +163,12 @@ export default (Metalsmith, options = {}) => {
       defaultedOptions.log(`${chalk.bold(timePrefix(elapsedMs))} Total build time`);
       defaultedOptions.log();
 
-      func(...args);
+      if (callback) {
+        callback(...args);
+      }
+      resolve(args[1]);
     }]);
-  };
+  });
 
   return Metalsmith;
 };

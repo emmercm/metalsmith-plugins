@@ -1,12 +1,23 @@
+// @ts-expect-error TS(7016): Could not find a declaration file for module '@bab... Remove this comment to see the full error message
 import codeFrame from '@babel/code-frame';
-import linthtml from '@linthtml/linthtml';
+import linthtml, {LinterConfig} from '@linthtml/linthtml';
 import async from 'async';
 import cheerio from 'cheerio';
 import deepmerge from 'deepmerge';
 import os from 'os';
+import Metalsmith from "metalsmith";
+import {LegacyLinterConfig} from "@linthtml/linthtml/read-config";
 
-const upgradeHtmllintConfig = (htmllint) => {
-  const config = {};
+interface Options {
+  html?: string,
+  parallelism?: number,
+  ignoreTags?: string[],
+  htmllint?: LegacyLinterConfig,
+  linthtml?: LinterConfig,
+}
+
+const upgradeHtmllintConfig = (htmllint: LegacyLinterConfig): LinterConfig => {
+  const config: {[key: string]: unknown} = {};
 
   // https://github.com/linthtml/linthtml/blob/0.3.0/docs/migrations.md
   const rules = Object.keys(htmllint)
@@ -18,7 +29,7 @@ const upgradeHtmllintConfig = (htmllint) => {
         acc[rule] = [true, ruleConfig];
       }
       return acc;
-    }, {});
+    }, {} as {[key: string]: unknown});
   ['maxerr',
     'text-ignore-regex',
     'raw-ignore-regex',
@@ -37,16 +48,17 @@ const upgradeHtmllintConfig = (htmllint) => {
 };
 
 // Get the linthtml (written in  htmllint config) and upgrade it
+// @ts-expect-error TS(2339): Property 'default' does not exist on type '{ (html... Remove this comment to see the full error message
 const linthtmlDefault = upgradeHtmllintConfig(linthtml.default.presets.default);
 
-export default (options = {}) => {
+export default (options: Options = {}): Metalsmith.Plugin => {
   // Upgrade any old htmllint config
   if (options.htmllint !== undefined) {
     options.linthtml = upgradeHtmllintConfig(options.htmllint);
     delete options.htmllint;
   }
 
-  const defaultedOptions = deepmerge.all(
+  const defaultedOptions: Options = deepmerge.all(
     [
       {
         linthtml: {
@@ -97,29 +109,32 @@ export default (options = {}) => {
     const debug = metalsmith.debug('metalsmith-html-linter');
     debug('running with options: %O', defaultedOptions);
 
-    const htmlFiles = metalsmith.match(defaultedOptions.html, Object.keys(files));
+    const htmlFiles = metalsmith.match(defaultedOptions.html ?? '**/*', Object.keys(files));
 
-    const failures = [];
+    const failures: string[] = [];
 
-    async.eachLimit(htmlFiles, defaultedOptions.parallelism, (filename, complete) => {
+    async.eachLimit(htmlFiles, defaultedOptions.parallelism ?? 1, (filename, complete) => {
       debug('processing file: %s', filename);
 
       const file = files[filename];
       const $ = cheerio.load(file.contents, {
+        // @ts-expect-error TS(2345): Argument of type '{ _useHtmlParser2: boolean; deco... Remove this comment to see the full error message
         _useHtmlParser2: true, // https://github.com/cheeriojs/cheerio/issues/1198
         decodeEntities: false,
       });
 
       // Remove ignored tags
-      $(defaultedOptions.ignoreTags.join(', ')).remove();
+      if (defaultedOptions.ignoreTags) {
+        $(defaultedOptions.ignoreTags.join(', ')).remove();
+      }
 
       const contents = $.html();
 
-      linthtml.default(contents, defaultedOptions.linthtml)
-        .then((results) => {
+      linthtml(contents, defaultedOptions.linthtml ?? {})
+        .then((results: any) => {
           if (results.length) {
             const codeFrames = results
-              .map((result) => {
+              .map((result: any) => {
                 // Use @babel/code-frame to get a more human-readable error message
                 const frame = codeFrame.codeFrameColumns(contents, {
                   start: result.position.start,
@@ -137,17 +152,17 @@ export default (options = {}) => {
 
           complete();
         })
-        .catch((err) => {
+        .catch((err: unknown) => {
           debug.error('linthtml error: %s', err);
           failures.push(`${filename}:\n\n${err}`);
           complete();
         });
     }, () => {
       if (failures.length) {
-        done(failures.join('\n\n'));
+        done(new Error(failures.join('\n\n')), files, metalsmith);
       }
 
-      done();
+      done(null, files, metalsmith);
     });
   };
 };

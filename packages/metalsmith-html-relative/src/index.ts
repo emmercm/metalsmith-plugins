@@ -2,8 +2,14 @@ import cheerio from 'cheerio';
 import deepmerge from 'deepmerge';
 import path from 'path';
 import url from 'url';
+import Metalsmith from "metalsmith";
 
-export default (options = {}) => {
+interface Options {
+    html?: string,
+    tags?: {[key: string]: string[] | string},
+}
+
+export default (options: Options = {}): Metalsmith.Plugin => {
   const defaultedOptions = deepmerge({
     html: '**/*.html',
     tags: {
@@ -13,7 +19,7 @@ export default (options = {}) => {
       script: 'src',
       form: 'action',
     },
-  }, options || {});
+  } satisfies Options, options || {});
 
   return (files, metalsmith, done) => {
     const debug = metalsmith.debug('metalsmith-html-relative');
@@ -31,7 +37,7 @@ export default (options = {}) => {
         // For each given tag
         Object.keys(defaultedOptions.tags)
           .forEach((tag) => {
-            let attributes = defaultedOptions.tags[tag];
+            let attributes = defaultedOptions.tags[tag] ?? [];
             if (!Array.isArray(attributes)) {
               attributes = [attributes];
             }
@@ -42,6 +48,9 @@ export default (options = {}) => {
               // For each matching element for the tag in the file
               $(selector).each((i, elem) => {
                 const resource = $(elem).attr(attribute);
+                if (!resource) {
+                    return;
+                }
 
                 // Ignore non-local resources
                 const resourceURL = url.parse(resource);
@@ -74,6 +83,6 @@ export default (options = {}) => {
         file.contents = Buffer.from($.html());
       });
 
-    done();
+    done(null, files, metalsmith);
   };
 };

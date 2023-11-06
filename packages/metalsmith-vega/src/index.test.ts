@@ -10,22 +10,26 @@ import vega from './index';
 
 jest.setTimeout(10_000);
 
-const test = (dir, config) => {
+const test = (dir: any, config: any) => {
+  // @ts-expect-error TS(2582): Cannot find name 'describe'. Do you need to instal... Remove this comment to see the full error message
   describe(dir, () => {
     // Allow src directory to not exist / be empty and not committed
     if (!existsSync(`${dir}/src`)) {
       mkdirSync(`${dir}/src`);
     }
 
-    it('should build', (testDone) => {
+    // @ts-expect-error TS(2582): Cannot find name 'it'. Do you need to install type... Remove this comment to see the full error message
+    it('should build', (testDone: any) => {
       Metalsmith(`${dir}`)
         // Run the plugin
         .use(vega(config.options))
         // Test the output
         .build((err) => {
           if (config.error) {
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(err.toString()).toMatch(config.error);
           } else {
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(err).toBeNull();
           }
 
@@ -41,8 +45,9 @@ const test = (dir, config) => {
   });
 };
 
+// @ts-expect-error TS(2582): Cannot find name 'describe'. Do you need to instal... Remove this comment to see the full error message
 describe('metalsmith-vega', () => {
-  const dirs = (p) => readdirSync(p)
+  const dirs = (p: any) => readdirSync(p)
     .map((f) => join(p, f))
     .filter((f) => statSync(f).isDirectory());
   dirs('lib/fixtures')

@@ -2,13 +2,25 @@ import async from 'async';
 import deepmerge from 'deepmerge';
 import http from 'http';
 import https from 'https';
+import Metalsmith from "metalsmith";
 
-const retryJsonGet = (link, options, callback, attempt = 1) => {
+interface Options {
+  username: string,
+  timeout?: number,
+  authorization?: {[key: string]: string},
+  retries?: number,
+  retryableStatusCodes?: number[],
+}
+
+const retryJsonGet = (link: string, options: Options, callback: (error: Error | null, data: unknown) => void, attempt = 1) => {
   const url = new URL(link);
   const library = {
     'http:': http,
     'https:': https,
   }[url.protocol];
+  if (!library) {
+    throw new Error(`protocol not supported: ${url.protocol}`);
+  }
 
   const requestOptions = {
     method: 'GET',
@@ -17,28 +29,29 @@ const retryJsonGet = (link, options, callback, attempt = 1) => {
       'User-Agent': 'metalsmith-github-profile',
     },
     timeout: options.timeout,
-  };
+  } satisfies http.RequestOptions;
 
   let authorized = false;
   if (options.authorization && Object.keys(options.authorization)) {
     const token = `${options.authorization.username}:${options.authorization.token}`;
+    // @ts-expect-error TS(2339): Property 'Authorization' does not exist on type '{... Remove this comment to see the full error message
     requestOptions.headers.Authorization = `Basic ${Buffer.from(token).toString('base64')}`;
     authorized = true;
   }
 
   const req = library.request(link, requestOptions, (res) => {
-    const rateLimitLimit = parseInt(res.headers['x-ratelimit-limit'], 10);
-    const rateLimitRemaining = parseInt(res.headers['x-ratelimit-remaining'], 10);
-    const rateLimitReset = parseInt(res.headers['x-ratelimit-reset'], 10);
+    const rateLimitLimit = parseInt(res.headers['x-ratelimit-limit'] as string, 10);
+    const rateLimitRemaining = parseInt(res.headers['x-ratelimit-remaining'] as string, 10);
+    const rateLimitReset = parseInt(res.headers['x-ratelimit-reset'] as string, 10);
 
     // Try to warn the user about silent authentication issues if authorization was intended
     if (authorized && rateLimitLimit < 1000) {
       console.log(`WARN: Authorization possibly failed, ${rateLimitRemaining}/${rateLimitLimit} rate limit calls remaining`);
     }
 
-    if (res.statusCode < 200 || res.statusCode > 299) {
-      if (options.retryableStatusCodes.includes(res.statusCode)) {
-        if (attempt <= options.retries) {
+    if (res.statusCode && (res.statusCode < 200 || res.statusCode > 299)) {
+      if ((options.retryableStatusCodes ?? []).includes(res.statusCode)) {
+        if (attempt <= (options.retries ?? 0)) {
           setTimeout(() => {
             retryJsonGet(link, options, callback, attempt + 1);
           }, (2 ** attempt) * 100);
@@ -75,14 +88,14 @@ const retryJsonGet = (link, options, callback, attempt = 1) => {
   req.end();
 };
 
-const getUser = (username, debug) => (options, callback) => {
+const getUser = (username: string, debug: Metalsmith.Debugger) => (options: Options, callback: (error: Error | null, data: unknown) => void) => {
   debug('fetching user: %s', username);
   retryJsonGet(`https://api.github.com/users/${username}`, options, callback);
 };
 
-const getRepos = (username, debug, page = 1, prevResults = []) => (options, callback) => {
+const getRepos = (username: string, debug: Metalsmith.Debugger, page = 1, prevResults: any[] = []) => (options: Options, callback: (error: Error | null, data: unknown) => void) => {
   debug('fetching repos for user: %s, page %i', username, page);
-  retryJsonGet(`https://api.github.com/users/${username}/repos?per_page=100&page=${page}`, options, (err, data) => {
+  retryJsonGet(`https://api.github.com/users/${username}/repos?per_page=100&page=${page}`, options, (err: any, data: any) => {
     // Recurse to get all pages
     if (data && data.length) {
       const results = [...prevResults, ...data];
@@ -95,7 +108,7 @@ const getRepos = (username, debug, page = 1, prevResults = []) => (options, call
       delete repo.owner; // large, duplicate info
       obj[repo.name] = repo;
       return obj;
-    }, {});
+    }, {} as {[key: string]: unknown});
 
     callback(err, results);
   });
@@ -106,13 +119,13 @@ const getRepos = (username, debug, page = 1, prevResults = []) => (options, call
  * @param {Object} options
  * @returns {function(Object.<string, Object>, Object, function)}
  */
-export default (options = {}) => {
+export default (options: Options): Metalsmith.Plugin => {
   const defaultedOptions = deepmerge({
+    username: '',
     timeout: 5 * 1000,
-    authorization: {},
     retries: 3,
     retryableStatusCodes: [0, 408, 500, 502, 503, 504],
-  }, options || {});
+  } satisfies Options, options || {});
 
   return (files, metalsmith, done) => {
     const debug = metalsmith.debug('metalsmith-github-profile');
@@ -122,21 +135,21 @@ export default (options = {}) => {
       user: getUser(defaultedOptions.username, debug),
       repos: getRepos(defaultedOptions.username, debug),
     };
-    async.mapValues(methods, (value, key, callback) => {
+    async.mapValues(methods, (value: any, key: any, callback: any) => {
       value(defaultedOptions, callback);
-    }, (err, result) => {
+    }, (err: any, result: any) => {
       if (err) {
-        done(err);
+        done(err, files, metalsmith);
         return;
       }
 
-      const metadata = metalsmith.metadata();
-      if (!metadata.github) {
+      const metadata = metalsmith.metadata() as {github: {profile?: object}};
+      if (metadata.github) {
         metadata.github = {};
       }
       metadata.github.profile = result;
 
-      done();
+      done(null, files, metalsmith);
     });
   };
 };

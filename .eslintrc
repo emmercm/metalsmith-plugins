@@ -13,6 +13,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
+  "ignorePatterns": ["lib/**"],
 
   "env": {
     "jest/globals": true

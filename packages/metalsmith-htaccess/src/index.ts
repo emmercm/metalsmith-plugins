@@ -1,6 +1,60 @@
 import deepmerge from 'deepmerge';
+import Metalsmith from "metalsmith";
 
-const generate = (options) => {
+interface Options {
+  core?: {
+    options?: {
+      followSymlinks?: boolean,
+      indexes?: boolean,
+      multiViews?: boolean,
+    },
+    defaultCharset?: string,
+    serverSignature?: boolean,
+    errorDocuments?: {[key: string]: string},
+  },
+  deflate?: {
+    mimeTypes?: string[]
+  },
+  dir?: {
+    index?: string,
+  },
+  environment?: {
+    serverAdminEmail?: string,
+    timezone?: string,
+  },
+  expires: {
+    default?: string,
+    types?: {
+      [key: string]: string
+    },
+  },
+  gzip?: {
+    canNegotiate?: boolean,
+    dechunk?: boolean,
+    include?: string[]
+    exclude?: string[]
+  },
+  headers?: {
+    etag: boolean,
+  },
+  mime?: {
+    defaultLanguage?: string,
+    languages?: {[key: string]: string},
+    charsets?: {[key: string]: string},
+    types?: {[key: string]: string},
+  },
+  rewrite?: {
+    options?: string,
+    allowedMethods?: string[],
+    '404'?: boolean,
+    httpsRedirect?: boolean,
+  },
+  spelling?: {
+    check?: boolean,
+  },
+}
+
+const generate = (options: Options) => {
   let htaccess = '';
 
   /* ***** Core ***** */
@@ -41,10 +95,11 @@ const generate = (options) => {
       htaccess += 'ServerSignature Off\n';
     }
 
-    if (options.core.errorDocuments && Object.keys(options.core.errorDocuments).length) {
-      Object.keys(options.core.errorDocuments)
+    const errorDocuments = options.core.errorDocuments;
+    if (errorDocuments && Object.keys(errorDocuments).length) {
+      Object.keys(errorDocuments)
         .forEach((code) => {
-          htaccess += `ErrorDocument ${code} ${options.core.errorDocuments[code]}\n`;
+          htaccess += `ErrorDocument ${code} ${errorDocuments[code]}\n`;
         });
     }
   }
@@ -108,10 +163,11 @@ const generate = (options) => {
       htaccess += `\tExpiresDefault "${options.expires.default}"\n`;
     }
 
-    if (options.expires.types && Object.keys(options.expires.types).length) {
-      Object.keys(options.expires.types)
+    const types = options.expires.types;
+    if (types && Object.keys(types).length) {
+      Object.keys(types)
         .forEach((type) => {
-          const time = options.expires.types[type];
+          const time = types[type];
           htaccess += `\tExpiresByType ${type} "${time}"\n`;
         });
     }
@@ -139,14 +195,14 @@ const generate = (options) => {
 
     if (options.gzip.include && options.gzip.include.length) {
       options.gzip.include
-        .forEach((include) => {
+        .forEach((include: any) => {
           htaccess += `\tmod_gzip_item_include ${include}\n`;
         });
     }
 
     if (options.gzip.exclude && options.gzip.exclude.length) {
       options.gzip.exclude
-        .forEach((exclude) => {
+        .forEach((exclude: any) => {
           htaccess += `\tmod_gzip_item_exclude ${exclude}\n`;
         });
     }
@@ -178,24 +234,27 @@ const generate = (options) => {
       htaccess += `\tDefaultLanguage ${options.mime.defaultLanguage}\n`;
     }
 
-    if (options.mime.languages && Object.keys(options.mime.languages).length) {
-      Object.keys(options.mime.languages)
+    const languages = options.mime.languages;
+    if (languages && Object.keys(languages).length) {
+      Object.keys(languages)
         .forEach((language) => {
-          htaccess += `\tAddLanguage ${language} ${options.mime.languages[language]}\n`;
+          htaccess += `\tAddLanguage ${language} ${languages[language]}\n`;
         });
     }
 
-    if (options.mime.charsets && Object.keys(options.mime.charsets).length) {
-      Object.keys(options.mime.charsets)
+    const charsets = options.mime.charsets;
+    if (charsets && Object.keys(charsets).length) {
+      Object.keys(charsets)
         .forEach((charset) => {
-          htaccess += `\tAddCharset ${charset} ${options.mime.charsets[charset]}\n`;
+          htaccess += `\tAddCharset ${charset} ${charsets[charset]}\n`;
         });
     }
 
-    if (options.mime.types && Object.keys(options.mime.types).length) {
-      Object.keys(options.mime.types)
+    const types = options.mime.types;
+    if (types && Object.keys(types).length) {
+      Object.keys(types)
         .forEach((type) => {
-          htaccess += `\tAddType ${type} ${options.mime.types[type]}\n`;
+          htaccess += `\tAddType ${type} ${types[type]}\n`;
         });
     }
 
@@ -252,7 +311,7 @@ const generate = (options) => {
   return htaccess;
 };
 
-export default (options = {}) => {
+export default (options = {}): Metalsmith.Plugin => {
   /**
    * Defaults are set with recommendations from the following websites:
    *  - https://htaccessbook.com/useful-htaccess-rules
@@ -322,7 +381,7 @@ export default (options = {}) => {
     rewrite: {
       options: 'Inherit',
     },
-  }, options || {}, { arrayMerge: (destinationArray, sourceArray) => sourceArray });
+  } satisfies Options, options || {}, { arrayMerge: (destinationArray, sourceArray) => sourceArray });
 
   return (files, metalsmith, done) => {
     const debug = metalsmith.debug('metalsmith-htaccess');
@@ -334,6 +393,6 @@ export default (options = {}) => {
       contents: Buffer.from(htaccess),
     };
 
-    done();
+    done(null, files, metalsmith);
   };
 };

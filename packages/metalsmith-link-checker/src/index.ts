@@ -1,10 +1,35 @@
-import async from 'async';
+import async, {AsyncResultCallback} from 'async';
 import cheerio from 'cheerio';
 import deepmerge from 'deepmerge';
 import http from 'http';
 import https from 'https';
 import path from 'path';
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'top-... Remove this comment to see the full error message
 import userAgents from 'top-user-agents';
+import Metalsmith from "metalsmith";
+
+interface Options {
+  html?: {
+    pattern?: string,
+    tags?: {[key: string]: string | string[]},
+  },
+  ignore?: string[] | RegExp[],
+  timeout?: number,
+  attempts?: number,
+  userAgent?: string,
+  parallelism?: number,
+}
+
+interface FilenameAndLink {
+  filename: string,
+      link: string,
+}
+
+interface FilenameAndLinkWithResult extends FilenameAndLink {
+  result?: string,
+}
+
+type Validator = (link: string, options: Options, debug: Metalsmith.Debugger, callback: (error: Error | null, validationError?: string) => void) => string | null | void;
 
 /**
  * Return a fake user agent.
@@ -17,11 +42,11 @@ const userAgent = userAgents[0];
  * @param {String} input
  * @returns {{}|URL}
  */
-const urlParse = (input) => {
+const urlParse = (input: string): URL => {
   try {
     return new URL(input);
   } catch (err) {
-    return {};
+    return new URL('');
   }
 };
 
@@ -47,9 +72,9 @@ const urlParse = (input) => {
  * @param {Object} options
  * @returns {Array.<filenameAndLink>}
  */
-const htmlLinks = (metalsmith, files, options) => {
+const htmlLinks = (metalsmith: Metalsmith, files: Metalsmith.Files, options: Options): FilenameAndLink[] => {
   // For each HTML file that matches the given pattern
-  const htmlFiles = metalsmith.match(options.html.pattern, Object.keys(files));
+  const htmlFiles = metalsmith.match(options.html?.pattern ?? '**/*', Object.keys(files));
   return htmlFiles
     .reduce((arr, filename) => {
       const file = files[filename];
@@ -58,23 +83,22 @@ const htmlLinks = (metalsmith, files, options) => {
       const normalizedFilename = filename.replace(/[/\\]/g, '/');
       return arr.concat(
         // For each given tag
-        ...Object.keys(options.html.tags)
+        ...Object.keys(options.html?.tags ?? {})
           .map((tag) => {
-            let attributes = options.html.tags[tag];
+            let attributes = (options.html?.tags ?? {})[tag];
             if (!Array.isArray(attributes)) {
               attributes = [attributes];
             }
 
-            return [].concat(
-              // For each given attribute, get the value of it
-              ...attributes
+            return attributes
                 .map((attribute) => $(`${tag}[${attribute}][${attribute}!='']`)
-                  .map((i, elem) => $(elem).attr(attribute))
-                  .get()),
-            ).map((link) => ({ filename: normalizedFilename, link }));
+                    .map((i, elem) => $(elem).attr(attribute))
+                    .get())
+                .flat()
+                .map((link) => ({ filename: normalizedFilename, link }) satisfies FilenameAndLink)
           }),
       );
-    }, []);
+    }, [] as FilenameAndLink[]);
 };
 
 /**
@@ -95,7 +119,7 @@ const htmlLinks = (metalsmith, files, options) => {
  * Validate a FaceTime link.
  * @type {validator}
  */
-const validFacetime = (link) => {
+const validFacetime = (link: string) => {
   // https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/FacetimeLinks/FacetimeLinks.html
   if (link === 'facetime:') {
     return null;
@@ -118,15 +142,15 @@ const validFacetime = (link) => {
   return null;
 };
 
-const validUrlCache = {};
+const validUrlCache: {[key: string]: string} = {};
 /**
  * Validate a remote HTTP or HTTPS URL.
  * @type {validator}
  */
-const validUrl = (link, options, debug, callback, attempt = 1, method = 'HEAD') => {
-  const cacheAndCallback = (err, result) => {
+const validUrl = (link: string, options: Options, debug: Metalsmith.Debugger, callback: any, attempt = 1, method = 'HEAD') => {
+  const cacheAndCallback = (err: any, result: any) => {
     // Retry failures if we haven't reached the retry limit
-    if (result && attempt <= options.attempts) {
+    if (result && attempt <= (options.attempts ?? 0)) {
       setTimeout(() => {
         validUrl(link, options, debug, callback, attempt + 1, method);
       }, Math.min(1000, 100 * 2 ** attempt));
@@ -161,7 +185,7 @@ const validUrl = (link, options, debug, callback, attempt = 1, method = 'HEAD') 
 
     if (!res) {
       cacheAndCallback(null, 'no response');
-    } else if (res.statusCode >= 400 && res.statusCode <= 599) {
+    } else if (res.statusCode && res.statusCode >= 400 && res.statusCode <= 599) {
       cacheAndCallback(null, `HTTP ${res.statusCode}`);
     } else {
       cacheAndCallback(null, null);
@@ -191,7 +215,7 @@ const validUrl = (link, options, debug, callback, attempt = 1, method = 'HEAD') 
  * Validate a mailto: link.
  * @type {validator}
  */
-const validMailto = (link) => {
+const validMailto = (link: string) => {
   // https://www.w3docs.com/snippets/html/how-to-create-mailto-links.html
   if (!link.match(/^mailto:[^@]+/)) {
     return 'invalid local-part';
@@ -209,7 +233,7 @@ const validMailto = (link) => {
  * Validate a sms: link.
  * @type {validator}
  */
-const validSms = (link) => {
+const validSms = (link: string) => {
   // https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/SMSLinks/SMSLinks.html
   if (!link.replace(/ /g, '').match(/^sms:([0-9.+-]+)?$/)) {
     return 'invalid';
@@ -224,7 +248,7 @@ const validSms = (link) => {
  * Validate a tel: link.
  * @type {validator}
  */
-const validTel = (link) => {
+const validTel = (link: string) => {
   // https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/PhoneLinks/PhoneLinks.html#//apple_ref/doc/uid/TP40007899-CH6-SW1
   if (!link.replace(/ /g, '').match(/^tel:([0-9.+-]+)?$/)) {
     return 'invalid';
@@ -242,7 +266,7 @@ const validTel = (link) => {
  * @param {string} dest
  * @returns {boolean}
  */
-const validLocal = (files, src, dest) => {
+const validLocal = (files: {[key: string]: unknown}, src: string, dest: string) => {
   // TODO: anchor validation
   // Strip trailing anchor link
   const destNormalized = dest.replace(/#.*$/, '');
@@ -264,7 +288,7 @@ const validLocal = (files, src, dest) => {
 /**
  * @type {Object.<string, validator>}
  */
-const protocolValidators = {
+const protocolValidators: {[key: string]: Validator} = {
   'facetime:': validFacetime,
   'facetime-audio:': validFacetime,
   'http:': validUrl,
@@ -279,7 +303,7 @@ const protocolValidators = {
  * @param {Object} defaultedOptions
  * @returns {function(Object.<string, Object>, Object, function)}
  */
-export default (options = {}) => {
+export default (options: Options = {}): Metalsmith.Plugin => {
   const defaultedOptions = deepmerge({
     html: {
       pattern: '**/*.html',
@@ -290,12 +314,11 @@ export default (options = {}) => {
         script: 'src',
       },
     },
-    ignore: [],
     timeout: 10 * 1000,
     attempts: 3,
     userAgent,
     parallelism: 100,
-  }, options || {});
+  } satisfies Options, options || {});
 
   return (files, metalsmith, done) => {
     const debug = metalsmith.debug('metalsmith-link-checker');
@@ -305,10 +328,10 @@ export default (options = {}) => {
       .reduce((reducer, filename) => {
         reducer[filename.replace(/[/\\]/g, '/')] = true;
         return reducer;
-      }, {});
+      }, {} as {[key: string]: boolean});
 
     // Gather a list of filename + link combinations, and remove ignored links
-    defaultedOptions.ignore = defaultedOptions.ignore.map((pattern) => new RegExp(pattern));
+    const ignore = defaultedOptions.ignore.map((pattern) => new RegExp(pattern));
     const filenamesAndLinks = [
       ...htmlLinks(metalsmith, files, defaultedOptions),
       // TODO: CSS files
@@ -316,20 +339,20 @@ export default (options = {}) => {
     ]
       // Filter this out if this a duplicate of an item earlier in the array
       .filter((v1, idx, arr) => {
-        const comparator = (v2) => JSON.stringify(v1) === JSON.stringify(v2);
+        const comparator = (v2: any) => JSON.stringify(v1) === JSON.stringify(v2);
         return arr.findIndex(comparator) === idx;
       })
       // Filter this out if any ignore regex matches
       .filter((filenameAndLink) => {
-        const comparator = (re) => re.test(filenameAndLink.link);
-        return !defaultedOptions.ignore.some(comparator);
+        const comparator = (re: RegExp) => re.test(filenameAndLink.link);
+        return !ignore.some(comparator);
       })
       // Shuffle to try to disperse checking the same domain concurrently
       .sort(() => Math.random() - 0.5);
 
     // For each link, find the files it is broken for
-    async.mapLimit(filenamesAndLinks, defaultedOptions.parallelism, (filenameAndLink, callback) => {
-      const callbackResult = (err, result) => callback(err, { ...filenameAndLink, result });
+    async.mapLimit(filenamesAndLinks, defaultedOptions.parallelism, (filenameAndLink, callback: AsyncResultCallback<FilenameAndLinkWithResult, Error>) => {
+      const callbackResult = (err: Error | null, result?: string) => callback(err, { ...filenameAndLink, result });
       const { filename, link } = filenameAndLink;
 
       // Validate links with a protocol (remote links)
@@ -342,7 +365,7 @@ export default (options = {}) => {
             debug,
             callbackResult,
           );
-          if (result === undefined) {
+          if (result === undefined || result === null) {
             // Validation function didn't return anything, it will call the callback for us
             return;
           }
@@ -352,19 +375,25 @@ export default (options = {}) => {
         }
 
         // Assume all unknown protocols are valid
-        callbackResult(null, null);
+        callbackResult(null, undefined);
         return;
       }
 
       // Validate local files
-      callbackResult(null, validLocal(normalizedFilenames, filename, link) ? null : 'not found');
-    }, (err, /** @type {filenameAndLinkWithResult} */ result) => {
+      callbackResult(null, validLocal(normalizedFilenames, filename, link) ? undefined : 'not found');
+    }, (err, result) => {
       if (err) {
-        done(err);
+        done(err, files, metalsmith);
+        return;
+      }
+
+      if (!result) {
+        done(null, files, metalsmith);
         return;
       }
 
       const filenamesToLinkErrors = result
+        .filter((filenamesAndLink): filenamesAndLink is FilenameAndLinkWithResult => filenamesAndLink !== undefined)
         .filter((filenameAndLink) => filenameAndLink.result)
         .reduce((obj, filenameAndLink) => {
           if (!obj[filenameAndLink.filename]) {
@@ -372,22 +401,22 @@ export default (options = {}) => {
           }
           obj[filenameAndLink.filename].push(`${filenameAndLink.link} (${filenameAndLink.result})`);
           return obj;
-        }, {});
+        }, {} as {[key: string]: string[]});
 
       // Return a pretty formatted error if there are bad links
       if (Object.keys(filenamesToLinkErrors).length) {
         const message = Object.keys(filenamesToLinkErrors).sort()
           .map((filename) => {
             const output = filenamesToLinkErrors[filename].sort()
-              .map((linkError) => `  ${linkError}`)
+              .map((linkError: any) => `  ${linkError}`)
               .join('\n');
             return `${filename}:\n${output}`;
           })
           .join('\n\n');
-        done(`Broken links found:\n\n${message}`);
+        done(new Error(`Broken links found:\n\n${message}`), files, metalsmith);
       }
 
-      done();
+      done(null, files, metalsmith);
     });
   };
 };

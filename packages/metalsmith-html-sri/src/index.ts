@@ -4,8 +4,16 @@ import deepmerge from 'deepmerge';
 import path from 'path';
 import request from 'sync-request';
 import url from 'url';
+import Metalsmith from "metalsmith";
 
-export default (options = {}) => {
+interface Options {
+  html?: string,
+  tags?: {[key: string]: {attribute: string, selector: string}},
+  ignoreResources?: string[],
+  algorithm?: string | string[],
+}
+
+export default (options: Options = {}): Metalsmith.Plugin => {
   const defaultedOptions = deepmerge({
     html: '**/*.html',
     tags: {
@@ -24,12 +32,12 @@ export default (options = {}) => {
     ignoreResources: [],
     // https://www.w3.org/TR/2016/REC-SRI-20160623/#hash-collision-attacks
     algorithm: 'sha384',
-  }, options || {});
+  } satisfies Options, options || {});
   if (!Array.isArray(defaultedOptions.algorithm)) {
     defaultedOptions.algorithm = [defaultedOptions.algorithm];
   }
 
-  const remoteResources = {};
+  const remoteResources: {[key: string]: string} = {};
 
   return (files, metalsmith, done) => {
     const debug = metalsmith.debug('metalsmith-html-sri');
@@ -57,6 +65,9 @@ export default (options = {}) => {
             // For each matching element for the tag in the file
             $elems.each((i, elem) => {
               const uri = $(elem).attr(attribute);
+              if (!uri) {
+                return;
+              }
 
               // Skip ignored resources
               const ignore = defaultedOptions.ignoreResources.some((ignoreResource) => {
@@ -81,8 +92,8 @@ export default (options = {}) => {
                 // Only calculate resource hash once
                 if (typeof files[resource].integrity === 'undefined') {
                   // https://www.w3.org/TR/2016/REC-SRI-20160623/#the-integrity-attribute
-                  files[resource].integrity = defaultedOptions.algorithm
-                    .map((algorithm) => `${algorithm}-${crypto.createHash(algorithm).update(files[resource].contents).digest('base64')}`)
+                  files[resource].integrity = (defaultedOptions.algorithm as string[])
+                    .map((algorithm: any) => `${algorithm}-${crypto.createHash(algorithm).update(files[resource].contents).digest('base64')}`)
                     .join(' ');
                 }
 
@@ -106,8 +117,8 @@ export default (options = {}) => {
                 if (!Object.prototype.hasOwnProperty.call(remoteResources, uri)) {
                   debug('fetching file: %s', uri);
                   const response = request('GET', uri);
-                  remoteResources[uri] = defaultedOptions.algorithm
-                    .map((algorithm) => `${algorithm}-${crypto.createHash(algorithm).update(response.body).digest('base64')}`)
+                  remoteResources[uri] = (defaultedOptions.algorithm as string[])
+                    .map((algorithm: any) => `${algorithm}-${crypto.createHash(algorithm).update(response.body).digest('base64')}`)
                     .join(' ');
                 }
 
@@ -128,6 +139,6 @@ export default (options = {}) => {
         file.contents = Buffer.from($.html());
       });
 
-    done();
+    done(null, files, metalsmith);
   };
 };

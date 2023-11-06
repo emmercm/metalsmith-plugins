@@ -1,16 +1,24 @@
+// @ts-expect-error TS(2307): Cannot find module '@mermaid-js/mermaid-cli' or it... Remove this comment to see the full error message
 // eslint-disable-next-line import/no-unresolved
 import { renderMermaid } from '@mermaid-js/mermaid-cli';
 import async from 'async';
 import deepmerge from 'deepmerge';
-import puppeteer from 'puppeteer';
+import puppeteer, {Browser} from 'puppeteer';
 import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
 import { unified } from 'unified';
-import { visit } from 'unist-util-visit';
+import {visit } from 'unist-util-visit';
+import Metalsmith from "metalsmith";
+import {Html,Root} from "mdast";
+
+interface Options {
+  markdown?: string,
+  mermaid?: unknown
+}
 
 const CONSISTENT_CSS = '.mermaid{line-height:1.2;}';
 
-const mermaidToSvg = async (browser, mermaidData, mermaidOptions) => {
+const mermaidToSvg = async (browser: Browser, mermaidData: string, mermaidOptions: unknown) => {
   const svgData = (await renderMermaid(browser, mermaidData, 'svg', {
     mermaidConfig: mermaidOptions,
     myCSS: CONSISTENT_CSS,
@@ -26,7 +34,7 @@ const mermaidToSvg = async (browser, mermaidData, mermaidOptions) => {
 
     // Remove HTML elements that cause problems if their contents are empty
     document.querySelectorAll('title, desc').forEach((elem) => {
-      if (elem.textContent.trim() === '') {
+      if (!elem.textContent || elem.textContent.trim() === '') {
         elem.remove();
       }
     });
@@ -49,16 +57,16 @@ const mermaidToSvg = async (browser, mermaidData, mermaidOptions) => {
   }, CONSISTENT_CSS);
 };
 
-const remarkMermaid = (browser, mermaidOptions, debug) => async (tree) => {
-  const promises = [];
-  await visit(tree, 'code', async (node, idx, parent) => {
-    if ((node.lang || '').toLowerCase() !== 'mermaid') {
-      return node;
+const remarkMermaid = (browser: Browser, mermaidOptions: unknown, debug: Metalsmith.Debugger) => async (tree: Root) => {
+  const promises: Promise<unknown>[] = [];
+  visit(tree, 'code', (node, idx, parent) => {
+    if ((node.lang || '').toLowerCase() !== 'mermaid' || idx === undefined || !parent) {
+      return;
     }
 
     debug('rendering %s beginning with: %s', node.lang, node.value.slice(0, 100));
     const promise = mermaidToSvg(browser, node.value, mermaidOptions).then((svg) => {
-      const newNode = {
+      const newNode: Html = {
         type: 'html',
         value: svg,
       };
@@ -66,12 +74,11 @@ const remarkMermaid = (browser, mermaidOptions, debug) => async (tree) => {
       parent.children.splice(idx, 1, newNode);
     });
     promises.push(promise);
-    return null;
   });
   await Promise.all(promises);
 };
 
-export default (options = {}) => {
+export default (options: Options = {}): Metalsmith.Plugin => {
   const defaultedOptions = deepmerge({
     markdown: '**/*.md',
     mermaid: {
@@ -88,7 +95,7 @@ export default (options = {}) => {
       },
       gantt: {},
     },
-  }, options || {});
+  } satisfies Options, options || {});
 
   return async (files, metalsmith, done) => {
     const debug = metalsmith.debug('metalsmith-mermaid');
@@ -109,7 +116,7 @@ export default (options = {}) => {
       file.contents = Buffer.from(tree.value);
     }, async (err) => {
       await browser.close();
-      done(err);
+      done(err ?? null, files, metalsmith);
     });
 
     // TODO: html files?

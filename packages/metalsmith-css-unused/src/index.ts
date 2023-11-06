@@ -1,7 +1,14 @@
 import deepmerge from 'deepmerge';
-import { PurgeCSS } from 'purgecss';
+import {PurgeCSS, UserDefinedOptions} from 'purgecss';
+import Metalsmith from "metalsmith";
 
-export default (options = {}) => {
+interface Options {
+  html?: string,
+  css?: string,
+  purgecss?: UserDefinedOptions,
+}
+
+export default (options: Options = {}): Metalsmith.Plugin => {
   const defaultedOptions = deepmerge({
     html: '**/*.html',
     css: '**/*.css',
@@ -15,16 +22,16 @@ export default (options = {}) => {
     // Build list of HTML content
     defaultedOptions.purgecss.content = metalsmith.match(defaultedOptions.html, Object.keys(files))
       .map((filename) => ({
-        raw: files[filename].contents.toString(),
-        extension: 'html',
-      }));
+      raw: files[filename].contents.toString(),
+      extension: 'html'
+    }));
 
     // Build list of CSS content
     const cssFiles = metalsmith.match(defaultedOptions.css, Object.keys(files));
     defaultedOptions.purgecss.css = cssFiles
       .map((filename) => ({
-        raw: files[filename].contents.toString(),
-      }));
+      raw: files[filename].contents.toString()
+    }));
 
     (new PurgeCSS().purge(defaultedOptions.purgecss))
       .then((purgecss) => {
@@ -32,11 +39,11 @@ export default (options = {}) => {
           files[cssFiles[i]].contents = Buffer.from(purgecss[i].css);
         }
 
-        done();
+        done(null, files, metalsmith);
       })
       .catch((err) => {
         debug.error('purgecss error: %s', err);
-        done(err);
+        done(err, files, metalsmith);
       });
   };
 };

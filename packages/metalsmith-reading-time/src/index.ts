@@ -1,13 +1,21 @@
 import deepmerge from 'deepmerge';
-import readingTime from 'reading-time';
+import readingTime, {Options as ReadingTimeOptions} from 'reading-time';
+import Metalsmith from "metalsmith";
 
-export default (options = {}) => {
+interface Options {
+    pattern?: string,
+    stripHtml?: boolean,
+    replacements?: string[][],
+    readingTime?: ReadingTimeOptions,
+}
+
+export default (options: Options = {}): Metalsmith.Plugin => {
   const defaultedOptions = deepmerge({
     pattern: '**/*',
     stripHtml: true,
     replacements: [],
     readingTime: {},
-  }, options || {});
+  } satisfies Options, options || {});
 
   return (files, metalsmith, done) => {
     const debug = metalsmith.debug('metalsmith-reading time');
@@ -15,7 +23,7 @@ export default (options = {}) => {
 
     // For each file that matches the given pattern
     metalsmith.match(defaultedOptions.pattern, Object.keys(files))
-      .forEach((filename) => {
+      .forEach((filename: any) => {
         debug('processing file: %s', filename);
 
         let contents = files[filename].contents.toString();
@@ -33,7 +41,7 @@ export default (options = {}) => {
 
         if (defaultedOptions.replacements && defaultedOptions.replacements.length) {
           defaultedOptions.replacements.forEach((replacement) => {
-            let pattern = replacement[0];
+            let pattern: string | RegExp = replacement[0];
             const matches = pattern.match(/^\/(.+)\/([a-z]*)/);
             if (matches) {
               pattern = new RegExp(matches[1], matches[2]);
@@ -46,6 +54,6 @@ export default (options = {}) => {
         files[filename].readingTime = readingTime(contents, defaultedOptions.readingTime).text;
       });
 
-    done();
+    done(null, files, metalsmith);
   };
 };

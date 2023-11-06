@@ -50,6 +50,7 @@
     "metalsmith": "^2.5.0"
   },
   "devDependencies": {
+    "@types/async": "^3.2.22",
     "@types/jest": "^29.5.7",
     "assert-dir-equal": "1.1.0",
     "eslint": "8.52.0",
