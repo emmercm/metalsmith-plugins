@@ -1,8 +1,8 @@
 import deepmerge from 'deepmerge';
-import {PurgeCSS, UserDefinedOptions} from 'purgecss';
-import Metalsmith from "metalsmith";
+import Metalsmith from 'metalsmith';
+import { PurgeCSS, UserDefinedOptions } from 'purgecss';
 
-interface Options {
+export interface Options {
   html?: string,
   css?: string,
   purgecss?: UserDefinedOptions,
@@ -22,16 +22,16 @@ export default (options: Options = {}): Metalsmith.Plugin => {
     // Build list of HTML content
     defaultedOptions.purgecss.content = metalsmith.match(defaultedOptions.html, Object.keys(files))
       .map((filename) => ({
-      raw: files[filename].contents.toString(),
-      extension: 'html'
-    }));
+        raw: files[filename].contents.toString(),
+        extension: 'html',
+      }));
 
     // Build list of CSS content
     const cssFiles = metalsmith.match(defaultedOptions.css, Object.keys(files));
     defaultedOptions.purgecss.css = cssFiles
       .map((filename) => ({
-      raw: files[filename].contents.toString()
-    }));
+        raw: files[filename].contents.toString(),
+      }));
 
     (new PurgeCSS().purge(defaultedOptions.purgecss))
       .then((purgecss) => {

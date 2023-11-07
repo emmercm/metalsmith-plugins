@@ -1,17 +1,16 @@
-import async, {AsyncResultCallback} from 'async';
+import async, { AsyncResultCallback } from 'async';
 import cheerio from 'cheerio';
 import deepmerge from 'deepmerge';
 import http from 'http';
 import https from 'https';
+import Metalsmith from 'metalsmith';
 import path from 'path';
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'top-... Remove this comment to see the full error message
 import userAgents from 'top-user-agents';
-import Metalsmith from "metalsmith";
 
-interface Options {
+export interface Options {
   html?: {
     pattern?: string,
-    tags?: {[key: string]: string | string[]},
+    tags?: { [key: string]: string | string[] },
   },
   ignore?: string[] | RegExp[],
   timeout?: number,
@@ -22,57 +21,44 @@ interface Options {
 
 interface FilenameAndLink {
   filename: string,
-      link: string,
+  link: string,
 }
 
 interface FilenameAndLinkWithResult extends FilenameAndLink {
   result?: string,
 }
 
-type Validator = (link: string, options: Options, debug: Metalsmith.Debugger, callback: (error: Error | null, validationError?: string) => void) => string | null | void;
+type Validator = (
+  link: string,
+  options: Options,
+  debug: Metalsmith.Debugger,
+  callback: (error: Error | null, validationError: string | null | undefined) => void
+) => string | null | void;
 
 /**
  * Return a fake user agent.
- * @returns {string}
  */
 const userAgent = userAgents[0];
 
 /**
  * A lenient WHATWG version of url.parse().
- * @param {String} input
- * @returns {{}|URL}
  */
-const urlParse = (input: string): URL => {
+const urlParse = (input: string): URL | undefined => {
   try {
     return new URL(input);
   } catch (err) {
-    return new URL('');
+    return undefined;
   }
 };
 
 /**
- * A Metalsmith files object.
- * @typedef {Object.<string, {}>} metalsmithFiles
- */
-
-/**
- * An object of a link in filename.
- * @typedef {{filename: string, link: string}} filenameAndLink
- */
-
-/**
- * An object of a link in a filename, with a validation result.
- * @typedef {{filename: string, link: string, result: ?string}} filenameAndLinkWithResult
- */
-
-/**
  * Gather all links from all HTML files.
- * @param {Object} metalsmith
- * @param {metalsmithFiles} files
- * @param {Object} options
- * @returns {Array.<filenameAndLink>}
  */
-const htmlLinks = (metalsmith: Metalsmith, files: Metalsmith.Files, options: Options): FilenameAndLink[] => {
+const htmlLinks = (
+  metalsmith: Metalsmith,
+  files: Metalsmith.Files,
+  options: Options,
+): FilenameAndLink[] => {
   // For each HTML file that matches the given pattern
   const htmlFiles = metalsmith.match(options.html?.pattern ?? '**/*', Object.keys(files));
   return htmlFiles
@@ -91,33 +77,18 @@ const htmlLinks = (metalsmith: Metalsmith, files: Metalsmith.Files, options: Opt
             }
 
             return attributes
-                .map((attribute) => $(`${tag}[${attribute}][${attribute}!='']`)
-                    .map((i, elem) => $(elem).attr(attribute))
-                    .get())
-                .flat()
-                .map((link) => ({ filename: normalizedFilename, link }) satisfies FilenameAndLink)
+              .map((attribute) => $(`${tag}[${attribute}][${attribute}!='']`)
+                .map((i, elem) => $(elem).attr(attribute))
+                .get())
+              .flat()
+              .map((link) => ({ filename: normalizedFilename, link }) satisfies FilenameAndLink);
           }),
       );
     }, [] as FilenameAndLink[]);
 };
 
 /**
- * @typedef {function} validator
- * @param {string} link
- * @param {Object} options Plugin options
- * @param {Object} debug Debug function
- * @param {validatorCallback} asyncCallback
- */
-
-/**
- * @callback validatorCallback
- * @param {Object} err
- * @param {?string} validationError
- */
-
-/**
  * Validate a FaceTime link.
- * @type {validator}
  */
 const validFacetime = (link: string) => {
   // https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/FacetimeLinks/FacetimeLinks.html
@@ -142,13 +113,19 @@ const validFacetime = (link: string) => {
   return null;
 };
 
-const validUrlCache: {[key: string]: string} = {};
+const validUrlCache: { [key: string]: string | null } = {};
 /**
  * Validate a remote HTTP or HTTPS URL.
- * @type {validator}
  */
-const validUrl = (link: string, options: Options, debug: Metalsmith.Debugger, callback: any, attempt = 1, method = 'HEAD') => {
-  const cacheAndCallback = (err: any, result: any) => {
+const validUrl = (
+  link: string,
+  options: Options,
+  debug: Metalsmith.Debugger,
+  callback: (error: Error | null, validationError: string | null) => void,
+  attempt = 1,
+  method = 'HEAD',
+) => {
+  const cacheAndCallback = (err: Error | null, result: string | null) => {
     // Retry failures if we haven't reached the retry limit
     if (result && attempt <= (options.attempts ?? 0)) {
       setTimeout(() => {
@@ -213,7 +190,6 @@ const validUrl = (link: string, options: Options, debug: Metalsmith.Debugger, ca
 
 /**
  * Validate a mailto: link.
- * @type {validator}
  */
 const validMailto = (link: string) => {
   // https://www.w3docs.com/snippets/html/how-to-create-mailto-links.html
@@ -231,7 +207,6 @@ const validMailto = (link: string) => {
 
 /**
  * Validate a sms: link.
- * @type {validator}
  */
 const validSms = (link: string) => {
   // https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/SMSLinks/SMSLinks.html
@@ -246,7 +221,6 @@ const validSms = (link: string) => {
 
 /**
  * Validate a tel: link.
- * @type {validator}
  */
 const validTel = (link: string) => {
   // https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/PhoneLinks/PhoneLinks.html#//apple_ref/doc/uid/TP40007899-CH6-SW1
@@ -261,12 +235,8 @@ const validTel = (link: string) => {
 
 /**
  * Return if a `dest` link from a `src` file is valid or not.
- * @param {metalsmithFiles} files
- * @param {string} src
- * @param {string} dest
- * @returns {boolean}
  */
-const validLocal = (files: {[key: string]: unknown}, src: string, dest: string) => {
+const validLocal = (files: { [key: string]: unknown }, src: string, dest: string) => {
   // TODO: anchor validation
   // Strip trailing anchor link
   const destNormalized = dest.replace(/#.*$/, '');
@@ -285,10 +255,7 @@ const validLocal = (files: {[key: string]: unknown}, src: string, dest: string) 
   return linkPath in files || path.join(linkPath, 'index.html').replace(/[/\\]/g, '/') in files;
 };
 
-/**
- * @type {Object.<string, validator>}
- */
-const protocolValidators: {[key: string]: Validator} = {
+const protocolValidators: { [key: string]: Validator } = {
   'facetime:': validFacetime,
   'facetime-audio:': validFacetime,
   'http:': validUrl,
@@ -300,8 +267,6 @@ const protocolValidators: {[key: string]: Validator} = {
 
 /**
  * Plugin entrypoint.
- * @param {Object} defaultedOptions
- * @returns {function(Object.<string, Object>, Object, function)}
  */
 export default (options: Options = {}): Metalsmith.Plugin => {
   const defaultedOptions = deepmerge({
@@ -315,7 +280,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
       },
     },
     timeout: 10 * 1000,
-    attempts: 3,
+    attempts: 1,
     userAgent,
     parallelism: 100,
   } satisfies Options, options || {});
@@ -328,10 +293,10 @@ export default (options: Options = {}): Metalsmith.Plugin => {
       .reduce((reducer, filename) => {
         reducer[filename.replace(/[/\\]/g, '/')] = true;
         return reducer;
-      }, {} as {[key: string]: boolean});
+      }, {} as { [key: string]: boolean });
 
     // Gather a list of filename + link combinations, and remove ignored links
-    const ignore = defaultedOptions.ignore.map((pattern) => new RegExp(pattern));
+    const ignore = (defaultedOptions.ignore ?? []).map((pattern) => new RegExp(pattern));
     const filenamesAndLinks = [
       ...htmlLinks(metalsmith, files, defaultedOptions),
       // TODO: CSS files
@@ -339,7 +304,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
     ]
       // Filter this out if this a duplicate of an item earlier in the array
       .filter((v1, idx, arr) => {
-        const comparator = (v2: any) => JSON.stringify(v1) === JSON.stringify(v2);
+        const comparator = (v2: FilenameAndLink) => JSON.stringify(v1) === JSON.stringify(v2);
         return arr.findIndex(comparator) === idx;
       })
       // Filter this out if any ignore regex matches
@@ -351,72 +316,81 @@ export default (options: Options = {}): Metalsmith.Plugin => {
       .sort(() => Math.random() - 0.5);
 
     // For each link, find the files it is broken for
-    async.mapLimit(filenamesAndLinks, defaultedOptions.parallelism, (filenameAndLink, callback: AsyncResultCallback<FilenameAndLinkWithResult, Error>) => {
-      const callbackResult = (err: Error | null, result?: string) => callback(err, { ...filenameAndLink, result });
-      const { filename, link } = filenameAndLink;
+    async.mapLimit(
+      filenamesAndLinks,
+      defaultedOptions.parallelism,
+      (filenameAndLink, callback: AsyncResultCallback<FilenameAndLinkWithResult, Error>) => {
+        const callbackResult = (err: Error | null, result: string | undefined | null) => callback(
+          err,
+          { ...filenameAndLink, result: result ?? undefined },
+        );
+        const { filename, link } = filenameAndLink;
 
-      // Validate links with a protocol (remote links)
-      const linkUrl = urlParse(link);
-      if (linkUrl.protocol) {
-        if (protocolValidators[linkUrl.protocol] !== undefined) {
-          const result = protocolValidators[linkUrl.protocol](
-            link,
-            defaultedOptions,
-            debug,
-            callbackResult,
-          );
-          if (result === undefined || result === null) {
-            // Validation function didn't return anything, it will call the callback for us
+        // Validate links with a protocol (remote links)
+        const linkUrl = urlParse(link);
+        if (linkUrl && linkUrl.protocol) {
+          if (protocolValidators[linkUrl.protocol] !== undefined) {
+            const result = protocolValidators[linkUrl.protocol](
+              link,
+              defaultedOptions,
+              debug,
+              callbackResult,
+            );
+            if (result === undefined) {
+              // Validation function didn't return anything, it will call the callback for us
+              return;
+            }
+            // Otherwise, call the callback with the validation result
+            callbackResult(null, result);
             return;
           }
-          // Otherwise, call the callback with the validation result
-          callbackResult(null, result);
+
+          // Assume all unknown protocols are valid
+          callbackResult(null, undefined);
           return;
         }
 
-        // Assume all unknown protocols are valid
-        callbackResult(null, undefined);
-        return;
-      }
+        // Validate local files
+        callbackResult(null, validLocal(normalizedFilenames, filename, link) ? undefined : 'not found');
+      },
+      (err, result) => {
+        if (err) {
+          done(err, files, metalsmith);
+          return;
+        }
 
-      // Validate local files
-      callbackResult(null, validLocal(normalizedFilenames, filename, link) ? undefined : 'not found');
-    }, (err, result) => {
-      if (err) {
-        done(err, files, metalsmith);
-        return;
-      }
+        if (!result) {
+          done(null, files, metalsmith);
+          return;
+        }
 
-      if (!result) {
+        const filenamesToLinkErrors = result
+          .filter((falwr): falwr is FilenameAndLinkWithResult => falwr !== undefined)
+          .filter((filenameAndLink) => filenameAndLink.result)
+          .reduce((obj, filenameAndLink) => {
+            if (!obj[filenameAndLink.filename]) {
+              obj[filenameAndLink.filename] = [];
+            }
+            obj[filenameAndLink.filename].push(`${filenameAndLink.link} (${filenameAndLink.result})`);
+            return obj;
+          }, {} as { [key: string]: string[] });
+
+        // Return a pretty formatted error if there are bad links
+        if (Object.keys(filenamesToLinkErrors).length) {
+          const message = Object.keys(filenamesToLinkErrors).sort()
+            .map((filename) => {
+              const output = filenamesToLinkErrors[filename].sort()
+                .map((linkError) => `  ${linkError}`)
+                .join('\n');
+              return `${filename}:\n${output}`;
+            })
+            .join('\n\n');
+          done(new Error(`Broken links found:\n\n${message}`), files, metalsmith);
+          return;
+        }
+
         done(null, files, metalsmith);
-        return;
-      }
-
-      const filenamesToLinkErrors = result
-        .filter((filenamesAndLink): filenamesAndLink is FilenameAndLinkWithResult => filenamesAndLink !== undefined)
-        .filter((filenameAndLink) => filenameAndLink.result)
-        .reduce((obj, filenameAndLink) => {
-          if (!obj[filenameAndLink.filename]) {
-            obj[filenameAndLink.filename] = [];
-          }
-          obj[filenameAndLink.filename].push(`${filenameAndLink.link} (${filenameAndLink.result})`);
-          return obj;
-        }, {} as {[key: string]: string[]});
-
-      // Return a pretty formatted error if there are bad links
-      if (Object.keys(filenamesToLinkErrors).length) {
-        const message = Object.keys(filenamesToLinkErrors).sort()
-          .map((filename) => {
-            const output = filenamesToLinkErrors[filename].sort()
-              .map((linkError: any) => `  ${linkError}`)
-              .join('\n');
-            return `${filename}:\n${output}`;
-          })
-          .join('\n\n');
-        done(new Error(`Broken links found:\n\n${message}`), files, metalsmith);
-      }
-
-      done(null, files, metalsmith);
-    });
+      },
+    );
   };
 };

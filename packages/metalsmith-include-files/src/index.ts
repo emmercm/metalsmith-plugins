@@ -1,12 +1,12 @@
 import deepmerge from 'deepmerge';
 import fg from 'fast-glob';
 import fs from 'fs';
+import Metalsmith from 'metalsmith';
 import path from 'path';
 import Mode from 'stat-mode';
-import Metalsmith from "metalsmith";
 
-interface Options {
-  directories?: {[key: string]: string[]},
+export interface Options {
+  directories?: { [key: string]: string[] },
   overwrite?: boolean,
 }
 

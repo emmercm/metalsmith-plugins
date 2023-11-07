@@ -1,11 +1,11 @@
 import cheerio from 'cheerio';
 import deepmerge from 'deepmerge';
+import Metalsmith from 'metalsmith';
 import url from 'url';
-import Metalsmith from "metalsmith";
 
-interface Options {
-    html?: string,
-    tags?: {[key: string]: string[] | string}
+export interface Options {
+  html?: string,
+  tags?: { [key: string]: string[] | string }
 }
 
 export default (options: Options = {}): Metalsmith.Plugin => {
@@ -46,7 +46,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
               $(selector).each((i, elem) => {
                 const resourceGlob = $(elem).attr(attribute);
                 if (!resourceGlob) {
-                    return;
+                  return;
                 }
 
                 // Ignore non-local resources

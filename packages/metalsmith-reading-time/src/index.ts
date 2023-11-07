@@ -1,12 +1,12 @@
 import deepmerge from 'deepmerge';
-import readingTime, {Options as ReadingTimeOptions} from 'reading-time';
-import Metalsmith from "metalsmith";
+import Metalsmith from 'metalsmith';
+import readingTime, { Options as ReadingTimeOptions } from 'reading-time';
 
-interface Options {
-    pattern?: string,
-    stripHtml?: boolean,
-    replacements?: string[][],
-    readingTime?: ReadingTimeOptions,
+export interface Options {
+  pattern?: string,
+  stripHtml?: boolean,
+  replacements?: string[][],
+  readingTime?: ReadingTimeOptions,
 }
 
 export default (options: Options = {}): Metalsmith.Plugin => {
@@ -23,7 +23,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
 
     // For each file that matches the given pattern
     metalsmith.match(defaultedOptions.pattern, Object.keys(files))
-      .forEach((filename: any) => {
+      .forEach((filename) => {
         debug('processing file: %s', filename);
 
         let contents = files[filename].contents.toString();

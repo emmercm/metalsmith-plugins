@@ -1,28 +1,27 @@
 import deepmerge from 'deepmerge';
 import * as htmlEscaper from 'html-escaper';
+import Metalsmith from 'metalsmith';
 import natural from 'natural';
 import sanitizeHtml from 'sanitize-html';
 
-import Metalsmith from 'metalsmith';
-
 const { TfIdf } = natural;
 
-interface Options {
-    pattern?: string,
-    maxRelated?: number,
-    natural?: {
-        minTfIdf?: number,
-        maxTerms?: number,
-    },
-    sanitizeHtml?: sanitizeHtml.IOptions,
+export interface Options {
+  pattern?: string,
+  maxRelated?: number,
+  natural?: {
+    minTfIdf?: number,
+    maxTerms?: number,
+  },
+  sanitizeHtml?: sanitizeHtml.IOptions,
 }
 
 interface DefaultedOptions extends Options {
-    pattern: string,
-    natural: {
-        minTfIdf: number,
-        maxTerms: number
-    }
+  pattern: string,
+  natural: {
+    minTfIdf: number,
+    maxTerms: number
+  }
 }
 
 export default (options: Options = {}): Metalsmith.Plugin => {
@@ -50,11 +49,11 @@ export default (options: Options = {}): Metalsmith.Plugin => {
     debug('processing files: %O', keywordFiles);
 
     // Create a map of collection->files
-    const collections: {[key: string]: string[]} = {};
+    const collections: { [key: string]: string[] } = {};
     keywordFiles
       .forEach((filename) => {
-          const fileCollections = (files[filename].collection ?? []) as string[];
-          fileCollections
+        const fileCollections = (files[filename].collection ?? []) as string[];
+        fileCollections
           .forEach((collection) => {
             if (!collections[collection]) {
               collections[collection] = [];
@@ -72,12 +71,12 @@ export default (options: Options = {}): Metalsmith.Plugin => {
 
         // For each file in the collection
         collectionFiles
-          .forEach((filename: any) => {
+          .forEach((filename) => {
             const tfidf = new TfIdf();
 
             // Gather filenames in order
             const documentFilenames = [filename, ...collectionFiles
-              .filter((relatedFilename: any) => relatedFilename !== filename)];
+              .filter((relatedFilename) => relatedFilename !== filename)];
 
             // Add each file to tf-idf
             documentFilenames
@@ -96,14 +95,14 @@ export default (options: Options = {}): Metalsmith.Plugin => {
               .slice(0, defaultedOptions.natural.maxTerms);
 
             // Find related files
-            let relatedFiles: any[] = [];
+            const filenamesWithMeasures: { filename: string, measure: number }[] = [];
             tfidf.tfidfs(terms, (i, measure) => {
-              relatedFiles.push({
+              filenamesWithMeasures.push({
                 filename: documentFilenames[i],
                 measure,
               });
             });
-            relatedFiles = relatedFiles
+            const relatedFiles = filenamesWithMeasures
               .slice(1)
               .sort((a, b) => {
                 // Sort by `measure` descending first

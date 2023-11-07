@@ -1,14 +1,12 @@
-// @ts-expect-error TS(7016): Could not find a declaration file for module '@bab... Remove this comment to see the full error message
 import codeFrame from '@babel/code-frame';
-import linthtml, {LinterConfig} from '@linthtml/linthtml';
+import linthtml, { LegacyLinterConfig, LinterConfig } from '@linthtml/linthtml';
 import async from 'async';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import deepmerge from 'deepmerge';
+import Metalsmith from 'metalsmith';
 import os from 'os';
-import Metalsmith from "metalsmith";
-import {LegacyLinterConfig} from "@linthtml/linthtml/read-config";
 
-interface Options {
+export interface Options {
   html?: string,
   parallelism?: number,
   ignoreTags?: string[],
@@ -17,7 +15,7 @@ interface Options {
 }
 
 const upgradeHtmllintConfig = (htmllint: LegacyLinterConfig): LinterConfig => {
-  const config: {[key: string]: unknown} = {};
+  const config: { [key: string]: unknown } = {};
 
   // https://github.com/linthtml/linthtml/blob/0.3.0/docs/migrations.md
   const rules = Object.keys(htmllint)
@@ -29,7 +27,7 @@ const upgradeHtmllintConfig = (htmllint: LegacyLinterConfig): LinterConfig => {
         acc[rule] = [true, ruleConfig];
       }
       return acc;
-    }, {} as {[key: string]: unknown});
+    }, {} as { [key: string]: unknown });
   ['maxerr',
     'text-ignore-regex',
     'raw-ignore-regex',
@@ -48,7 +46,6 @@ const upgradeHtmllintConfig = (htmllint: LegacyLinterConfig): LinterConfig => {
 };
 
 // Get the linthtml (written in  htmllint config) and upgrade it
-// @ts-expect-error TS(2339): Property 'default' does not exist on type '{ (html... Remove this comment to see the full error message
 const linthtmlDefault = upgradeHtmllintConfig(linthtml.default.presets.default);
 
 export default (options: Options = {}): Metalsmith.Plugin => {
@@ -118,7 +115,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
 
       const file = files[filename];
       const $ = cheerio.load(file.contents, {
-        // @ts-expect-error TS(2345): Argument of type '{ _useHtmlParser2: boolean; deco... Remove this comment to see the full error message
+        // @ts-expect-error: _useHtmlParser2 is necessary but isn't exposed in CheerioOptions
         _useHtmlParser2: true, // https://github.com/cheeriojs/cheerio/issues/1198
         decodeEntities: false,
       });
@@ -130,17 +127,17 @@ export default (options: Options = {}): Metalsmith.Plugin => {
 
       const contents = $.html();
 
-      linthtml(contents, defaultedOptions.linthtml ?? {})
-        .then((results: any) => {
+      linthtml.default(contents, defaultedOptions.linthtml ?? {})
+        .then((results) => {
           if (results.length) {
             const codeFrames = results
-              .map((result: any) => {
+              .map((result) => {
                 // Use @babel/code-frame to get a more human-readable error message
                 const frame = codeFrame.codeFrameColumns(contents, {
                   start: result.position.start,
                 });
                 let data = '';
-                if (Object.keys(result.data).length) {
+                if (Object.keys(result.data as object).length) {
                   data = ` ${JSON.stringify(result.data)}:`;
                 }
                 return `${result.rule} (${result.code}):${data}\n\n${frame.replace(/^/gm, '  ')}`;
@@ -157,9 +154,15 @@ export default (options: Options = {}): Metalsmith.Plugin => {
           failures.push(`${filename}:\n\n${err}`);
           complete();
         });
-    }, () => {
+    }, (err) => {
+      if (err) {
+        done(err, files, metalsmith);
+        return;
+      }
+
       if (failures.length) {
         done(new Error(failures.join('\n\n')), files, metalsmith);
+        return;
       }
 
       done(null, files, metalsmith);

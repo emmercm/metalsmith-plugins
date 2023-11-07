@@ -1,13 +1,13 @@
 import cheerio from 'cheerio';
 import deepmerge from 'deepmerge';
+import Metalsmith from 'metalsmith';
 import path from 'path';
-import Metalsmith from "metalsmith";
 
-interface Options {
-    pattern?: string,
-    ignore?: string,
-    html?: string,
-    attributes?: string[],
+export interface Options {
+  pattern?: string,
+  ignore?: string,
+  html?: string,
+  attributes?: string[],
 }
 
 export default (options: Options = {}): Metalsmith.Plugin => {
@@ -30,7 +30,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
     const resources = [].concat(
       // For each HTML file that matches the given pattern
       ...metalsmith.match(defaultedOptions.html, Object.keys(files))
-        .map((filename: any) => {
+        .map((filename) => {
           debug('finding resources in file: %s', filename);
 
           const file = files[filename];
@@ -46,8 +46,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
                 return [
                   // Directly referenced resources
                   ...$(selector)
-                    // @ts-expect-error TS(2345): Argument of type 'string | undefined' is not assig... Remove this comment to see the full error message
-                    .map((i, elem) => path.join(path.dirname(filename), $(elem).attr(attribute)))
+                    .map((i, elem) => path.join(path.dirname(filename), $(elem).attr(attribute) ?? ''))
                     .get()
                     .filter((resource) => resource in files)
                     .map((resource) => {
@@ -58,16 +57,15 @@ export default (options: Options = {}): Metalsmith.Plugin => {
                   // Manifest-referenced resources
                   ...[].concat(
                     ...$(`${selector}[rel="manifest"]`)
-                      // @ts-expect-error TS(2345): Argument of type 'string | undefined' is not assig... Remove this comment to see the full error message
-                      .map((i, elem) => path.join(path.dirname(filename), $(elem).attr(attribute)))
+                      .map((i, elem) => path.join(path.dirname(filename), $(elem).attr(attribute) ?? ''))
                       .get()
                       .filter((resource) => resource in files)
                       .map((resource) => {
                         const contents = JSON.parse(files[resource].contents.toString());
                         if (Object.prototype.hasOwnProperty.call(contents, 'icons')) {
                           return contents.icons
-                            .filter((icon: any) => Object.prototype.hasOwnProperty.call(icon, 'src'))
-                            .map((icon: any) => {
+                            .filter((icon: object) => Object.prototype.hasOwnProperty.call(icon, 'src'))
+                            .map((icon: { src: string }) => {
                               // Get rid of leading slash
                               const relative = icon.src.replace(/^\//, '');
 
@@ -105,8 +103,8 @@ export default (options: Options = {}): Metalsmith.Plugin => {
       ? metalsmith.match(defaultedOptions.pattern, Object.keys(files)) : [];
     consideredFilenames
       // Filter "ignore"
-      .filter((filename: any) => ignoredFilenames.indexOf(filename) === -1)
-      .forEach((filename: any) => {
+      .filter((filename) => ignoredFilenames.indexOf(filename) === -1)
+      .forEach((filename) => {
         // Map to a consistent path separator
         const normalizedFilename = filename.replace(/[/\\]/g, '/');
         // Remove the file if it's unused

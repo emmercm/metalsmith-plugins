@@ -1,17 +1,15 @@
-// @ts-expect-error TS(2307): Cannot find module '@mermaid-js/mermaid-cli' or it... Remove this comment to see the full error message
-// eslint-disable-next-line import/no-unresolved
 import { renderMermaid } from '@mermaid-js/mermaid-cli';
 import async from 'async';
 import deepmerge from 'deepmerge';
-import puppeteer, {Browser} from 'puppeteer';
+import { Html, Root } from 'mdast';
+import Metalsmith from 'metalsmith';
+import puppeteer, { Browser } from 'puppeteer';
 import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
 import { unified } from 'unified';
-import {visit } from 'unist-util-visit';
-import Metalsmith from "metalsmith";
-import {Html,Root} from "mdast";
+import { visit } from 'unist-util-visit';
 
-interface Options {
+export interface Options {
   markdown?: string,
   mermaid?: unknown
 }
@@ -57,7 +55,11 @@ const mermaidToSvg = async (browser: Browser, mermaidData: string, mermaidOption
   }, CONSISTENT_CSS);
 };
 
-const remarkMermaid = (browser: Browser, mermaidOptions: unknown, debug: Metalsmith.Debugger) => async (tree: Root) => {
+const remarkMermaid = (
+  browser: Browser,
+  mermaidOptions: unknown,
+  debug: Metalsmith.Debugger,
+) => async (tree: Root) => {
   const promises: Promise<unknown>[] = [];
   visit(tree, 'code', (node, idx, parent) => {
     if ((node.lang || '').toLowerCase() !== 'mermaid' || idx === undefined || !parent) {
@@ -104,7 +106,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
     const browser = await puppeteer.launch();
 
     const markdownFiles = metalsmith.match(defaultedOptions.markdown, Object.keys(files));
-    async.eachLimit(markdownFiles, 1, async (filename) => {
+    async.eachLimit(markdownFiles, 1, async.asyncify(async (filename: string) => {
       const file = files[filename];
 
       const tree = await unified()
@@ -114,7 +116,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
         .process(file.contents);
 
       file.contents = Buffer.from(tree.value);
-    }, async (err) => {
+    }), async (err) => {
       await browser.close();
       done(err ?? null, files, metalsmith);
     });

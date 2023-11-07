@@ -1,14 +1,14 @@
 import cheerio from 'cheerio';
 import crypto from 'crypto';
 import deepmerge from 'deepmerge';
+import Metalsmith from 'metalsmith';
 import path from 'path';
 import request from 'sync-request';
 import url from 'url';
-import Metalsmith from "metalsmith";
 
-interface Options {
+export interface Options {
   html?: string,
-  tags?: {[key: string]: {attribute: string, selector: string}},
+  tags?: { [key: string]: { attribute: string, selector: string } },
   ignoreResources?: string[],
   algorithm?: string | string[],
 }
@@ -37,7 +37,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
     defaultedOptions.algorithm = [defaultedOptions.algorithm];
   }
 
-  const remoteResources: {[key: string]: string} = {};
+  const remoteResources: { [key: string]: string } = {};
 
   return (files, metalsmith, done) => {
     const debug = metalsmith.debug('metalsmith-html-sri');
@@ -93,7 +93,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
                 if (typeof files[resource].integrity === 'undefined') {
                   // https://www.w3.org/TR/2016/REC-SRI-20160623/#the-integrity-attribute
                   files[resource].integrity = (defaultedOptions.algorithm as string[])
-                    .map((algorithm: any) => `${algorithm}-${crypto.createHash(algorithm).update(files[resource].contents).digest('base64')}`)
+                    .map((algorithm) => `${algorithm}-${crypto.createHash(algorithm).update(files[resource].contents).digest('base64')}`)
                     .join(' ');
                 }
 
@@ -116,9 +116,9 @@ export default (options: Options = {}): Metalsmith.Plugin => {
                 // Only calculate resource hash once
                 if (!Object.prototype.hasOwnProperty.call(remoteResources, uri)) {
                   debug('fetching file: %s', uri);
-                  const response = request('GET', uri);
+                  const response = request.default('GET', uri);
                   remoteResources[uri] = (defaultedOptions.algorithm as string[])
-                    .map((algorithm: any) => `${algorithm}-${crypto.createHash(algorithm).update(response.body).digest('base64')}`)
+                    .map((algorithm) => `${algorithm}-${crypto.createHash(algorithm).update(response.body).digest('base64')}`)
                     .join(' ');
                 }
 

@@ -1,9 +1,13 @@
 import callsites from 'callsites';
 import chalk from 'chalk';
 import deepmerge from 'deepmerge';
+import Metalsmith from 'metalsmith';
 import ora from 'ora';
 
-import Metalsmith, {Files} from 'metalsmith';
+export interface Options {
+  log?: (...data: unknown[]) => void,
+}
+
 const LEFT_MARGIN = 7;
 
 const IGNORED_JAVASCRIPT_FILES = [
@@ -31,10 +35,10 @@ const timePrefix = (milliseconds: number) => {
   return ' '.repeat(LEFT_MARGIN - fixed.length - suffix.length) + fixed + suffix;
 };
 
-export default (Metalsmith: Metalsmith, options = {}) => {
+export default (realMetalsmith: Metalsmith, options: Options = {}) => {
   const defaultedOptions = deepmerge({
     log: console.log,
-  }, options || {});
+  } satisfies Options, options || {});
 
   const spinner = ora({
     prefixText: `\n${' '.repeat(LEFT_MARGIN - 5 - 1)}`,
@@ -43,12 +47,12 @@ export default (Metalsmith: Metalsmith, options = {}) => {
   let index = 0;
   let count = 0;
 
-  const { use } = Metalsmith;
+  const { use } = realMetalsmith;
   // eslint-disable-next-line no-param-reassign
-  Metalsmith.use = (plugin: Metalsmith.Plugin) => {
+  realMetalsmith.use = (plugin: Metalsmith.Plugin) => {
     count += 1;
 
-    return use.apply(Metalsmith, [(files, metalsmith, done) => {
+    return use.apply(realMetalsmith, [(files, metalsmith, done) => {
       const start = process.hrtime();
 
       // Show progress message
@@ -120,7 +124,7 @@ export default (Metalsmith: Metalsmith, options = {}) => {
           pkgStr = (filenames
             .filter((filename) => filename.indexOf('/node_modules/') === -1)
             .find(() => true) || '')
-            .replace(Metalsmith.directory(), '')
+            .replace(metalsmith.directory(), '')
             .replace(/^[/\\]+/, '');
         }
         if (!pkgStr || IGNORED_JAVASCRIPT_FILES.some((ignored) => pkgStr.indexOf(ignored) !== -1)) {
@@ -147,14 +151,14 @@ export default (Metalsmith: Metalsmith, options = {}) => {
     }]);
   };
 
-  const { build } = Metalsmith;
-  Metalsmith.build = (callback?: Metalsmith.Callback) => new Promise((resolve, reject) => {
+  const { build } = realMetalsmith;
+  realMetalsmith.build = (callback?: Metalsmith.Callback) => new Promise((resolve) => {
     defaultedOptions.log(`${'-'.repeat(LEFT_MARGIN)} ${chalk.bold('Build process started')} ${'-'.repeat(LEFT_MARGIN)}`);
     defaultedOptions.log();
 
     const start = process.hrtime();
 
-    return build.apply(Metalsmith, [(...args) => {
+    build.apply(realMetalsmith, [(...args) => {
       const elapsed = process.hrtime(start);
       const elapsedMs = (elapsed[0] * 1e9 + elapsed[1]) / 1000000;
 
@@ -170,5 +174,5 @@ export default (Metalsmith: Metalsmith, options = {}) => {
     }]);
   });
 
-  return Metalsmith;
+  return realMetalsmith;
 };

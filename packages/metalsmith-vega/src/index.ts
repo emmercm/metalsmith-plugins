@@ -1,19 +1,18 @@
 import async from 'async';
 import deepmerge from 'deepmerge';
+import { Html, Root } from 'mdast';
+import Metalsmith from 'metalsmith';
 import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
-import vega, {Config as VegaConfig} from 'vega';
-import vegaLite, {Config as VegaLiteConfig} from 'vega-lite';
+import vega, { Config as VegaConfig } from 'vega';
+import vegaLite, { Config as VegaLiteConfig } from 'vega-lite';
+import { CompileOptions } from 'vega-lite/build/src/compile/compile';
+import { LayoutSizeMixins } from 'vega-lite/src/spec/base';
 import xml2js from 'xml2js';
-import Metalsmith from "metalsmith";
-import {CompileOptions} from "vega-lite/build/src/compile/compile.js";
-import {Root} from "mdast";
-import {Html} from "mdast";
-import {LayoutSizeMixins} from "vega-lite/src/spec/base.js";
 
-interface Options {
+export interface Options {
   markdown?: string,
   vegaLite?: VegaLiteConfig,
   vega?: VegaConfig & LayoutSizeMixins,
@@ -25,7 +24,7 @@ const vegaToSvg = async (vegaBody: vega.Spec, vegaOptions: VegaConfig = {}) => {
   });
   const svg = await view.toSVG();
 
-  const xml: any = await new Promise((resolve, reject) => {
+  const xml: { svg: { '$': { class?: string } } } = await new Promise((resolve, reject) => {
     xml2js.parseString(svg, (err, result) => {
       if (err) {
         reject(err);
@@ -43,7 +42,10 @@ const vegaToSvg = async (vegaBody: vega.Spec, vegaOptions: VegaConfig = {}) => {
   })).buildObject(xml);
 };
 
-const remarkVegaLite = (vegaLiteOptions: CompileOptions, debug: Metalsmith.Debugger) => async (tree: Root) => {
+const remarkVegaLite = (
+  vegaLiteOptions: CompileOptions,
+  debug: Metalsmith.Debugger,
+) => async (tree: Root) => {
   const promises: Promise<unknown>[] = [];
   visit(tree, 'code', (node, idx, parent) => {
     if ((node.lang || '').toLowerCase() !== 'vega-lite' || idx === undefined || !parent) {
@@ -71,7 +73,6 @@ const remarkVegaLite = (vegaLiteOptions: CompileOptions, debug: Metalsmith.Debug
       parent.children.splice(idx, 1, newNode);
     });
     promises.push(promise);
-    return null;
   });
   await Promise.all(promises);
 };
@@ -102,7 +103,6 @@ const remarkVega = (vegaOptions: VegaConfig, debug: Metalsmith.Debugger) => asyn
       parent.children.splice(idx, 1, newNode);
     });
     promises.push(promise);
-    return null;
   });
   await Promise.all(promises);
 };
@@ -129,7 +129,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
 
     const markdownFiles = metalsmith.match(defaultedOptions.markdown, Object.keys(files));
 
-    async.each(markdownFiles, async (filename) => {
+    async.each(markdownFiles, async.asyncify(async (filename: string) => {
       const file = files[filename];
 
       const tree = await unified()
@@ -149,7 +149,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
         .process(file.contents);
 
       file.contents = Buffer.from(tree.value);
-    }, (err) => {
+    }), (err) => {
       done(err ?? null, files, metalsmith);
     });
 
