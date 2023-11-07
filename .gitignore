@@ -233,6 +233,6 @@ fabric.properties
 
 ### Custom ###
 packages/*/dist
-packages/*/src/fixtures/*/build
+packages/*/test/fixtures/*/build
 packages/*/junit.xml
 packages/*/LICENSE

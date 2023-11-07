@@ -54,7 +54,7 @@ describe('metalsmith-collections-related', () => {
   const dirs = (p: string) => readdirSync(p)
     .map((f) => join(p, f))
     .filter((f) => statSync(f).isDirectory());
-  dirs('src/fixtures')
+  dirs('test/fixtures')
     .forEach((dir) => {
       const config = existsSync(`${dir}/config.json`) ? JSON.parse(readFileSync(`${dir}/config.json`).toString()) : {};
       test(dir, config);
