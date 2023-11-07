@@ -23,18 +23,20 @@
     "provenance": true
   },
   "scripts": {
-    "lock:regen": "rm -f package-lock.json packages/*/package-lock.json && npm install",
+    "lock:regen": "rm -rf package-lock.json packages/*/package-lock.json node_modules/ && npm install",
     "clean": "lerna clean --yes",
     "lint": "lerna run lint",
     "lint:fix": "lerna run lint:fix",
     "test": "lerna run test",
+    "test:force": "lerna run test --skip-nx-cache",
     "test:coverage": "lerna run test:coverage",
     "bump:major": "lerna ls --parseable --since main --no-private --loglevel silent | while read -r package; do npm --prefix \"${package}\" version major --no-git-tag-version; done && npm run lock:regen",
     "bump:minor": "lerna ls --parseable --since main --no-private --loglevel silent | while read -r package; do npm --prefix \"${package}\" version minor --no-git-tag-version; done && npm run lock:regen",
     "bump:patch": "lerna ls --parseable --since main --no-private --loglevel silent | while read -r package; do npm --prefix \"${package}\" version patch --no-git-tag-version; done && npm run lock:regen"
   },
   "devDependencies": {
-    "lerna": "^7.4.2"
+    "lerna": "^7.4.2",
+    "ts-migrate": "^0.1.35"
   },
   "engines": {
     "node": ">=15"
