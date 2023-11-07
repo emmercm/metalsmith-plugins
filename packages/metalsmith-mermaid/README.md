@@ -3,7 +3,7 @@
 [![npm: version](https://img.shields.io/npm/v/metalsmith-mermaid?color=%23cc3534&label=version&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-mermaid)
 [![npm: downloads](https://img.shields.io/npm/dw/metalsmith-mermaid?color=%23cc3534&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-mermaid)
 
-[![Snyk: vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/metalsmith-mermaid?logo=snyk&logoColor=white)](https://snyk.io/test/npm/metalsmith-mermaid)
+[![Snyk: vulnerabilities](https://snyk.io/test/npm/metalsmith-mermaid/badge.svg)](https://snyk.io/test/npm/metalsmith-mermaid)
 [![codecov: coverage](https://img.shields.io/codecov/c/github/emmercm/metalsmith-plugins?flag=metalsmith-mermaid&logo=codecov&logoColor=white)](https://codecov.io/gh/emmercm/metalsmith-mermaid)
 [![license](https://img.shields.io/github/license/emmercm/metalsmith-plugins?color=blue)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 

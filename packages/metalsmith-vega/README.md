@@ -3,7 +3,7 @@
 [![npm: version](https://img.shields.io/npm/v/metalsmith-vega?color=%23cc3534&label=version&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-vega)
 [![npm: downloads](https://img.shields.io/npm/dw/metalsmith-vega?color=%23cc3534&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-vega)
 
-[![Snyk: vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/metalsmith-vega?logo=snyk&logoColor=white)](https://snyk.io/test/npm/metalsmith-vega)
+[![Snyk: vulnerabilities](https://snyk.io/test/npm/metalsmith-vega/badge.svg)](https://snyk.io/test/npm/metalsmith-vega)
 [![codecov: coverage](https://img.shields.io/codecov/c/github/emmercm/metalsmith-plugins?flag=metalsmith-vega&logo=codecov&logoColor=white)](https://codecov.io/gh/emmercm/metalsmith-vega)
 [![license](https://img.shields.io/github/license/emmercm/metalsmith-plugins?color=blue)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
