@@ -1,18 +1,29 @@
 {
+  "root": true,
+
   "extends": [
     "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
     "airbnb-base",
+    "airbnb-typescript/base",
     "plugin:jest/recommended"
   ],
   "plugins": [
+    "@typescript-eslint",
     "simple-import-sort",
     "jest"
   ],
 
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": "latest",
+    "project": "./tsconfig.json",
     "sourceType": "module"
   },
+  "ignorePatterns": [
+    "coverage/**",
+    "dist/**",
+    "test/fixtures/**"
+  ],
 
   "env": {
     "jest/globals": true

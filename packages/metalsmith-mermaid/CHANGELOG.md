@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.0 / 2023-11-06
+
+- Converted to TypeScript, including type definitions.
+
 ## v0.2.0 / 2023-10-30
 
 - Added `Metalsmith#debug()` calls.
