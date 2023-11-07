@@ -23,7 +23,7 @@
     "provenance": true
   },
   "scripts": {
-    "lock:regen": "rm -f package-lock.json packages/*/package-lock.json && npm install",
+    "lock:regen": "rm -rf package-lock.json packages/*/package-lock.json node_modules/ && npm install",
     "clean": "lerna clean --yes",
     "lint": "lerna run lint",
     "lint:fix": "lerna run lint:fix",
