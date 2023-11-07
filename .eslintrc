@@ -21,8 +21,8 @@
   },
   "ignorePatterns": [
     "coverage/**",
-    "lib/**",
-    "src/fixtures/**"
+    "dist/**",
+    "test/fixtures/**"
   ],
 
   "env": {

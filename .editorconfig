@@ -10,9 +10,9 @@ end_of_line = lf
 # editorconfig-tools is unable to ignore longs strings or urls
 max_line_length = 100
 
-[lib/fixtures/*/**/*.html]
+[src/fixtures/*/**/*.html]
 indent_size = 4
 
-[lib/fixtures/*/expected/**]
+[src/fixtures/*/expected/**]
 trim_trailing_whitespace = false
 insert_final_newline = false
