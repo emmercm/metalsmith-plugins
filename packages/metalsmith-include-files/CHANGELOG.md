@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.0.0 / 2023-11-06
+
+- Converted to TypeScript, including type definitions.
+
 ## v2.0.0 / 2023-10-31
 
 - Converted to be an ES6 module.

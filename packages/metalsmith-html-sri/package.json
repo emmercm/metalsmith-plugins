@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-html-sri",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A Metalsmith to add subresource integrity attributes to HTML.",
   "keywords": [
     "metalsmith",

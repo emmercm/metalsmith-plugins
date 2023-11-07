@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.0.0 / 2023-11-06
+
+- Converted to TypeScript, including type definitions.
+
 ## v1.0.0 / 2022-07-27
 
 - Convert to being an ES6 because both [callsites](https://www.npmjs.com/package/callsites) and [ora](https://www.npmjs.com/package/ora) are now.
