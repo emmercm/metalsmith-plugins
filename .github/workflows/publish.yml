@@ -11,6 +11,11 @@ jobs:
   node-publish:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions:
+      # actions/checkout@v4
+      contents: read
+      # `npm publish --provenance`
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: volta-cli/action@v4

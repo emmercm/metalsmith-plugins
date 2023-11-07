@@ -19,9 +19,6 @@
   "workspaces": [
     "packages/*"
   ],
-  "publishConfig": {
-    "provenance": true
-  },
   "scripts": {
     "lock:regen": "rm -rf package-lock.json packages/*/package-lock.json node_modules/ && npm install",
     "clean": "lerna clean --yes",
