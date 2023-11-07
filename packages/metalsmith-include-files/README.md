@@ -3,7 +3,7 @@
 [![npm: version](https://img.shields.io/npm/v/metalsmith-include-files?color=%23cc3534&label=version&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-include-files)
 [![npm: downloads](https://img.shields.io/npm/dw/metalsmith-include-files?color=%23cc3534&logo=npm&logoColor=white)](https://www.npmjs.com/package/metalsmith-include-files)
 
-[![Snyk: vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/metalsmith-include-files?logo=snyk&logoColor=white)](https://snyk.io/test/npm/metalsmith-include-files)
+[![Snyk: vulnerabilities](https://snyk.io/test/npm/metalsmith-include-files/badge.svg)](https://snyk.io/test/npm/metalsmith-include-files)
 [![codecov: coverage](https://img.shields.io/codecov/c/github/emmercm/metalsmith-plugins?flag=metalsmith-include-files&logo=codecov&logoColor=white)](https://codecov.io/gh/emmercm/metalsmith-include-files)
 [![license](https://img.shields.io/github/license/emmercm/metalsmith-plugins?color=blue)](https://github.com/emmercm/metalsmith-plugins/blob/main/LICENSE)
 
