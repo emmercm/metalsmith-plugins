@@ -116,7 +116,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
                 // Only calculate resource hash once
                 if (!Object.prototype.hasOwnProperty.call(remoteResources, uri)) {
                   debug('fetching file: %s', uri);
-                  const response = request.default('GET', uri);
+                  const response = request.default('GET', uri, { socketTimeout: 10_000 });
                   remoteResources[uri] = (defaultedOptions.algorithm as string[])
                     .map((algorithm) => `${algorithm}-${crypto.createHash(algorithm).update(response.body).digest('base64')}`)
                     .join(' ');

@@ -12,6 +12,9 @@ const jestConfig: JestConfigWithTsJest = {
     '^(\\.{1,2}/.*)\\.js$': '$1',
     // END https://kulshekhar.github.io/ts-jest/docs/guides/esm-support
   },
+
+  // Don't run any compiled versions of the tests, if they exist
+  modulePathIgnorePatterns: ['<rootDir>/dist/'],
 };
 
 export default jestConfig;
