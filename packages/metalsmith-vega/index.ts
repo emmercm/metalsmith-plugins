@@ -152,7 +152,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
 
       file.contents = Buffer.from(tree.value);
     }), (err) => {
-      done(err ?? null, files, metalsmith);
+      done(err ?? undefined);
     });
 
     // TODO: html files?

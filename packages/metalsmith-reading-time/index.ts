@@ -54,6 +54,6 @@ export default (options: Options = {}): Metalsmith.Plugin => {
         files[filename].readingTime = readingTime(contents, defaultedOptions.readingTime).text;
       });
 
-    done(null, files, metalsmith);
+    done();
   };
 };

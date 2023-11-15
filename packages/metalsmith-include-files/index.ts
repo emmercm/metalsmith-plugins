@@ -36,7 +36,7 @@ export default (options: Options = {}): Metalsmith.Plugin => (files, metalsmith,
       const contents = fs.readFileSync(globbedFile);
       const key = path.join(folder, path.basename(globbedFile));
       if (!defaultedOptions.overwrite && files[key]) {
-        done(new Error(`File already exists in build path: ${key}`), files, metalsmith);
+        done(new Error(`File already exists in build path: ${key}`));
         return;
       }
       debug('including "%s" -> "%s"', globbedFile, key);
@@ -47,5 +47,5 @@ export default (options: Options = {}): Metalsmith.Plugin => (files, metalsmith,
     }
   }
 
-  done(null, files, metalsmith);
+  done();
 };

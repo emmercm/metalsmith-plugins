@@ -118,7 +118,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
       file.contents = Buffer.from(tree.value);
     }), async (err) => {
       await browser.close();
-      done(err ?? null, files, metalsmith);
+      done(err ?? undefined);
     });
 
     // TODO: html files?

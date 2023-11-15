@@ -98,7 +98,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
                 }
 
                 debug('  %s: %s', resource, files[resource].integrity);
-                $(elem).attr('integrity', files[resource].integrity);
+                $(elem).attr('integrity', files[resource].integrity as string);
               } else {
                 // Add integrity attribute to remote resources
 
@@ -139,6 +139,6 @@ export default (options: Options = {}): Metalsmith.Plugin => {
         file.contents = Buffer.from($.html());
       });
 
-    done(null, files, metalsmith);
+    done();
   };
 };

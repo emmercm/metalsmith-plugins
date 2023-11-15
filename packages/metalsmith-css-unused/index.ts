@@ -39,11 +39,11 @@ export default (options: Options = {}): Metalsmith.Plugin => {
           files[cssFiles[i]].contents = Buffer.from(purgecss[i].css);
         }
 
-        done(null, files, metalsmith);
+        done();
       })
       .catch((err) => {
         debug.error('purgecss error: %s', err);
-        done(err, files, metalsmith);
+        done(err);
       });
   };
 };

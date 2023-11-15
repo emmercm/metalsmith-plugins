@@ -156,16 +156,16 @@ export default (options: Options = {}): Metalsmith.Plugin => {
         });
     }, (err) => {
       if (err) {
-        done(err, files, metalsmith);
+        done(err);
         return;
       }
 
       if (failures.length) {
-        done(new Error(failures.join('\n\n')), files, metalsmith);
+        done(new Error(failures.join('\n\n')));
         return;
       }
 
-      done(null, files, metalsmith);
+      done();
     });
   };
 };

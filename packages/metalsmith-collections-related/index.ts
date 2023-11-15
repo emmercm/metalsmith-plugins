@@ -122,10 +122,12 @@ export default (options: Options = {}): Metalsmith.Plugin => {
             if (!files[filename].related) {
               files[filename].related = {};
             }
-            files[filename].related[collection] = relatedFiles;
+            (
+              files[filename].related as { [key: string]: Metalsmith.File[] }
+            )[collection] = relatedFiles;
           });
       });
 
-    done(null, files, metalsmith);
+    done();
   };
 };

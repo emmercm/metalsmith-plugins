@@ -61,7 +61,7 @@ export default (realMetalsmith: Metalsmith, options: Options = {}) => {
       spinner.text = chalk.bold(`${index}/${count} (${((index / count) * 100).toFixed(1)}%)`);
       spinner.start();
 
-      const doneInterceptor = (err: Error | null) => {
+      const doneInterceptor: Metalsmith.DoneCallback = (err?: Error) => {
         const elapsed = process.hrtime(start);
         const elapsedMs = (elapsed[0] * 1e9 + elapsed[1]) / 1000000;
 
@@ -137,7 +137,7 @@ export default (realMetalsmith: Metalsmith, options: Options = {}) => {
         spinner.stop();
         defaultedOptions.log(`${elapsedColor(timePrefix(elapsedMs))} ${pkgColor(pkgStr)}`);
 
-        done(err, files, metalsmith);
+        done(err);
       };
 
       // Run the plugin but give it our new "done" callback
@@ -146,7 +146,7 @@ export default (realMetalsmith: Metalsmith, options: Options = {}) => {
       // If the plugin has fewer than 3 arguments then it can't call the "done"
       // callback, so assume it executed synchronously and call it manually.
       if (plugin.length < 3) {
-        doneInterceptor(null);
+        doneInterceptor();
       }
     }]);
   };

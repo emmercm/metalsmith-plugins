@@ -92,6 +92,6 @@ export default (options: Options = {}): Metalsmith.Plugin => {
         file.contents = Buffer.from($.html());
       });
 
-    done(null, files, metalsmith);
+    done();
   };
 };
