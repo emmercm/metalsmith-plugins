@@ -70,7 +70,7 @@
     "handlebars": "4.7.7",
     "jest": "29.7.0",
     "jest-junit": "16.0.0",
-    "metalsmith": "^2.5.1",
+    "metalsmith": "^2.6.2",
     "metalsmith-auto-collections": "0.2.0",
     "metalsmith-hbt-md": "1.0.1",
     "metalsmith-paths": "^4.0.1",

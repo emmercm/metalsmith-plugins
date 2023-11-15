@@ -153,7 +153,7 @@ export default (options: Options): Metalsmith.Plugin => {
       value(defaultedOptions, callback);
     }, (err, result) => {
       if (err) {
-        done(err, files, metalsmith);
+        done(err);
         return;
       }
 
@@ -163,7 +163,7 @@ export default (options: Options): Metalsmith.Plugin => {
       }
       metadata.github.profile = result;
 
-      done(null, files, metalsmith);
+      done();
     });
   };
 };

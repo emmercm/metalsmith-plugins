@@ -355,12 +355,12 @@ export default (options: Options = {}): Metalsmith.Plugin => {
       },
       (err, result) => {
         if (err) {
-          done(err, files, metalsmith);
+          done(err);
           return;
         }
 
         if (!result) {
-          done(null, files, metalsmith);
+          done();
           return;
         }
 
@@ -385,11 +385,11 @@ export default (options: Options = {}): Metalsmith.Plugin => {
               return `${filename}:\n${output}`;
             })
             .join('\n\n');
-          done(new Error(`Broken links found:\n\n${message}`), files, metalsmith);
+          done(new Error(`Broken links found:\n\n${message}`));
           return;
         }
 
-        done(null, files, metalsmith);
+        done();
       },
     );
   };

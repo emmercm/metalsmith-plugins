@@ -397,6 +397,6 @@ options || {},
       contents: Buffer.from(htaccess),
     };
 
-    done(null, files, metalsmith);
+    done();
   };
 };

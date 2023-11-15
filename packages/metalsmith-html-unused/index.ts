@@ -114,6 +114,6 @@ export default (options: Options = {}): Metalsmith.Plugin => {
         }
       });
 
-    done(null, files, metalsmith);
+    done();
   };
 };
