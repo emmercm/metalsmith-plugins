@@ -16,6 +16,8 @@ const jestConfig: JestConfigWithTsJest = {
     '@metalsmith/collections': require.resolve('@metalsmith/collections').replace('.cjs', '.js'),
   },
 
+  resolver: '<rootDir>/../../jest.resolver.cjs',
+
   // Don't run any compiled versions of the tests, if they exist
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
 };
