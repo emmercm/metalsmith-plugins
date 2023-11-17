@@ -86,6 +86,7 @@ export default (options: Options): Metalsmith.Plugin => async (files, metalsmith
         metadata.collections[collection] = collectionsSnapshot[collection];
       });
 
+    // Sort the collections
     const metadataCollections = metadata.collections || {};
     metadata.collections = Object.keys(metadataCollections)
       .sort()

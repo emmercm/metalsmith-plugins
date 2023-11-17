@@ -25,7 +25,6 @@ const test = (dir: string, config: Config) => {
       Metalsmith(`${dir}`)
         // Run the plugin
         .use(multiCollections(config.options))
-        .use((a, b, c) => c())
         .use(hbtmd(handlebars))
         // Test the output
         .build((err) => {
