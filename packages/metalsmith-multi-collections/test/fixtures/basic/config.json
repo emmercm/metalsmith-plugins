@@ -1,0 +1,7 @@
+{
+  "options": {
+    "pattern": "languages/*.md",
+    "key": "tags",
+    "collection": "tag/{val}"
+  }
+}

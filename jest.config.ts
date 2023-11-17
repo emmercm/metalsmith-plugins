@@ -11,6 +11,9 @@ const jestConfig: JestConfigWithTsJest = {
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
     // END https://kulshekhar.github.io/ts-jest/docs/guides/esm-support
+
+    // Fix @metalsmith/collections
+    '@metalsmith/collections': require.resolve('@metalsmith/collections').replace('.cjs', '.js')
   },
 
   // Don't run any compiled versions of the tests, if they exist
