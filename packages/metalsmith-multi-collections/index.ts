@@ -86,13 +86,13 @@ export default (options: Options): Metalsmith.Plugin => async (files, metalsmith
         metadata.collections[collection] = collectionsSnapshot[collection];
       });
 
-    const collections = metadata.collections || {};
-    metadata.collections = Object.keys(collections)
+    const metadataCollections = metadata.collections || {};
+    metadata.collections = Object.keys(metadataCollections)
       .sort()
       .reduce((dict, collection) => {
-        dict[collection] = collections[collection];
+        dict[collection] = metadataCollections[collection];
         return dict;
-      }, {} as {[key: string]: Metalsmith.File});
+      }, {} as { [key: string]: Metalsmith.File });
 
     done(...args);
   });
