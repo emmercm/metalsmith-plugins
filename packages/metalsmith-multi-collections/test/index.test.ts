@@ -10,6 +10,11 @@ import { join } from 'path';
 
 import multiCollections, { Options } from '../index.js';
 
+Handlebars.registerHelper('replace', (find, replace, options) => {
+  const string = options.fn(this);
+  return string.replace(find, replace);
+});
+
 interface Config {
   options: Options,
   error?: string,
