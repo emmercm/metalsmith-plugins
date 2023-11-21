@@ -7,7 +7,10 @@ import Metalsmith from 'metalsmith';
 export interface Options {
   username: string,
   timeout?: number,
-  authorization?: { [key: string]: string },
+  authorization?: {
+    username?: string,
+    token?: string,
+  } & { [key: string]: string | undefined },
   retries?: number,
   retryableStatusCodes?: number[],
 }
