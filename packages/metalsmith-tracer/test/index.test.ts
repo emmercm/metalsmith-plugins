@@ -1,3 +1,4 @@
+import { describe, expect, it } from '@jest/globals';
 import assertDir from 'assert-dir-equal';
 import {
   existsSync, mkdirSync, readdirSync, readFileSync, statSync,
@@ -39,7 +40,7 @@ const test = (dir: string, config: Config) => {
             assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
             testDone();
           } catch (assertionError) {
-            testDone(assertionError);
+            testDone(assertionError instanceof Error ? assertionError : assertionError?.toString());
           }
         });
     });
