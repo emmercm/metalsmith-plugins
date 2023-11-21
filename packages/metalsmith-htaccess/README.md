@@ -11,7 +11,7 @@ A Metalsmith plugin to create an Apache HTTP Server `.htaccess` configuration fi
 
 ## Installation
 
-```bash
+```shell
 npm install --save metalsmith-htaccess
 ```
 
@@ -38,7 +38,7 @@ Metalsmith(__dirname)
 
 #### `core.defaultCharset` (optional)
 
-Type: `string` Default: `utf-8`
+Type: `string` Default: `"utf-8"`
 
 Sets [`AddDefaultCharset`](https://httpd.apache.org/docs/current/mod/core.html#adddefaultcharset).
 
@@ -56,13 +56,13 @@ An object of [`ErrorDocument`](https://httpd.apache.org/docs/current/mod/core.ht
 
 ```json
 {
-    "core": {
-        "errorDocuments": {
-            "401": "/error_pages/401.html",
-            "404": "/error_pages/404.html",
-            "500": "/error_pages/500.html"
-        }
+  "core": {
+    "errorDocuments": {
+      "401": "/error_pages/401.html",
+      "404": "/error_pages/404.html",
+      "500": "/error_pages/500.html"
     }
+  }
 }
 ```
 
@@ -98,7 +98,7 @@ A list of MIME types to [`AddOutputFilterByType DEFLATE`](https://httpd.apache.o
 
 #### `dir.index` (optional)
 
-Type: `string` Default: `index.html index.htm index.php index.cgi`
+Type: `string` Default: `"index.html index.htm index.php index.cgi"`
 
 Set [`DirectoryIndex`](https://httpd.apache.org/docs/current/mod/mod_dir.html#directoryindex).
 
@@ -120,7 +120,7 @@ Set [`SetEnv TZ`](https://httpd.apache.org/docs/current/mod/mod_env.html#setenv)
 
 #### `expires.default` (optional)
 
-Type: `string` Default: `access plus 2 days`
+Type: `string` Default: `"access plus 2 days"`
 
 Set [`ExpiresDefault`](https://httpd.apache.org/docs/current/mod/mod_expires.html#expiresdefault).
 
@@ -252,7 +252,7 @@ Sets the [404 redirect page](https://httpd.apache.org/docs/current/mod/mod_rewri
 
 #### `rewrite.options` (optional)
 
-Type: `string` Default: `Inherit`
+Type: `string` Default: `"Inherit"`
 
 Sets [`RewriteOptions`](https://httpd.apache.org/docs/current/mod/mod_rewrite.html#rewriteoptions).
 

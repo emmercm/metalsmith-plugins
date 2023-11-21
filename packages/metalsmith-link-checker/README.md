@@ -22,7 +22,7 @@ If there are any broken or invalid links found, all of them will be printed to c
 
 ## Installation
 
-```bash
+```shell
 npm install --save metalsmith-link-checker
 ```
 
@@ -49,7 +49,7 @@ Metalsmith(__dirname)
 
 ### `html.pattern` (optional)
 
-Type: `string` Default: `**/*.html`
+Type: `string` Default: `"**/*.html"`
 
 A [micromatch](https://www.npmjs.com/package/micromatch) glob pattern to find HTML files.
 

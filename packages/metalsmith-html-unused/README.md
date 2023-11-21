@@ -13,7 +13,7 @@ Removing unreferenced files such as JavaScript, CSS, images, and documents helps
 
 ## Installation
 
-```bash
+```shell
 npm install --save metalsmith-html-unused
 ```
 
@@ -25,7 +25,8 @@ const unused     = require('metalsmith-html-unused');
 
 Metalsmith(__dirname)
     .use(unused({
-        // options here
+        pattern: '**/*.@(css|js)'
+        // other options here
     }))
     .build((err) => {
         if (err) {
@@ -42,7 +43,7 @@ Type: `string`
 
 A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern for files to consider for removal.
 
-Example: `**/*.@(css|js|bmp|gif|jpg|jpeg|png|svg|tif|tiff|webp)`.
+Example: `"**/*.@(css|js|bmp|gif|jpg|jpeg|png|svg|tif|tiff|webp)"`
 
 ### `ignore` (optional)
 
@@ -52,7 +53,7 @@ A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern for file
 
 ### `html` (optional)
 
-Type: `string` Default: `**/*.html`
+Type: `string` Default: `"**/*.html"`
 
 A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern to find HTML files.
 

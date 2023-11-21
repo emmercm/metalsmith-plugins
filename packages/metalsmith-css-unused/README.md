@@ -17,7 +17,7 @@ You might also want to consider minifying your CSS files after this plugin using
 
 ## Installation
 
-```bash
+```shell
 npm install --save metalsmith-css-unused
 ```
 
@@ -42,13 +42,13 @@ Metalsmith(__dirname)
 
 ### `html` (optional)
 
-Type: `string` Default: `**/*.html`
+Type: `string` Default: `"**/*.html"`
 
 A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern to find HTML files.
 
 ### `css` (optional)
 
-Type: `string` Default: `**/*.css`
+Type: `string` Default: `"**/*.css"`
 
 A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern to find CSS files.
 
