@@ -29,7 +29,14 @@ const test = (dir: string, config: Config) => {
     it('should build', (testDone) => {
       Metalsmith(`${dir}`)
         // Run the plugin
-        .use(githubProfile(config.options))
+        .use(githubProfile({
+          ...config.options,
+          // GitHub Actions mitigation for API rate limits
+          authorization: {
+            username: process.env.GITHUB_ACTOR || undefined,
+            token: process.env.GITHUB_TOKEN || undefined,
+          },
+        }))
         .use(hbtmd(handlebars))
         // Test the output
         .build((err) => {
