@@ -21,7 +21,7 @@ For each file in a collection, [Term Frequency-Inverse Document Frequency (TF-ID
 
 ## Installation
 
-```bash
+```shell
 npm install --save metalsmith-collections-related
 ```
 
@@ -84,7 +84,7 @@ which can be used with templating engines, such as with [`handlebars`](https://w
 
 ### `pattern` (optional)
 
-Type: `string` Default: `**/*`
+Type: `string` Default: `"**/*"`
 
 A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern to find input files.
 
@@ -100,8 +100,8 @@ Type: `object` Default:
 
 ```json
 {
-    "minTfIdf": 0,
-    "maxTerms": 10
+  "minTfIdf": 0,
+  "maxTerms": 10
 }
 ```
 

@@ -31,7 +31,7 @@ Build finished
 
 ## Installation
 
-```bash
+```shell
 npm install --save metalsmith-tracer
 ```
 
@@ -61,7 +61,7 @@ tracer(Metalsmith(path.resolve()), {
 
 ### `log` (optional)
 
-Type: `function(string)` Default: `console.log`
+Type: `(...data: unknown[]) => void` Default: `console.log`
 
 The logger function.
 
