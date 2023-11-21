@@ -1,1 +1,14 @@
-../../tsconfig.json
+{
+  "extends": "../../tsconfig.json",
+
+  "include": [
+    "../../@types/*.d.ts",
+    "test/**/*.ts",
+    "*.ts",
+  ],
+
+  "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig to read more about this file */
+    "moduleResolution": "node",  // downgrade for @metalsmith/collections
+  }
+}
