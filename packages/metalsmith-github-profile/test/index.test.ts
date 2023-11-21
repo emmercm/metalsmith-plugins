@@ -34,8 +34,8 @@ const test = (dir: string, config: Config) => {
           // GitHub Actions mitigation for API rate limits
           authorization: {
             username: process.env.GITHUB_ACTOR || undefined,
-            token: process.env.GITHUB_TOKEN || undefined
-          }
+            token: process.env.GITHUB_TOKEN || undefined,
+          },
         }))
         .use(hbtmd(handlebars))
         // Test the output
