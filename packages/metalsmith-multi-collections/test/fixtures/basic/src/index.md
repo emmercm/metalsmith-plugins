@@ -1,3 +1,3 @@
 {{#each collections}}
-{{@key}}:{{#each this}}{{this.path}}{{/each}}
+{{@key}}:{{#each this}}{{replace this.path '\' "/"}}{{/each}}
 {{/each}}
