@@ -13,7 +13,7 @@ This will change `href`, `src`, and other tag attributes that reference local fi
 
 ## Installation
 
-```bash
+```shell
 npm install --save metalsmith-html-relative
 ```
 
@@ -38,7 +38,7 @@ Metalsmith(__dirname)
 
 ### `html` (optional)
 
-Type: `string` Default: `**/*.html`
+Type: `string` Default: `"**/*.html"`
 
 A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern to find HTML files.
 

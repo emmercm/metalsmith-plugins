@@ -13,7 +13,7 @@ A common use case is wanting to include JavaScript, CSS, or font files from an i
 
 ## Installation
 
-```bash
+```shell
 npm install --save metalsmith-include-files
 ```
 
@@ -25,7 +25,8 @@ const include    = require('metalsmith-include-files');
 
 Metalsmith(__dirname)
     .use(include({
-        // options here
+        directories: { /* ... */ }
+        // other options here
     }))
     .build((err) => {
         if (err) {
