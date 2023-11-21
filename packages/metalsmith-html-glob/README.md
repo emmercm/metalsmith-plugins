@@ -13,7 +13,7 @@ This plugin works by expanding glob patterns in hyperlinks and resource links su
 
 ## Installation
 
-```bash
+```shell
 npm install --save metalsmith-html-glob
 ```
 
@@ -38,7 +38,7 @@ Metalsmith(__dirname)
 
 ### `html` (optional)
 
-Type: `string` Default: `**/*.html`
+Type: `string` Default: `"**/*.html"`
 
 A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern to find HTML files.
 

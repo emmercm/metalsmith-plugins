@@ -13,7 +13,7 @@ This plugin will raise an exception and stop the build if any HTML files are fou
 
 ## Installation
 
-```bash
+```shell
 npm install --save metalsmith-html-linter
 ```
 
@@ -38,7 +38,7 @@ Metalsmith(__dirname)
 
 ### `html` (optional)
 
-Type: `string` Default: `**/*.html`
+Type: `string` Default: `"**/*.html"`
 
 A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern to find HTML files.
 

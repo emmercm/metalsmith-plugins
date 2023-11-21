@@ -11,7 +11,7 @@ A Metalsmith plugin to fetch GitHub profile information as global metadata.
 
 ## Installation
 
-```bash
+```shell
 npm install --save metalsmith-github-profile
 ```
 

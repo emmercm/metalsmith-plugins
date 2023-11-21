@@ -21,7 +21,7 @@ You should run this plugin before any Markdown rendering plugins such as [`@meta
 
 ## Installation
 
-```bash
+```shell
 npm install --save metalsmith-mermaid
 ```
 
@@ -50,7 +50,7 @@ Metalsmith(path.resolve())
 
 ### `markdown` (optional)
 
-Type: `string` Default: `**/*.md`
+Type: `string` Default: `"**/*.md"`
 
 A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern to find Markdown files.
 

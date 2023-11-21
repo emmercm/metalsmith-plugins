@@ -5,7 +5,7 @@ import readingTime, { Options as ReadingTimeOptions } from 'reading-time';
 export interface Options {
   pattern?: string,
   stripHtml?: boolean,
-  replacements?: string[][],
+  replacements?: [string | RegExp, string][],
   readingTime?: ReadingTimeOptions,
 }
 
@@ -41,10 +41,12 @@ export default (options: Options = {}): Metalsmith.Plugin => {
 
         if (defaultedOptions.replacements && defaultedOptions.replacements.length) {
           defaultedOptions.replacements.forEach((replacement) => {
-            let pattern: string | RegExp = replacement[0];
-            const matches = pattern.match(/^\/(.+)\/([a-z]*)/);
-            if (matches) {
-              pattern = new RegExp(matches[1], matches[2]);
+            let pattern = replacement[0];
+            if (typeof pattern === 'string') {
+              const matches = pattern.match(/^\/(.+)\/([a-z]*)/);
+              if (matches) {
+                pattern = new RegExp(matches[1], matches[2]);
+              }
             }
 
             contents = contents.replace(pattern, replacement[1]);

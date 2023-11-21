@@ -15,7 +15,7 @@ This plugin works with both local and remote resources.
 
 ## Installation
 
-```bash
+```shell
 npm install --save metalsmith-html-sri
 ```
 
@@ -40,7 +40,7 @@ Metalsmith(__dirname)
 
 ### `html` (optional)
 
-Type: `string` Default: `**/*.html`
+Type: `string` Default: `"**/*.html"`
 
 A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern to find HTML files.
 
@@ -73,7 +73,7 @@ An array of regular expressions of resources to be ignored.
 
 ### `algorithm` (optional)
 
-Type: `string|string[]` Default: `sha384`
+Type: `string | string[]` Default: `"sha384"`
 
 Either a string or an array of strings of hashing algorithms to use.
 

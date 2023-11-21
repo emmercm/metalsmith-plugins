@@ -1,4 +1,6 @@
-import { jest } from '@jest/globals';
+import {
+  describe, expect, it, jest,
+} from '@jest/globals';
 import {
   existsSync, mkdirSync, readdirSync, readFileSync, statSync,
 } from 'fs';

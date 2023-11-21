@@ -11,7 +11,7 @@ A Metalsmith plugin to estimate pages' reading times.
 
 ## Installation
 
-```bash
+```shell
 npm install --save metalsmith-reading-time
 ```
 
@@ -48,7 +48,7 @@ Reading time will be reported in minutes in the form "# min read" per [`reading-
 
 ### `pattern` (optional)
 
-Type: `string` Default: `**/*`
+Type: `string` Default: `"**/*"`
 
 A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern to find input files.
 
@@ -60,7 +60,7 @@ Whether to strip HTML tags from content before evaluating the reading time or no
 
 ### `replacements` (optional)
 
-type: `(string|RegExp)[][]` Default: `[]`
+type: `[string | RegExp, string][]` Default: `[]`
 
 A list of tuples fed to `String.replace()` to get rid of meaningless content before evaluating the reading time.
 
