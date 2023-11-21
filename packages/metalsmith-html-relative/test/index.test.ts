@@ -1,3 +1,4 @@
+import { describe, expect, it } from '@jest/globals';
 import assertDir from 'assert-dir-equal';
 import {
   existsSync, mkdirSync, readdirSync, readFileSync, statSync,

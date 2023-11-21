@@ -1,9 +1,5 @@
 {
-  "include": [
-    "../../@types/*.d.ts",
-    "test/**/*.ts",
-    "*.ts",
-  ],
+  "include": ["REPLACE ME"],
 
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
