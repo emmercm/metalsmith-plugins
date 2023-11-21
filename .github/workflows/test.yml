@@ -28,9 +28,23 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
-
       # Test the source files
       - run: npm test
+
+  node-build:
+    runs-on: ${{ matrix.os }}-latest
+    timeout-minutes: 5
+    strategy:
+      matrix:
+        os: [ ubuntu, macos, windows ]
+    steps:
+      # Setup and install
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: volta-cli/action@v4
+      - run: npm ci
+      # Test building
+      - run: npm run build
 
   markdown-lint:
     runs-on: ubuntu-latest
@@ -52,6 +66,7 @@ jobs:
   test-status-check:
     needs:
       - node-unit
+      - node-build
       - markdown-lint
       - renovate-lint
     runs-on: ubuntu-latest

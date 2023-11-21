@@ -9,6 +9,9 @@
 
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
-    "moduleResolution": "node",  // downgrade for @metalsmith/collections
+
+    // downgrade for @metalsmith/collections
+    "module": "commonjs",
+    "moduleResolution": "node"
   }
 }
