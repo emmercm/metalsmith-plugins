@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-include-files",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A Metalsmith plugin to include external files.",
   "keywords": [
     "metalsmith",
@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "deepmerge": "^4.3.1",
-    "fast-glob": "^3.3.1",
+    "fast-glob": "^3.3.2",
     "stat-mode": "^1.0.0"
   },
   "peerDependencies": {
