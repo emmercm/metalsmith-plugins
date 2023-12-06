@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-multi-collections",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Metalsmith plugin to automatically create collections from files' metadata.",
   "keywords": [
     "metalsmith",
@@ -36,7 +36,7 @@
     "provenance": true
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --build --verbose",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --verbose && eslint .",
@@ -72,5 +72,8 @@
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.3.2"
+  },
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   }
 }

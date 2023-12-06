@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-vega",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "keywords": [
     "metalsmith",
@@ -36,7 +36,7 @@
     "provenance": true
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --build --verbose",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --verbose && eslint .",
