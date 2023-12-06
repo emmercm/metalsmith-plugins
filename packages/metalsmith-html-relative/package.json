@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-html-relative",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A Metalsmith plugin to convert to relative paths within HTML.",
   "keywords": [
     "metalsmith",
@@ -36,7 +36,7 @@
     "provenance": true
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --build --verbose",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js --verbose && eslint .",

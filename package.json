@@ -30,7 +30,8 @@
     "test:coverage": "lerna run test:coverage",
     "bump:major": "lerna ls --parseable --since main --no-private --loglevel silent | while read -r package; do npm --prefix \"${package}\" version major --no-git-tag-version; done && npm run lock:regen",
     "bump:minor": "lerna ls --parseable --since main --no-private --loglevel silent | while read -r package; do npm --prefix \"${package}\" version minor --no-git-tag-version; done && npm run lock:regen",
-    "bump:patch": "lerna ls --parseable --since main --no-private --loglevel silent | while read -r package; do npm --prefix \"${package}\" version patch --no-git-tag-version; done && npm run lock:regen"
+    "bump:patch": "lerna ls --parseable --since main --no-private --loglevel silent | while read -r package; do npm --prefix \"${package}\" version patch --no-git-tag-version; done && npm run lock:regen",
+    "pack:all": "lerna exec -- npm pack"
   },
   "devDependencies": {
     "lerna": "^8.0.0",

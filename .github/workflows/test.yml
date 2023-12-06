@@ -42,11 +42,26 @@ jobs:
     steps:
       # Setup and install
       - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: volta-cli/action@v4
+      - uses: volta-cli/action@v4
       - run: npm ci
       # Test building
       - run: npm run build
+
+  node-pack:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # Setup and install
+      - uses: actions/checkout@v4
+      - uses: volta-cli/action@v4
+      - run: npm ci
+      # Test building & packing
+      - run: |
+          npm run pack:all
+          for package in packages/*; do
+            echo "=== ${package} ==="
+            tar -ztvf "${package}"/*.tgz | grep -E '.js$'
+          done
 
   markdown-lint:
     runs-on: ubuntu-latest
@@ -70,6 +85,7 @@ jobs:
     needs:
       - node-unit
       - node-build
+      - node-pack
       - markdown-lint
       - renovate-lint
     runs-on: ubuntu-latest
