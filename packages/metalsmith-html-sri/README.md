@@ -22,8 +22,8 @@ npm install --save metalsmith-html-sri
 ## JavaScript Usage
 
 ```javascript
-const Metalsmith = require('metalsmith');
-const sri        = require('metalsmith-html-sri');
+import Metalsmith from 'metalsmith';
+import sri from 'metalsmith-html-sri';
 
 Metalsmith(__dirname)
     .use(sri({

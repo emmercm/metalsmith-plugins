@@ -18,8 +18,8 @@ npm install --save metalsmith-htaccess
 ## JavaScript Usage
 
 ```javascript
-const Metalsmith = require('metalsmith');
-const htaccess   = require('metalsmith-htaccess');
+import Metalsmith from 'metalsmith';
+import htaccess from 'metalsmith-htaccess';
 
 Metalsmith(__dirname)
     .use(htaccess({

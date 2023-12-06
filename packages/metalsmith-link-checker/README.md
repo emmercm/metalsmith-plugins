@@ -31,8 +31,8 @@ npm install --save metalsmith-link-checker
 This plugin will cause a build error if any links are broken:
 
 ```javascript
-const Metalsmith  = require('metalsmith');
-const linkChecker = require('metalsmith-link-checker');
+import Metalsmith from 'metalsmith';
+import linkChecker from 'metalsmith-link-checker';
 
 Metalsmith(__dirname)
     .use(linkChecker({

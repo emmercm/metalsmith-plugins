@@ -29,8 +29,8 @@ npm install --save metalsmith-multi-collections
 ## JavaScript Usage
 
 ```javascript
-const Metalsmith       = require('metalsmith');
-const multiCollections = require('metalsmith-multi-collections');
+import Metalsmith from 'metalsmith';
+import multiCollections from 'metalsmith-multi-collections';
 
 Metalsmith(__dirname)
     .use(multiCollections({

@@ -20,8 +20,8 @@ npm install --save metalsmith-html-unused
 ## JavaScript Usage
 
 ```javascript
-const Metalsmith = require('metalsmith');
-const unused     = require('metalsmith-html-unused');
+import Metalsmith from 'metalsmith';
+import unused from 'metalsmith-html-unused';
 
 Metalsmith(__dirname)
     .use(unused({

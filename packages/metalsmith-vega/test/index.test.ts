@@ -7,7 +7,7 @@ import {
 import Metalsmith from 'metalsmith';
 import { join } from 'path';
 
-// const assertDir = require('assert-dir-equal');
+// import assertDir from 'assert-dir-equal';
 import vega, { Options } from '../index.js';
 
 jest.setTimeout(10_000);

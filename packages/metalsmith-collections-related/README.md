@@ -30,9 +30,9 @@ npm install --save metalsmith-collections-related
 Collections need to be processed before related files can be found:
 
 ```javascript
-const Metalsmith  = require('metalsmith');
-const collections = require('metalsmith-collections');
-const related     = require('metalsmith-collections-related');
+import Metalsmith from 'metalsmith';
+import collections from 'metalsmith-collections';
+import related from 'metalsmith-collections-related';
 
 Metalsmith(__dirname)
     .use(collections({

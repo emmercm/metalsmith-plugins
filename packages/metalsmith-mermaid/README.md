@@ -33,7 +33,7 @@ This plugin requires ES6 syntax:
 import path from 'path';
 
 import Metalsmith from 'metalsmith';
-import mermaid    from 'metalsmith-mermaid';
+import mermaid from 'metalsmith-mermaid';
 
 Metalsmith(path.resolve())
     .use(mermaid({

@@ -33,7 +33,7 @@ This plugin requires ES6 syntax:
 import path from 'path';
 
 import Metalsmith from 'metalsmith';
-import vega       from 'metalsmith-vega';
+import vega from 'metalsmith-vega';
 
 Metalsmith(path.resolve())
     .use(vega({

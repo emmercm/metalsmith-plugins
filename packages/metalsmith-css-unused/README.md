@@ -24,8 +24,8 @@ npm install --save metalsmith-css-unused
 ## JavaScript Usage
 
 ```javascript
-const Metalsmith = require('metalsmith');
-const cssUnused  = require('metalsmith-css-unused');
+import Metalsmith from 'metalsmith';
+import cssUnused from 'metalsmith-css-unused';
 
 Metalsmith(__dirname)
     .use(cssUnused({
@@ -61,8 +61,8 @@ An object of [PurgeCSS options](https://purgecss.com/configuration.html#options)
 ## Example
 
 ```javascript
-const Metalsmith = require('metalsmith');
-const cssUnused  = require('metalsmith-css-unused');
+import Metalsmith from 'metalsmith';
+import cssUnused from 'metalsmith-css-unused';
 
 Metalsmith(__dirname)
     .use(cssUnused({

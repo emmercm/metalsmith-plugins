@@ -18,8 +18,8 @@ npm install --save metalsmith-reading-time
 ## JavaScript Usage
 
 ```javascript
-const Metalsmith  = require('metalsmith');
-const readingTime = require('metalsmith-reading-time');
+import Metalsmith from 'metalsmith';
+import readingTime from 'metalsmith-reading-time';
 
 Metalsmith(__dirname)
     .use(readingTime({

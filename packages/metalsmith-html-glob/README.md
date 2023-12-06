@@ -20,8 +20,8 @@ npm install --save metalsmith-html-glob
 ## JavaScript Usage
 
 ```javascript
-const Metalsmith = require('metalsmith');
-const glob       = require('metalsmith-html-glob');
+import Metalsmith from 'metalsmith';
+import glob from 'metalsmith-html-glob';
 
 Metalsmith(__dirname)
     .use(glob({
