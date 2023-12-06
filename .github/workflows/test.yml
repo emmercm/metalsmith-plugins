@@ -50,7 +50,7 @@ jobs:
           npm run pack:all
           for package in packages/*; do
             echo "=== ${package} ==="
-            tar -ztvf "${package}"/*.tgz '*.js'
+            tar -ztvf "${package}"/*.tgz | grep -E '.js$'
           done
 
   markdown-lint:
