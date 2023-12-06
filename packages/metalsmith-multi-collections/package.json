@@ -13,7 +13,7 @@
   },
   "license": "GPL-3.0-or-later",
   "author": "Christian Emmer",
-  "type": "module",
+  "type": "commonjs",
   "files": [
     "dist",
     "!**/test/**",

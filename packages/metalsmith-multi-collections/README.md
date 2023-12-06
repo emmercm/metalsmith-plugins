@@ -33,7 +33,7 @@ import Metalsmith from 'metalsmith';
 import multiCollections from 'metalsmith-multi-collections';
 
 Metalsmith(__dirname)
-    .use(multiCollections({
+    .use(multiCollections.default({
         // options here
     }))
     .build((err) => {
