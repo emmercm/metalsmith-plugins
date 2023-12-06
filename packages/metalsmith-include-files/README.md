@@ -20,8 +20,8 @@ npm install --save metalsmith-include-files
 ## JavaScript Usage
 
 ```javascript
-const Metalsmith = require('metalsmith');
-const include    = require('metalsmith-include-files');
+import Metalsmith from 'metalsmith';
+import include from 'metalsmith-include-files';
 
 Metalsmith(__dirname)
     .use(include({
@@ -71,7 +71,8 @@ Whether existing files in the Metalsmith build output can be overwritten or not.
 To include a number of static assets from [`jquery`](https://www.npmjs.com/package/jquery), [`bootstrap`](https://www.npmjs.com/package/bootstrap), and [`@fortawesome/fontawesome-free`](https://www.npmjs.com/package/@fortawesome/fontawesome-free) in your output files:
 
 ```javascript
-const include = require('metalsmith-include-files');
+import Metalsmith from 'metalsmith';
+import include from 'metalsmith-include-files';
 
 Metalsmith(__dirname)
     .use(include({

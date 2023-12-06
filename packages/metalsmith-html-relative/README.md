@@ -20,8 +20,8 @@ npm install --save metalsmith-html-relative
 ## JavaScript Usage
 
 ```javascript
-const Metalsmith = require('metalsmith');
-const relative   = require('metalsmith-html-relative');
+import Metalsmith from 'metalsmith';
+import relative from 'metalsmith-html-relative';
 
 Metalsmith(__dirname)
     .use(relative({

@@ -18,8 +18,8 @@ npm install --save metalsmith-github-profile
 ## JavaScript Usage
 
 ```javascript
-const Metalsmith    = require('metalsmith');
-const githubProfile = require('metalsmith-github-profile');
+import Metalsmith from 'metalsmith';
+import githubProfile from 'metalsmith-github-profile';
 
 Metalsmith(__dirname)
     .use(githubProfile({

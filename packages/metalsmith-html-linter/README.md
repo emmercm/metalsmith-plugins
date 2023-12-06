@@ -20,8 +20,8 @@ npm install --save metalsmith-html-linter
 ## JavaScript Usage
 
 ```javascript
-const Metalsmith = require('metalsmith');
-const linter     = require('metalsmith-html-linter');
+import Metalsmith from 'metalsmith';
+import linter from 'metalsmith-html-linter';
 
 Metalsmith(__dirname)
     .use(linter({

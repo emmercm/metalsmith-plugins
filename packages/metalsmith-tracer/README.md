@@ -45,7 +45,7 @@ This plugin requires ES6 syntax.
 import path from 'path';
 
 import Metalsmith from 'metalsmith';
-import tracer     from 'metalsmith-tracer';
+import tracer from 'metalsmith-tracer';
 
 tracer(Metalsmith(path.resolve()), {
         // options here
