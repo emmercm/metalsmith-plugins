@@ -232,7 +232,8 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/node,webstorm+all
 
 ### Custom ###
-packages/*/dist
-packages/*/test/fixtures/*/build
+.nx/
+packages/*/dist/
+packages/*/test/fixtures/*/build/
 packages/*/junit.xml
 packages/*/LICENSE
