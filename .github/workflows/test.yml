@@ -33,7 +33,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  node-pack:
+  node-build:
     runs-on: ${{ matrix.os }}-latest
     timeout-minutes: 5
     strategy:
@@ -42,8 +42,18 @@ jobs:
     steps:
       # Setup and install
       - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: volta-cli/action@v4
+      - uses: volta-cli/action@v4
+      - run: npm ci
+      # Test building
+      - run: npm run build
+
+  node-pack:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # Setup and install
+      - uses: actions/checkout@v4
+      - uses: volta-cli/action@v4
       - run: npm ci
       # Test building & packing
       - run: |
@@ -74,6 +84,7 @@ jobs:
     if: always()
     needs:
       - node-unit
+      - node-build
       - node-pack
       - markdown-lint
       - renovate-lint
