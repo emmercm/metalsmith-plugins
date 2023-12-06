@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-multi-collections",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A Metalsmith plugin to automatically create collections from files' metadata.",
   "keywords": [
     "metalsmith",
