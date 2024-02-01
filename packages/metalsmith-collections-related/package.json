@@ -76,7 +76,7 @@
     "metalsmith-auto-collections": "0.2.0",
     "metalsmith-hbt-md": "1.0.1",
     "metalsmith-paths": "^4.0.6",
-    "ts-jest": "^29.1.1",
+    "ts-jest": "^29.1.2",
     "ts-migrate": "^0.1.35",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
