@@ -32,8 +32,7 @@ type Validator = (
   link: string,
   options: Options,
   debug: Metalsmith.Debugger,
-  callback: (error: Error | null, validationError: string | null | undefined) => void
-) => string | null | void;
+) => string | undefined | Promise<(string | undefined)>;
 
 /**
  * Return a fake user agent.
@@ -93,7 +92,7 @@ const htmlLinks = (
 const validFacetime = (link: string) => {
   // https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/FacetimeLinks/FacetimeLinks.html
   if (link === 'facetime:') {
-    return null;
+    return undefined;
   }
   if (link.indexOf('@') === -1 && !link.match(/[0-9]/)) {
     return 'invalid';
@@ -110,82 +109,77 @@ const validFacetime = (link: string) => {
       return 'invalid phone number';
     }
   }
-  return null;
+  return undefined;
 };
 
-const validUrlCache: { [key: string]: string | null } = {};
+const validUrlCache: { [key: string]: string | undefined } = {};
 /**
  * Validate a remote HTTP or HTTPS URL.
  */
-const validUrl = (
+const validUrl = async (
   link: string,
   options: Options,
   debug: Metalsmith.Debugger,
-  callback: (error: Error | null, validationError: string | null) => void,
   attempt = 1,
   method = 'HEAD',
-) => {
-  const cacheAndCallback = (err: Error | null, result: string | null) => {
-    // Retry failures if we haven't reached the retry limit
-    if (result && attempt <= (options.attempts ?? 0)) {
-      setTimeout(() => {
-        validUrl(link, options, debug, callback, attempt + 1, method);
-      }, Math.min(1000, 100 * 2 ** attempt));
-      return;
-    }
-    // Otherwise, store the result and call the callback
-    validUrlCache[link] = result;
-    callback(err, result);
-  };
+): Promise<(string | undefined)> => {
   if (link in validUrlCache) {
-    callback(null, validUrlCache[link]);
-    return;
+    // Already validated
+    return validUrlCache[link];
   }
 
-  debug('checking URL with %s: %s, attempt %i', method, link, attempt);
-  const library = (link.slice(0, 5) === 'https' ? https : http);
-  const req = library.request(link, {
-    method,
-    headers: {
-      // TODO: something to fix Pixabay
-      'User-Agent': options.userAgent,
-    },
-    timeout: options.timeout,
-    rejectUnauthorized: false,
-  }, (res) => {
-    debug('%s %s (%s)', method, link, res.statusCode);
-    // Re-attempt HEAD 405s as GETs
-    if (res.statusCode === 405 && method !== 'GET') {
-      validUrl(link, options, debug, callback, attempt, 'GET');
-      return;
-    }
+  const result = await new Promise<(string | undefined)>((resolve) => {
+    debug('checking URL with %s: %s, attempt %i', method, link, attempt);
+    const library = (link.slice(0, 5) === 'https' ? https : http);
+    const req = library.request(link, {
+      method,
+      headers: {
+        // TODO: something to fix Pixabay
+        'User-Agent': options.userAgent,
+      },
+      timeout: options.timeout,
+      rejectUnauthorized: false,
+    }, (res) => {
+      debug('%s %s (%s)', method, link, res.statusCode);
 
-    if (!res) {
-      cacheAndCallback(null, 'no response');
-    } else if (res.statusCode && res.statusCode >= 400 && res.statusCode <= 599) {
-      cacheAndCallback(null, `HTTP ${res.statusCode}`);
-    } else {
-      cacheAndCallback(null, null);
-    }
+      if (!res) {
+        resolve('no response');
+      } else if (res.statusCode && res.statusCode >= 400 && res.statusCode <= 599) {
+        resolve(`HTTP ${res.statusCode}`);
+      } else {
+        resolve(undefined);
+      }
+    });
+
+    req.on('error', (err) => {
+      debug.error('failed to %s URL "%s": %s', method, link, err);
+      resolve(err.message);
+    });
+
+    req.on('timeout', () => {
+      debug.error('failed to %s URL "%s": timeout', method, link);
+      req.destroy(); // cause an error
+    });
+
+    req.end();
   });
 
-  req.on('error', (err) => {
-    // Re-attempt HEAD errors as GETs
-    if (method !== 'GET') {
-      validUrl(link, options, debug, callback, attempt, 'GET');
-      return;
-    }
+  // Re-attempt HEAD errors as GETs
+  if (result && method === 'HEAD') {
+    return validUrl(link, options, debug, attempt, 'GET');
+  }
 
-    debug.error('failed to check URL "%s": %s', link, err);
-    cacheAndCallback(null, err.message);
-  });
+  // Retry failures if we haven't reached the retry limit
+  if (result && attempt <= (options.attempts ?? 0)) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, Math.min(1000, 100 * 2 ** attempt));
+    });
+    return validUrl(link, options, debug, attempt + 1, method);
+  }
 
-  req.on('timeout', () => {
-    debug.error('failed to check URL "%s": timeout', link);
-    req.destroy(); // cause an error
-  });
-
-  req.end();
+  // Otherwise, store the result and return
+  validUrlCache[link] = result;
+  return result;
 };
 
 /**
@@ -202,7 +196,7 @@ const validMailto = (link: string) => {
   if (!link.match(/^mailto:[^@]+@[^?]+(\?(subject|cc|bcc|body)=[^&]+(&(subject|cc|bcc|body)=[^&]+)?)?$/)) {
     return 'invalid query params';
   }
-  return null;
+  return undefined;
 };
 
 /**
@@ -216,7 +210,7 @@ const validSms = (link: string) => {
   if (link.indexOf(' ') !== -1) {
     return 'contains a space';
   }
-  return null;
+  return undefined;
 };
 
 /**
@@ -230,7 +224,7 @@ const validTel = (link: string) => {
   if (link.indexOf(' ') !== -1) {
     return 'contains a space';
   }
-  return null;
+  return undefined;
 };
 
 /**
@@ -319,8 +313,8 @@ export default (options: Options = {}): Metalsmith.Plugin => {
     async.mapLimit(
       filenamesAndLinks,
       defaultedOptions.parallelism,
-      (filenameAndLink, callback: AsyncResultCallback<FilenameAndLinkWithResult, Error>) => {
-        const callbackResult = (err: Error | null, result: string | undefined | null) => callback(
+      async (filenameAndLink, callback: AsyncResultCallback<FilenameAndLinkWithResult, Error>) => {
+        const callbackResult = (err: Error | null, result: string | undefined) => callback(
           err,
           { ...filenameAndLink, result: result ?? undefined },
         );
@@ -330,17 +324,12 @@ export default (options: Options = {}): Metalsmith.Plugin => {
         const linkUrl = urlParse(link);
         if (linkUrl && linkUrl.protocol) {
           if (protocolValidators[linkUrl.protocol] !== undefined) {
-            const result = protocolValidators[linkUrl.protocol](
+            const result = await protocolValidators[linkUrl.protocol](
               link,
               defaultedOptions,
               debug,
-              callbackResult,
             );
-            if (result === undefined) {
-              // Validation function didn't return anything, it will call the callback for us
-              return;
-            }
-            // Otherwise, call the callback with the validation result
+            // Call the callback with the validation result
             callbackResult(null, result);
             return;
           }
