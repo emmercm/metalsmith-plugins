@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.0 / 2024-02-15
+
+- Rewrote callback system to eliminate "callback was already called" exceptions.
+
 ## v2.0.0 / 2023-11-06
 
 - Converted to TypeScript, including type definitions.
