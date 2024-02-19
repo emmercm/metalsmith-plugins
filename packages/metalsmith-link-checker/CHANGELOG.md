@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.1 / 2024-02-18
+
+- Don't validate `link[href][rel='preconnect']` links as they can 404 (e.g. `https://fonts.googleapis.com`).
+
 ## v2.1.0 / 2024-02-15
 
 - Rewrote callback system to eliminate "callback was already called" exceptions.

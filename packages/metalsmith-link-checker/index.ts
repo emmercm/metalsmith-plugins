@@ -76,7 +76,7 @@ const htmlLinks = (
             }
 
             return attributes
-              .map((attribute) => $(`${tag}[${attribute}][${attribute}!='']`)
+              .map((attribute) => $(`${tag}[${attribute}][${attribute}!=''][rel!='preconnect']`)
                 .map((i, elem) => $(elem).attr(attribute))
                 .get())
               .flat()
