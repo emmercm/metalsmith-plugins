@@ -61,7 +61,7 @@
     "@types/async": "^3.2.24",
     "@types/babel__code-frame": "^7.0.6",
     "@types/jest": "^29.5.12",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
     "assert-dir-equal": "1.1.0",
     "eslint": "8.57.0",
     "eslint-config-airbnb-base": "15.0.0",
