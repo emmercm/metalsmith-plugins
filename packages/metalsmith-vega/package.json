@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-vega",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "",
   "keywords": [
     "metalsmith",
@@ -51,7 +51,7 @@
     "deepmerge": "^4.3.1",
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
-    "unified": "^11.0.4",
+    "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0",
     "vega": "^5.30.0",
     "vega-lite": "^5.19.0",
