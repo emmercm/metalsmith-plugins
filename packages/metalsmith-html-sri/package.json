@@ -47,7 +47,7 @@
     "postpack": "rm ./LICENSE"
   },
   "dependencies": {
-    "cheerio": "1.0.0-rc.12",
+    "cheerio": "^1.0.0",
     "deepmerge": "^4.3.1",
     "sync-request": "^6.1.0"
   },
@@ -73,6 +73,6 @@
     "typescript": "^5.3.3"
   },
   "engines": {
-    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+    "node": ">=18.17"
   }
 }

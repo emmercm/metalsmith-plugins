@@ -50,7 +50,7 @@
     "@babel/code-frame": "^7.24.7",
     "@linthtml/linthtml": "^0.9.6",
     "async": "^3.2.5",
-    "cheerio": "1.0.0-rc.12",
+    "cheerio": "^1.0.0",
     "deepmerge": "^4.3.1"
   },
   "peerDependencies": {
@@ -77,6 +77,6 @@
     "typescript": "^5.3.3"
   },
   "engines": {
-    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+    "node": ">=18.17"
   }
 }

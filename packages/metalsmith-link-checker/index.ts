@@ -1,5 +1,5 @@
 import async, { AsyncResultCallback } from 'async';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import deepmerge from 'deepmerge';
 import http from 'http';
 import https from 'https';

@@ -1,4 +1,4 @@
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import deepmerge from 'deepmerge';
 import Metalsmith from 'metalsmith';
 import url from 'url';
