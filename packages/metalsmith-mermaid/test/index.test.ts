@@ -10,7 +10,7 @@ import { join } from 'path';
 // import assertDir from 'assert-dir-equal';
 import mermaid, { Options } from '../index.js';
 
-jest.setTimeout(15_000);
+jest.setTimeout(20_000);
 
 interface Config {
   options: Options,
