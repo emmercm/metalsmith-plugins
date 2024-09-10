@@ -86,9 +86,9 @@
       },
       {
         // Group ESLint together so files can be fixed automatically
-        matchPackagePatterns: [
-          '^@typescript-eslint',
-          '^eslint',
+        matchPackageNames: [
+          '/^@typescript-eslint/',
+          '/^eslint/',
         ],
         groupName: 'ESLint'
       },
@@ -107,6 +107,12 @@
         // Separate Lerna
         matchPackageNames: ['lerna'],
         groupName: 'Lerna',
+        prPriority: -9,
+      },
+      {
+        // Separate TypeScript because upgrades are dependent on support by other dependencies
+        matchPackageNames: ['typescript'],
+        groupName: 'TypeScript',
         prPriority: -10,
       },
 
@@ -118,6 +124,15 @@
         schedule: 'at any time',
         prCreation: 'immediate',
         platformAutomerge: true
+      },
+
+      // Disabled updates
+      {
+        matchPackageNames: [
+          // https://github.com/linthtml/linthtml/issues/746
+          '@linthtml/linthtml'
+        ],
+        enabled: false
       },
 
       // Everything else
