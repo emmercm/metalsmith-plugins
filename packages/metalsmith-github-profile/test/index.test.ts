@@ -1,10 +1,6 @@
-import {
-  describe, expect, it, jest as requiredJest,
-} from '@jest/globals';
+import { describe, expect, it, jest as requiredJest } from '@jest/globals';
 import assertDir from 'assert-dir-equal';
-import {
-  existsSync, mkdirSync, readdirSync, readFileSync, statSync,
-} from 'fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync } from 'fs';
 import handlebars from 'handlebars';
 import Metalsmith from 'metalsmith';
 import hbtmd from 'metalsmith-hbt-md';
@@ -15,8 +11,8 @@ import githubProfile, { Options } from '../index.js';
 requiredJest.setTimeout(30 * 1000);
 
 interface Config {
-  options: Options,
-  error?: string,
+  options: Options;
+  error?: string;
 }
 
 const test = (dir: string, config: Config) => {
@@ -29,14 +25,16 @@ const test = (dir: string, config: Config) => {
     it('should build', (testDone) => {
       Metalsmith(`${dir}`)
         // Run the plugin
-        .use(githubProfile({
-          ...config.options,
-          // GitHub Actions mitigation for API rate limits
-          authorization: {
-            username: process.env.GITHUB_ACTOR || undefined,
-            token: process.env.GITHUB_TOKEN || undefined,
-          },
-        }))
+        .use(
+          githubProfile({
+            ...config.options,
+            // GitHub Actions mitigation for API rate limits
+            authorization: {
+              username: process.env.GITHUB_ACTOR || undefined,
+              token: process.env.GITHUB_TOKEN || undefined,
+            },
+          }),
+        )
         .use(hbtmd(handlebars))
         // Test the output
         .build((err) => {
@@ -63,12 +61,14 @@ const test = (dir: string, config: Config) => {
 };
 
 describe('metalsmith-github-profile', () => {
-  const dirs = (p: string) => readdirSync(p)
-    .map((f) => join(p, f))
-    .filter((f) => statSync(f).isDirectory());
-  dirs('test/fixtures')
-    .forEach((dir) => {
-      const config = existsSync(`${dir}/config.json`) ? JSON.parse(readFileSync(`${dir}/config.json`).toString()) : {};
-      test(dir, config);
-    });
+  const dirs = (p: string) =>
+    readdirSync(p)
+      .map((f) => join(p, f))
+      .filter((f) => statSync(f).isDirectory());
+  dirs('test/fixtures').forEach((dir) => {
+    const config = existsSync(`${dir}/config.json`)
+      ? JSON.parse(readFileSync(`${dir}/config.json`).toString())
+      : {};
+    test(dir, config);
+  });
 });

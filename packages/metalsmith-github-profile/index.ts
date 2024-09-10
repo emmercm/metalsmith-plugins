@@ -6,14 +6,14 @@ import Metalsmith from 'metalsmith';
 import { URL } from 'url';
 
 export interface Options {
-  username: string,
-  timeout?: number,
+  username: string;
+  timeout?: number;
   authorization?: {
-    username?: string,
-    token?: string,
-  } & { [key: string]: string | undefined },
-  retries?: number,
-  retryableStatusCodes?: number[],
+    username?: string;
+    token?: string;
+  } & { [key: string]: string | undefined };
+  retries?: number;
+  retryableStatusCodes?: number[];
 }
 
 const retryJsonGet = <T>(
@@ -55,22 +55,27 @@ const retryJsonGet = <T>(
 
     // Try to warn the user about silent authentication issues if authorization was intended
     if (authorized && rateLimitLimit < 1000) {
-      console.log(`WARN: Authorization possibly failed, ${rateLimitRemaining}/${rateLimitLimit} rate limit calls remaining`);
+      console.log(
+        `WARN: Authorization possibly failed, ${rateLimitRemaining}/${rateLimitLimit} rate limit calls remaining`,
+      );
     }
 
     if (res.statusCode && (res.statusCode < 200 || res.statusCode > 299)) {
       if ((options.retryableStatusCodes ?? []).includes(res.statusCode)) {
         if (attempt <= (options.retries ?? 0)) {
-          setTimeout(() => {
-            retryJsonGet(link, options, callback, attempt + 1);
-          }, (2 ** attempt) * 100);
+          setTimeout(
+            () => {
+              retryJsonGet(link, options, callback, attempt + 1);
+            },
+            2 ** attempt * 100,
+          );
         } else {
           callback(new Error('retry limit reached'), null);
         }
       } else {
         let message = `HTTP ${res.statusCode}: ${res.statusMessage}`;
         if (rateLimitRemaining <= 0) {
-          message += `(rate limit reset at ${(new Date(rateLimitReset * 1000)).toLocaleString()})`;
+          message += `(rate limit reset at ${new Date(rateLimitReset * 1000).toLocaleString()})`;
         }
         callback(new Error(message), null);
       }
@@ -97,40 +102,43 @@ const retryJsonGet = <T>(
   req.end();
 };
 
-const getUser = (
-  username: string,
-  debug: Metalsmith.Debugger,
-) => (options: Options, callback: (error: Error | null, data: unknown) => void) => {
-  debug('fetching user: %s', username);
-  retryJsonGet(`https://api.github.com/users/${username}`, options, callback);
-};
+const getUser =
+  (username: string, debug: Metalsmith.Debugger) =>
+  (options: Options, callback: (error: Error | null, data: unknown) => void) => {
+    debug('fetching user: %s', username);
+    retryJsonGet(`https://api.github.com/users/${username}`, options, callback);
+  };
 
-type Repo = { owner?: object, name: string };
-const getRepos = (
-  username: string,
-  debug: Metalsmith.Debugger,
-  page = 1,
-  prevResults: Repo[] = [],
-) => (options: Options, callback: (error: Error | null, data: unknown) => void) => {
-  debug('fetching repos for user: %s, page %i', username, page);
-  retryJsonGet<Repo[]>(`https://api.github.com/users/${username}/repos?per_page=100&page=${page}`, options, (err, data) => {
-    // Recurse to get all pages
-    if (data && Array.isArray(data) && data.length) {
-      const results = [...prevResults, ...data];
-      getRepos(username, debug, page + 1, results)(options, callback);
-      return;
-    }
+type Repo = { owner?: object; name: string };
+const getRepos =
+  (username: string, debug: Metalsmith.Debugger, page = 1, prevResults: Repo[] = []) =>
+  (options: Options, callback: (error: Error | null, data: unknown) => void) => {
+    debug('fetching repos for user: %s, page %i', username, page);
+    retryJsonGet<Repo[]>(
+      `https://api.github.com/users/${username}/repos?per_page=100&page=${page}`,
+      options,
+      (err, data) => {
+        // Recurse to get all pages
+        if (data && Array.isArray(data) && data.length) {
+          const results = [...prevResults, ...data];
+          getRepos(username, debug, page + 1, results)(options, callback);
+          return;
+        }
 
-    // Key the results by repo name
-    const results = prevResults.reduce((obj, repo) => {
-      delete repo.owner; // large, duplicate info
-      obj[repo.name] = repo;
-      return obj;
-    }, {} as { [key: string]: unknown });
+        // Key the results by repo name
+        const results = prevResults.reduce(
+          (obj, repo) => {
+            delete repo.owner; // large, duplicate info
+            obj[repo.name] = repo;
+            return obj;
+          },
+          {} as { [key: string]: unknown },
+        );
 
-    callback(err, results);
-  });
-};
+        callback(err, results);
+      },
+    );
+  };
 
 /**
  * Plugin entrypoint.
@@ -138,12 +146,15 @@ const getRepos = (
  * @returns {function(Object.<string, Object>, Object, function)}
  */
 export default (options: Options): Metalsmith.Plugin => {
-  const defaultedOptions = deepmerge({
-    username: '',
-    timeout: 5 * 1000,
-    retries: 3,
-    retryableStatusCodes: [0, 408, 500, 502, 503, 504],
-  } satisfies Options, options || {});
+  const defaultedOptions = deepmerge(
+    {
+      username: '',
+      timeout: 5 * 1000,
+      retries: 3,
+      retryableStatusCodes: [0, 408, 500, 502, 503, 504],
+    } satisfies Options,
+    options || {},
+  );
 
   return (files, metalsmith, done) => {
     const debug = metalsmith.debug('metalsmith-github-profile');
@@ -153,21 +164,25 @@ export default (options: Options): Metalsmith.Plugin => {
       user: getUser(defaultedOptions.username, debug),
       repos: getRepos(defaultedOptions.username, debug),
     };
-    async.mapValues(methods, (value, key, callback) => {
-      value(defaultedOptions, callback);
-    }, (err, result) => {
-      if (err) {
-        done(err);
-        return;
-      }
+    async.mapValues(
+      methods,
+      (value, key, callback) => {
+        value(defaultedOptions, callback);
+      },
+      (err, result) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-      const metadata = metalsmith.metadata() as { github?: { profile?: object } };
-      if (!metadata.github) {
-        metadata.github = {};
-      }
-      metadata.github.profile = result;
+        const metadata = metalsmith.metadata() as { github?: { profile?: object } };
+        if (!metadata.github) {
+          metadata.github = {};
+        }
+        metadata.github.profile = result;
 
-      done();
-    });
+        done();
+      },
+    );
   };
 };

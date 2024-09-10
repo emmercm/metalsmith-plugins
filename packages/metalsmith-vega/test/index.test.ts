@@ -1,9 +1,5 @@
-import {
-  describe, expect, it, jest,
-} from '@jest/globals';
-import {
-  existsSync, mkdirSync, readdirSync, readFileSync, statSync,
-} from 'fs';
+import { describe, expect, it, jest } from '@jest/globals';
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync } from 'fs';
 import Metalsmith from 'metalsmith';
 import { join } from 'path';
 
@@ -13,8 +9,8 @@ import vega, { Options } from '../index.js';
 jest.setTimeout(10_000);
 
 interface Config {
-  options: Options,
-  error?: string,
+  options: Options;
+  error?: string;
 }
 
 const test = (dir: string, config: Config) => {
@@ -49,12 +45,14 @@ const test = (dir: string, config: Config) => {
 };
 
 describe('metalsmith-vega', () => {
-  const dirs = (p: string) => readdirSync(p)
-    .map((f) => join(p, f))
-    .filter((f) => statSync(f).isDirectory());
-  dirs('test/fixtures')
-    .forEach((dir) => {
-      const config = existsSync(`${dir}/config.json`) ? JSON.parse(readFileSync(`${dir}/config.json`).toString()) : {};
-      test(dir, config);
-    });
+  const dirs = (p: string) =>
+    readdirSync(p)
+      .map((f) => join(p, f))
+      .filter((f) => statSync(f).isDirectory());
+  dirs('test/fixtures').forEach((dir) => {
+    const config = existsSync(`${dir}/config.json`)
+      ? JSON.parse(readFileSync(`${dir}/config.json`).toString())
+      : {};
+    test(dir, config);
+  });
 });

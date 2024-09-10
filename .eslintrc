@@ -4,9 +4,8 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "airbnb-base",
-    "airbnb-typescript/base",
-    "plugin:jest/recommended"
+    "plugin:jest/recommended",
+    "plugin:prettier/recommended" // MUST BE LAST!
   ],
   "plugins": [
     "@typescript-eslint",
