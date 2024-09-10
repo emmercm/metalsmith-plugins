@@ -3,6 +3,7 @@ import deepmerge from 'deepmerge';
 import http from 'http';
 import https from 'https';
 import Metalsmith from 'metalsmith';
+import { URL } from 'url';
 
 export interface Options {
   username: string,

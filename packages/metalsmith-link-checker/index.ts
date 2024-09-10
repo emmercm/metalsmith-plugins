@@ -6,6 +6,7 @@ import https from 'https';
 import Metalsmith from 'metalsmith';
 import path from 'path';
 import userAgents from 'top-user-agents';
+import { URL } from 'url';
 
 export interface Options {
   html?: {
@@ -76,10 +77,9 @@ const htmlLinks = (
             }
 
             return attributes
-              .map((attribute) => $(`${tag}[${attribute}][${attribute}!=''][rel!='preconnect']`)
+              .flatMap((attribute) => $(`${tag}[${attribute}][${attribute}!=''][rel!='preconnect']`)
                 .map((i, elem) => $(elem).attr(attribute))
                 .get())
-              .flat()
               .map((link) => ({ filename: normalizedFilename, link }) satisfies FilenameAndLink);
           }),
       );
