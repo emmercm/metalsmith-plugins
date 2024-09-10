@@ -10,30 +10,30 @@ import { URL } from 'url';
 
 export interface Options {
   html?: {
-    pattern?: string,
-    tags?: { [key: string]: string | string[] },
-  },
-  ignore?: string[] | RegExp[],
-  timeout?: number,
-  attempts?: number,
-  userAgent?: string,
-  parallelism?: number,
+    pattern?: string;
+    tags?: { [key: string]: string | string[] };
+  };
+  ignore?: string[] | RegExp[];
+  timeout?: number;
+  attempts?: number;
+  userAgent?: string;
+  parallelism?: number;
 }
 
 interface FilenameAndLink {
-  filename: string,
-  link: string,
+  filename: string;
+  link: string;
 }
 
 interface FilenameAndLinkWithResult extends FilenameAndLink {
-  result?: string,
+  result?: string;
 }
 
 type Validator = (
   link: string,
   options: Options,
   debug: Metalsmith.Debugger,
-) => string | undefined | Promise<(string | undefined)>;
+) => string | undefined | Promise<string | undefined>;
 
 /**
  * Return a fake user agent.
@@ -61,29 +61,29 @@ const htmlLinks = (
 ): FilenameAndLink[] => {
   // For each HTML file that matches the given pattern
   const htmlFiles = metalsmith.match(options.html?.pattern ?? '**/*', Object.keys(files));
-  return htmlFiles
-    .reduce((arr, filename) => {
-      const file = files[filename];
-      const $ = cheerio.load(file.contents);
+  return htmlFiles.reduce((arr, filename) => {
+    const file = files[filename];
+    const $ = cheerio.load(file.contents);
 
-      const normalizedFilename = filename.replace(/[/\\]/g, '/');
-      return arr.concat(
-        // For each given tag
-        ...Object.keys(options.html?.tags ?? {})
-          .map((tag) => {
-            let attributes = (options.html?.tags ?? {})[tag];
-            if (!Array.isArray(attributes)) {
-              attributes = [attributes];
-            }
+    const normalizedFilename = filename.replace(/[/\\]/g, '/');
+    return arr.concat(
+      // For each given tag
+      ...Object.keys(options.html?.tags ?? {}).map((tag) => {
+        let attributes = (options.html?.tags ?? {})[tag];
+        if (!Array.isArray(attributes)) {
+          attributes = [attributes];
+        }
 
-            return attributes
-              .flatMap((attribute) => $(`${tag}[${attribute}][${attribute}!=''][rel!='preconnect']`)
-                .map((i, elem) => $(elem).attr(attribute))
-                .get())
-              .map((link) => ({ filename: normalizedFilename, link }) satisfies FilenameAndLink);
-          }),
-      );
-    }, [] as FilenameAndLink[]);
+        return attributes
+          .flatMap((attribute) =>
+            $(`${tag}[${attribute}][${attribute}!=''][rel!='preconnect']`)
+              .map((i, elem) => $(elem).attr(attribute))
+              .get(),
+          )
+          .map((link) => ({ filename: normalizedFilename, link }) satisfies FilenameAndLink);
+      }),
+    );
+  }, [] as FilenameAndLink[]);
 };
 
 /**
@@ -122,34 +122,38 @@ const validUrl = async (
   debug: Metalsmith.Debugger,
   attempt = 1,
   method = 'HEAD',
-): Promise<(string | undefined)> => {
+): Promise<string | undefined> => {
   if (link in validUrlCache) {
     // Already validated
     return validUrlCache[link];
   }
 
-  const result = await new Promise<(string | undefined)>((resolve) => {
+  const result = await new Promise<string | undefined>((resolve) => {
     debug('checking URL with %s: %s, attempt %i', method, link, attempt);
-    const library = (link.slice(0, 5) === 'https' ? https : http);
-    const req = library.request(link, {
-      method,
-      headers: {
-        // TODO: something to fix Pixabay
-        'User-Agent': options.userAgent,
+    const library = link.slice(0, 5) === 'https' ? https : http;
+    const req = library.request(
+      link,
+      {
+        method,
+        headers: {
+          // TODO: something to fix Pixabay
+          'User-Agent': options.userAgent,
+        },
+        timeout: options.timeout,
+        rejectUnauthorized: false,
       },
-      timeout: options.timeout,
-      rejectUnauthorized: false,
-    }, (res) => {
-      debug('%s %s (%s)', method, link, res.statusCode);
+      (res) => {
+        debug('%s %s (%s)', method, link, res.statusCode);
 
-      if (!res) {
-        resolve('no response');
-      } else if (res.statusCode && res.statusCode >= 400 && res.statusCode <= 599) {
-        resolve(`HTTP ${res.statusCode}`);
-      } else {
-        resolve(undefined);
-      }
-    });
+        if (!res) {
+          resolve('no response');
+        } else if (res.statusCode && res.statusCode >= 400 && res.statusCode <= 599) {
+          resolve(`HTTP ${res.statusCode}`);
+        } else {
+          resolve(undefined);
+        }
+      },
+    );
 
     req.on('error', (err) => {
       debug.error('failed to %s URL "%s": %s', method, link, err);
@@ -193,7 +197,11 @@ const validMailto = (link: string) => {
   if (!link.match(/^mailto:[^@]+@[^?]+/)) {
     return 'invalid domain';
   }
-  if (!link.match(/^mailto:[^@]+@[^?]+(\?(subject|cc|bcc|body)=[^&]+(&(subject|cc|bcc|body)=[^&]+)?)?$/)) {
+  if (
+    !link.match(
+      /^mailto:[^@]+@[^?]+(\?(subject|cc|bcc|body)=[^&]+(&(subject|cc|bcc|body)=[^&]+)?)?$/,
+    )
+  ) {
     return 'invalid query params';
   }
   return undefined;
@@ -263,31 +271,36 @@ const protocolValidators: { [key: string]: Validator } = {
  * Plugin entrypoint.
  */
 export default (options: Options = {}): Metalsmith.Plugin => {
-  const defaultedOptions = deepmerge({
-    html: {
-      pattern: '**/*.html',
-      tags: {
-        a: 'href',
-        img: ['src', 'data-src'],
-        link: 'href',
-        script: 'src',
+  const defaultedOptions = deepmerge(
+    {
+      html: {
+        pattern: '**/*.html',
+        tags: {
+          a: 'href',
+          img: ['src', 'data-src'],
+          link: 'href',
+          script: 'src',
+        },
       },
-    },
-    timeout: 10 * 1000,
-    attempts: 1,
-    userAgent,
-    parallelism: 100,
-  } satisfies Options, options || {});
+      timeout: 10 * 1000,
+      attempts: 1,
+      userAgent,
+      parallelism: 100,
+    } satisfies Options,
+    options || {},
+  );
 
   return (files, metalsmith, done) => {
     const debug = metalsmith.debug('metalsmith-link-checker');
     debug('running with options: %O', defaultedOptions);
 
-    const normalizedFilenames = Object.keys(files)
-      .reduce((reducer, filename) => {
+    const normalizedFilenames = Object.keys(files).reduce(
+      (reducer, filename) => {
         reducer[filename.replace(/[/\\]/g, '/')] = true;
         return reducer;
-      }, {} as { [key: string]: boolean });
+      },
+      {} as { [key: string]: boolean },
+    );
 
     // Gather a list of filename + link combinations, and remove ignored links
     const ignore = (defaultedOptions.ignore ?? []).map((pattern) => new RegExp(pattern));
@@ -314,10 +327,8 @@ export default (options: Options = {}): Metalsmith.Plugin => {
       filenamesAndLinks,
       defaultedOptions.parallelism,
       async (filenameAndLink, callback: AsyncResultCallback<FilenameAndLinkWithResult, Error>) => {
-        const callbackResult = (err: Error | null, result: string | undefined) => callback(
-          err,
-          { ...filenameAndLink, result: result ?? undefined },
-        );
+        const callbackResult = (err: Error | null, result: string | undefined) =>
+          callback(err, { ...filenameAndLink, result: result ?? undefined });
         const { filename, link } = filenameAndLink;
 
         // Validate links with a protocol (remote links)
@@ -340,7 +351,10 @@ export default (options: Options = {}): Metalsmith.Plugin => {
         }
 
         // Validate local files
-        callbackResult(null, validLocal(normalizedFilenames, filename, link) ? undefined : 'not found');
+        callbackResult(
+          null,
+          validLocal(normalizedFilenames, filename, link) ? undefined : 'not found',
+        );
       },
       (err, result) => {
         if (err) {
@@ -356,19 +370,26 @@ export default (options: Options = {}): Metalsmith.Plugin => {
         const filenamesToLinkErrors = result
           .filter((falwr): falwr is FilenameAndLinkWithResult => falwr !== undefined)
           .filter((filenameAndLink) => filenameAndLink.result)
-          .reduce((obj, filenameAndLink) => {
-            if (!obj[filenameAndLink.filename]) {
-              obj[filenameAndLink.filename] = [];
-            }
-            obj[filenameAndLink.filename].push(`${filenameAndLink.link} (${filenameAndLink.result})`);
-            return obj;
-          }, {} as { [key: string]: string[] });
+          .reduce(
+            (obj, filenameAndLink) => {
+              if (!obj[filenameAndLink.filename]) {
+                obj[filenameAndLink.filename] = [];
+              }
+              obj[filenameAndLink.filename].push(
+                `${filenameAndLink.link} (${filenameAndLink.result})`,
+              );
+              return obj;
+            },
+            {} as { [key: string]: string[] },
+          );
 
         // Return a pretty formatted error if there are bad links
         if (Object.keys(filenamesToLinkErrors).length) {
-          const message = Object.keys(filenamesToLinkErrors).sort()
+          const message = Object.keys(filenamesToLinkErrors)
+            .sort()
             .map((filename) => {
-              const output = filenamesToLinkErrors[filename].sort()
+              const output = filenamesToLinkErrors[filename]
+                .sort()
                 .map((linkError) => `  ${linkError}`)
                 .join('\n');
               return `${filename}:\n${output}`;

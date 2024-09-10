@@ -1,16 +1,14 @@
 import { describe, expect, it } from '@jest/globals';
 import assertDir from 'assert-dir-equal';
-import {
-  existsSync, mkdirSync, readdirSync, readFileSync, statSync,
-} from 'fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync } from 'fs';
 import Metalsmith from 'metalsmith';
 import { join } from 'path';
 
 import htaccess, { Options } from '../index.js';
 
 interface Config {
-  options: Options,
-  error?: string,
+  options: Options;
+  error?: string;
 }
 
 const test = (dir: string, config: Config) => {
@@ -45,12 +43,14 @@ const test = (dir: string, config: Config) => {
 };
 
 describe('metalsmith-htaccess', () => {
-  const dirs = (p: string) => readdirSync(p)
-    .map((f) => join(p, f))
-    .filter((f) => statSync(f).isDirectory());
-  dirs('test/fixtures')
-    .forEach((dir) => {
-      const config = existsSync(`${dir}/config.json`) ? JSON.parse(readFileSync(`${dir}/config.json`).toString()) : {};
-      test(dir, config);
-    });
+  const dirs = (p: string) =>
+    readdirSync(p)
+      .map((f) => join(p, f))
+      .filter((f) => statSync(f).isDirectory());
+  dirs('test/fixtures').forEach((dir) => {
+    const config = existsSync(`${dir}/config.json`)
+      ? JSON.parse(readFileSync(`${dir}/config.json`).toString())
+      : {};
+    test(dir, config);
+  });
 });
