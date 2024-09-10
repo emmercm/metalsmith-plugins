@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-html-linter",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "A Metalsmith plugin to lint HTML.",
   "keywords": [
     "metalsmith",
@@ -76,7 +76,11 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
+  "//engines": [
+    "Requires ^12.20.0 || ^14.13.1 || >=16.0.0 for ES6 modules.",
+    "Requires >=18.17.0 for cheerio v1.0.0."
+  ],
   "engines": {
-    "node": ">=18.17"
+    "node": ">=18.17.0"
   }
 }
