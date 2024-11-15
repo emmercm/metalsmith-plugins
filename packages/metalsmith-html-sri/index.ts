@@ -36,7 +36,7 @@ async function get(uri: string | URL, timeout = 10_000): Promise<Buffer> {
           return reject(new Error('statusCode=' + res.statusCode));
         }
 
-        const chunks: Buffer[] = [];
+        const chunks: Uint8Array[] = [];
         res.on('data', (chunk) => {
           chunks.push(chunk);
         });
