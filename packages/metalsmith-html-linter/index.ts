@@ -1,4 +1,4 @@
-import codeFrame from '@babel/code-frame';
+import { codeFrameColumns } from '@babel/code-frame';
 import linthtml, { LegacyLinterConfig, LinterConfig } from '@linthtml/linthtml';
 import async from 'async';
 import * as cheerio from 'cheerio';
@@ -182,7 +182,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
               const codeFrames = results
                 .map((result) => {
                   // Use @babel/code-frame to get a more human-readable error message
-                  const frame = codeFrame.codeFrameColumns(contents, {
+                  const frame = codeFrameColumns(contents, {
                     start: result.position.start,
                   });
                   let data = '';
