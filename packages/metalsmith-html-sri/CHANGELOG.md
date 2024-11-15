@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.0 / 2024-11-15
+
+- Replaced the six year old [`sync-request`](https://www.npmjs.com/package/sync-request) with native Node.js `https.get()` calls.
+- Added `parallelism` option.
+
 ## v2.0.0 / 2023-11-06
 
 - Converted to TypeScript, including type definitions.

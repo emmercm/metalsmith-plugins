@@ -79,6 +79,12 @@ Either a string or an array of strings of hashing algorithms to use.
 
 Valid hashing algorithms: `sha256`, `sha384`, `sha512`.
 
+### `parallelism` (optional)
+
+Type: `number` Default: the number of logical CPU cores available
+
+The maximum number of HTML files to process concurrently.
+
 ## Example HTML
 
 ### Example Input
