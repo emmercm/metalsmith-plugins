@@ -1,4 +1,4 @@
-import async, { AsyncResultCallback } from 'async';
+import async from 'async';
 import * as cheerio from 'cheerio';
 import deepmerge from 'deepmerge';
 import http from 'http';
@@ -326,9 +326,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
     async.mapLimit(
       filenamesAndLinks,
       defaultedOptions.parallelism,
-      async (filenameAndLink, callback: AsyncResultCallback<FilenameAndLinkWithResult, Error>) => {
-        const callbackResult = (err: Error | null, result: string | undefined) =>
-          callback(err, { ...filenameAndLink, result: result ?? undefined });
+      async (filenameAndLink: FilenameAndLink): Promise<FilenameAndLinkWithResult> => {
         const { filename, link } = filenameAndLink;
 
         // Validate links with a protocol (remote links)
@@ -341,20 +339,18 @@ export default (options: Options = {}): Metalsmith.Plugin => {
               debug,
             );
             // Call the callback with the validation result
-            callbackResult(null, result);
-            return;
+            return { ...filenameAndLink, result };
           }
 
           // Assume all unknown protocols are valid
-          callbackResult(null, undefined);
-          return;
+          return { ...filenameAndLink, result: undefined };
         }
 
         // Validate local files
-        callbackResult(
-          null,
-          validLocal(normalizedFilenames, filename, link) ? undefined : 'not found',
-        );
+        return {
+          ...filenameAndLink,
+          result: validLocal(normalizedFilenames, filename, link) ? undefined : 'not found',
+        };
       },
       (err, result) => {
         if (err) {
