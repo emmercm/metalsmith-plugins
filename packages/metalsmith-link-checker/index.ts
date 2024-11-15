@@ -46,7 +46,7 @@ const userAgent = userAgents[0];
 const urlParse = (input: string): URL | undefined => {
   try {
     return new URL(input);
-  } catch (err) {
+  } catch {
     return undefined;
   }
 };
