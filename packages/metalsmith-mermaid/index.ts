@@ -2,7 +2,6 @@ import { renderMermaid } from '@mermaid-js/mermaid-cli';
 import async from 'async';
 import deepmerge from 'deepmerge';
 import { Html, Root } from 'mdast';
-import { MermaidConfig } from 'mermaid';
 import Metalsmith from 'metalsmith';
 import puppeteer, { Browser } from 'puppeteer';
 import remarkParse from 'remark-parse';
@@ -12,21 +11,18 @@ import { visit } from 'unist-util-visit';
 
 export interface Options {
   markdown?: string;
-  mermaid?: MermaidConfig;
+  mermaid?: unknown;
 }
 
 const CONSISTENT_CSS = '.mermaid{line-height:1.2;}';
 
-const mermaidToSvg = async (
-  browser: Browser,
-  mermaidData: string,
-  mermaidOptions: MermaidConfig,
-) => {
-  const mermaidOutput = await renderMermaid(browser, mermaidData, 'svg', {
-    mermaidConfig: mermaidOptions,
-    myCSS: CONSISTENT_CSS,
-  });
-  const svgData = Buffer.from(mermaidOutput.data).toString();
+const mermaidToSvg = async (browser: Browser, mermaidData: string, mermaidOptions: unknown) => {
+  const svgData = (
+    await renderMermaid(browser, mermaidData, 'svg', {
+      mermaidConfig: mermaidOptions,
+      myCSS: CONSISTENT_CSS,
+    })
+  ).data.toString();
 
   const page = await browser.newPage();
   await page.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 1 });
@@ -67,8 +63,7 @@ const mermaidToSvg = async (
 };
 
 const remarkMermaid =
-  (browser: Browser, mermaidOptions: MermaidConfig, debug: Metalsmith.Debugger) =>
-  async (tree: Root) => {
+  (browser: Browser, mermaidOptions: unknown, debug: Metalsmith.Debugger) => async (tree: Root) => {
     const promises: Promise<unknown>[] = [];
     visit(tree, 'code', (node, idx, parent) => {
       if ((node.lang || '').toLowerCase() !== 'mermaid' || idx === undefined || !parent) {
@@ -128,7 +123,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
           .use(remarkParse)
           .use(remarkMermaid, browser, defaultedOptions.mermaid, debug)
           .use(remarkStringify)
-          .process(file.contents.toString());
+          .process(file.contents);
 
         file.contents = Buffer.from(tree.value);
       }),
