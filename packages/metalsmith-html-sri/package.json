@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-html-sri",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "A Metalsmith to add subresource integrity attributes to HTML.",
   "keywords": [
     "metalsmith",
@@ -47,9 +47,9 @@
     "postpack": "rm ./LICENSE"
   },
   "dependencies": {
+    "async": "^3.2.6",
     "cheerio": "^1.0.0",
-    "deepmerge": "^4.3.1",
-    "sync-request": "^6.1.0"
+    "deepmerge": "^4.3.1"
   },
   "peerDependencies": {
     "metalsmith": "^2.5.0"

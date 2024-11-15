@@ -86,7 +86,7 @@ An array of [`cheerio`](https://www.npmjs.com/package/cheerio) selectors of elem
 
 Type: `number` Default: the number of logical CPU cores available
 
-The maximum number of async operations at a time.
+The maximum number of HTML files to process concurrently.
 
 ## Changelog
 
