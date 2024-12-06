@@ -58,7 +58,7 @@
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/html-escaper": "^3.0.2",
-    "@types/jest": "^29.5.12",
+    "@types/jest": "^29.5.14",
     "@types/sanitize-html": "^2.13.0",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "assert-dir-equal": "1.1.0",
@@ -77,7 +77,7 @@
     "metalsmith-hbt-md": "1.0.1",
     "metalsmith-paths": "^4.0.6",
     "prettier": "^3.3.3",
-    "ts-jest": "^29.1.4",
+    "ts-jest": "^29.2.5",
     "ts-migrate": "^0.1.35",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
