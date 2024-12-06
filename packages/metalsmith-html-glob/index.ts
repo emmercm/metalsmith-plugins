@@ -26,12 +26,18 @@ export default (options: Options = {}): Metalsmith.Plugin => {
     const debug = metalsmith.debug('metalsmith-github-profile');
     debug('running with options: %O', defaultedOptions);
 
+    const normalizedFilenames = Object.keys(files).map((resource) =>
+      resource.replace(/[/\\]/g, '/'),
+    );
+
     // For each HTML file that matches the given pattern
     metalsmith.match(defaultedOptions.html, Object.keys(files)).forEach((filename) => {
       debug('processing file: %s', filename);
 
       const file = files[filename];
       const $ = cheerio.load(file.contents);
+
+      let fileChanged = false;
 
       // For each given tag
       Object.keys(defaultedOptions.tags).forEach((tag) => {
@@ -70,9 +76,6 @@ export default (options: Options = {}): Metalsmith.Plugin => {
             }
 
             // Find all input files matching the glob in the tag
-            const normalizedFilenames = Object.keys(files).map((resource) =>
-              resource.replace(/[/\\]/g, '/'),
-            );
             const resources = metalsmith
               .match(relativeGlob, normalizedFilenames)
               .map((resource) => resource.replace(/[/\\]/g, '/'))
@@ -86,12 +89,15 @@ export default (options: Options = {}): Metalsmith.Plugin => {
                 resource.insertBefore($(elem));
               });
               $(elem).remove();
+              fileChanged = true;
             }
           });
         });
       });
 
-      file.contents = Buffer.from($.html());
+      if (fileChanged) {
+        file.contents = Buffer.from($.html());
+      }
     });
 
     done();

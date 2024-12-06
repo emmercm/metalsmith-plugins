@@ -36,7 +36,7 @@ async function get(uri: string | URL, timeout = 10_000): Promise<Buffer> {
           return reject(new Error('statusCode=' + res.statusCode));
         }
 
-        const chunks: Buffer[] = [];
+        const chunks: Uint8Array[] = [];
         res.on('data', (chunk) => {
           chunks.push(chunk);
         });
@@ -93,9 +93,11 @@ export default (options: Options = {}): Metalsmith.Plugin => {
 
         const file = files[filename];
         const normalizedFilename = filename.replace(/[/\\]/g, path.sep);
+        const $ = cheerio.load(file.contents);
+
+        let fileChanged = false;
 
         // For each given tag
-        const $ = cheerio.load(file.contents);
         for (const tag of Object.keys(defaultedOptions.tags)) {
           const { attribute } = defaultedOptions.tags[tag];
 
@@ -146,6 +148,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
 
                 debug('  %s: %s', resource, files[resource].integrity);
                 $(elem).attr('integrity', files[resource].integrity as string);
+                fileChanged = true;
               } else {
                 // Add integrity attribute to remote resources
 
@@ -175,6 +178,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
 
                 debug('  %s: %s', uri, remoteResources[uri]);
                 $(elem).attr('integrity', remoteResources[uri]);
+                fileChanged = true;
 
                 // Enforce crossorigin attribute for non-local resources with integrity attribute
                 //  https://www.w3.org/TR/2016/REC-SRI-20160623/#cross-origin-data-leakage
@@ -190,7 +194,9 @@ export default (options: Options = {}): Metalsmith.Plugin => {
           await elemPromise;
         }
 
-        file.contents = Buffer.from($.html());
+        if (fileChanged) {
+          file.contents = Buffer.from($.html());
+        }
       }),
       (err) => {
         if (err) {
