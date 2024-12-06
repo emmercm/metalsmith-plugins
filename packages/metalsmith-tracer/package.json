@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-tracer",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "A Metalsmith plugin to find related files within collections.",
   "keywords": [
     "metalsmith",
@@ -50,7 +50,7 @@
     "callsites": "^4.2.0",
     "chalk": "^5.3.0",
     "deepmerge": "^4.3.1",
-    "ora": "^8.1.0"
+    "ora": "^8.1.1"
   },
   "peerDependencies": {
     "metalsmith": "*"
@@ -58,7 +58,7 @@
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/jest": "^29.5.12",
-    "@typescript-eslint/eslint-plugin": "^8.14.0",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
     "assert-dir-equal": "1.1.0",
     "eslint": "8.57.1",
     "eslint-config-prettier": "^9.1.0",
@@ -73,7 +73,7 @@
     "resolve-from": "5.0.0",
     "ts-jest": "^29.1.4",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3"
+    "typescript": "^5.7.2"
   },
   "engines": {
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"

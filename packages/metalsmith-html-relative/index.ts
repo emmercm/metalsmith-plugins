@@ -36,6 +36,8 @@ export default (options: Options = {}): Metalsmith.Plugin => {
       const normalizedFilename = filename.replace(/[/\\]/g, path.sep);
       const $ = cheerio.load(file.contents);
 
+      let fileChanged = false;
+
       // For each given tag
       Object.keys(defaultedOptions.tags).forEach((tag) => {
         let attributes = defaultedOptions.tags[tag] ?? [];
@@ -79,11 +81,14 @@ export default (options: Options = {}): Metalsmith.Plugin => {
 
             debug('  "%s" changed to: %s', resource, relativeResource);
             $(elem).attr(attribute, relativeResource);
+            fileChanged = true;
           });
         });
       });
 
-      file.contents = Buffer.from($.html());
+      if (fileChanged) {
+        file.contents = Buffer.from($.html());
+      }
     });
 
     done();
