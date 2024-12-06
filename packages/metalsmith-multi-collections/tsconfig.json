@@ -9,10 +9,6 @@
 
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
-    "outDir": "./dist",
-
-    // downgrade for @metalsmith/collections
-    "module": "commonjs",
-    "moduleResolution": "node"
+    "outDir": "./dist"
   }
 }
