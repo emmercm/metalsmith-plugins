@@ -32,6 +32,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      # Fix Puppeteer issues on Ubuntu 23.10+
+      # https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md#option-1_the-easiest-way
+      - run: |
+          echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
+
       # Setup and install
       - uses: actions/checkout@v4
       - uses: volta-cli/action@v4
