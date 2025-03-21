@@ -21,6 +21,12 @@ jobs:
         # Note: npm workspaces requires npm v7+ = Node.js v15+
         node-version: [ lts, 18 ]
     steps:
+      # Fix Puppeteer issues on Ubuntu 23.10+
+      # @see https://github.com/actions/runner-images/issues/10015#issuecomment-2668163375
+      - if: ${{ matrix.os == 'ubuntu' }}
+        run: |
+          sudo aa-teardown || true
+          sudo systemctl disable --now apparmor.service
       # Setup and install
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
