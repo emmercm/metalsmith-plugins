@@ -103,7 +103,7 @@ export default (options: Options | Options[] = []): Metalsmith.Plugin => {
           },
         );
       }, Promise.resolve())
-      .then(() => done)
+      .then(() => done())
       .catch(done);
   };
 };
