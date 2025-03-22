@@ -1,0 +1,10 @@
+{
+  "options": {
+    "methods": [
+      {
+        "name": "resize",
+        "args": [1, 1]
+      }
+    ]
+  }
+}

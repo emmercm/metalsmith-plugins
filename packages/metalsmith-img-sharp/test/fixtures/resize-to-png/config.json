@@ -1,0 +1,15 @@
+{
+  "options": {
+    "namingPattern": "{dir}{name}.png",
+    "methods": [
+      {
+        "name": "resize",
+        "args": [1, 1]
+      },
+      {
+        "name": "png"
+      }
+    ],
+    "moveFile": true
+  }
+}
