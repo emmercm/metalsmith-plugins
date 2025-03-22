@@ -66,6 +66,8 @@ export default (options: Options | Options[] = []): Metalsmith.Plugin => {
           return;
         }
 
+        sharp.concurrency(defaultedOptions.parallelism);
+
         const imageFiles = metalsmith.match(defaultedOptions.src ?? '**/*', Object.keys(files));
 
         await async.eachLimit(
