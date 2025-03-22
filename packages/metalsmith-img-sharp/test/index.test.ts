@@ -21,7 +21,13 @@ const test = (dir: string, config: Config) => {
     it('should build', (testDone) => {
       Metalsmith(`${dir}`)
         // Run the plugin
-        .use(sharp(config.options))
+        .use(
+          sharp({
+            ...config.options,
+            // Allow tests to run in parallel without issue
+            parallelism: 1,
+          }),
+        )
         // Test the output
         .build((err) => {
           if (config.error) {
