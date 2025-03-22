@@ -61,7 +61,10 @@ export default (options: Options | Options[] = []): Metalsmith.Plugin => {
         );
         debug('running with options: %O', defaultedOptions);
 
-        sharp.concurrency(defaultedOptions.parallelism);
+        if (defaultedOptions.methods.length === 0) {
+          // There's nothing to do
+          return;
+        }
 
         const imageFiles = metalsmith.match(defaultedOptions.src ?? '**/*', Object.keys(files));
 
