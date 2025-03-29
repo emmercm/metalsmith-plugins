@@ -68,12 +68,15 @@ export default {
         .write(outputFiles);
       await fs.promises.writeFile(cacheMarkerFile, '');
 
+      // If a callback was passed then `Metalsmith.run()` won't return anything
       if (callback) {
         callback(null, outputFiles);
-      } else {
-        return outputFiles;
+        return;
       }
+
+      return outputFiles;
     };
+
     return realMetalsmith;
   },
 

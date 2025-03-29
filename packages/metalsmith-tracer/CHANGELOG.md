@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.0 / 2025-03-29
+
+- Fixed handling `Metalsmith.build()` called without a callback.
+
 ## v2.0.0 / 2023-11-06
 
 - Converted to TypeScript, including type definitions.
