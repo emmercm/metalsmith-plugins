@@ -155,7 +155,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
           .use(remarkStringify)
           .process(file.contents);
 
-        file.contents = Buffer.from(tree.value);
+        file.contents = Buffer.from(tree.value as string);
       }),
       (err) => {
         done(err ?? undefined);

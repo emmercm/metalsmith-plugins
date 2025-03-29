@@ -130,7 +130,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
           .use(remarkStringify)
           .process(file.contents.toString());
 
-        file.contents = Buffer.from(tree.value);
+        file.contents = Buffer.from(tree.value as string);
       }),
       async (err) => {
         await browser.close();
