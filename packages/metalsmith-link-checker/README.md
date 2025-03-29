@@ -78,13 +78,13 @@ An array of regular expressions of links to be ignored.
 
 Type: `number` Default: `10000`
 
-The network timeout when checking external links, in milliseconds.
+The network timeout when checking external links in milliseconds.
 
 ### `attempts` (optional)
 
 Type: `number` Default: `3`
 
-The number of times to attempt checking external links.
+The number of times to attempt to check external links.
 
 ### `userAgent` (optional)
 

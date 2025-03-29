@@ -17,27 +17,24 @@ const test = (dir: string, config: Config) => {
       mkdirSync(`${dir}/src`);
     }
 
-    it('should build', (testDone) => {
-      Metalsmith(`${dir}`)
-        // Run the plugin
-        .use(sharp(config.options))
-        // Test the output
-        .build((err) => {
-          if (config.error) {
-            expect((err ?? '').toString()).toMatch(config.error);
-          } else {
-            expect(err).toBeNull();
-          }
+    it('should build', async () => {
+      try {
+        await Metalsmith(`${dir}`)
+          // Run the plugin
+          .use(sharp(config.options))
+          // Test the output
+          .build();
+      } catch (err) {
+        if (config.error) {
+          expect((err ?? '').toString()).toMatch(config.error);
+        } else {
+          expect(err).toBeNull();
+        }
+        return;
+      }
 
-          if (err) {
-            testDone();
-            return;
-          }
-
-          // TODO: can't test file contents, different OSes render slightly differently
-          // assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
-          testDone();
-        });
+      // TODO: can't test file contents, different OSes render slightly differently
+      //  assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
     });
   });
 };
