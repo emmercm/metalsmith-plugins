@@ -163,32 +163,39 @@ export default (realMetalsmith: Metalsmith, options: Options = {}) => {
   };
 
   const { build } = realMetalsmith;
-  realMetalsmith.build = (callback?: Metalsmith.Callback) =>
-    new Promise((resolve) => {
-      defaultedOptions.log(
-        `${'-'.repeat(LEFT_MARGIN)} ${chalk.bold('Build process started')} ${'-'.repeat(LEFT_MARGIN)}`,
-      );
-      defaultedOptions.log();
+  // @ts-expect-error Metalsmith.builds()'s two different signatures makes TypeScript mad here
+  realMetalsmith.build = async (callback?: Metalsmith.Callback) => {
+    defaultedOptions.log(
+      `${'-'.repeat(LEFT_MARGIN)} ${chalk.bold('Build process started')} ${'-'.repeat(LEFT_MARGIN)}`,
+    );
+    defaultedOptions.log();
 
-      const start = process.hrtime();
+    const start = process.hrtime();
 
-      build.apply(realMetalsmith, [
-        (...args) => {
-          const elapsed = process.hrtime(start);
-          const elapsedMs = (elapsed[0] * 1e9 + elapsed[1]) / 1000000;
-
-          spinner.stop();
-          defaultedOptions.log();
-          defaultedOptions.log(`${chalk.bold(timePrefix(elapsedMs))} Total build time`);
-          defaultedOptions.log();
-
-          if (callback) {
-            callback(...args);
-          }
-          resolve(args[1]);
-        },
-      ]);
+    // Run `Metalsmith.build()` with a callback to capture the results
+    const [err, files] = await new Promise<[Error | null, Metalsmith.Files]>((resolve) => {
+      build.apply(realMetalsmith, [(...args) => resolve(args)]);
     });
+
+    const elapsed = process.hrtime(start);
+    const elapsedMs = (elapsed[0] * 1e9 + elapsed[1]) / 1000000;
+
+    spinner.stop();
+    defaultedOptions.log();
+    defaultedOptions.log(`${chalk.bold(timePrefix(elapsedMs))} Total build time`);
+    defaultedOptions.log();
+
+    // If a callback was passed then `Metalsmith.build()` won't return anything
+    if (callback) {
+      callback(err, files);
+      return;
+    }
+
+    if (err) {
+      throw err;
+    }
+    return files;
+  };
 
   return realMetalsmith;
 };
