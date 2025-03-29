@@ -16,9 +16,10 @@
   "type": "module",
   "files": [
     "dist",
+    "!**/jest.*",
     "!**/test/**",
     "!**/*.test.*",
-    "!**/jest.*"
+    "!**/*.tsbuildinfo"
   ],
   "main": "dist/index.js",
   "exports": {
@@ -56,6 +57,7 @@
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/jest": "^29.5.14",
+    "@types/node": "^22.13.14",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "assert-dir-equal": "1.1.0",
     "eslint": "8.57.1",

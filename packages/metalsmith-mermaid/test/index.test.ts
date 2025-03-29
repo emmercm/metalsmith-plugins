@@ -20,38 +20,34 @@ const test = (dir: string, config: Config) => {
       mkdirSync(`${dir}/src`);
     }
 
-    it('should build', (testDone) => {
-      Metalsmith(`${dir}`)
-        // Run the plugin
-        .use(mermaid(config.options))
-        // Test the output
-        .build((err) => {
-          if (config.error) {
-            expect((err ?? '').toString()).toMatch(config.error);
-          } else {
-            expect(err).toBeNull();
-          }
+    it('should build', async () => {
+      try {
+        await Metalsmith(`${dir}`)
+          // Run the plugin
+          .use(mermaid(config.options))
+          // Test the output
+          .build();
+      } catch (err) {
+        if (config.error) {
+          expect((err ?? '').toString()).toMatch(config.error);
+        } else {
+          expect(err).toBeNull();
+        }
+        return;
+      }
 
-          if (err) {
-            testDone();
-            return;
-          }
+      // TODO: can't test file contents, CircleCI's Puppeteer viewport renders different
+      // assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
+      readdirSync(`${dir}/build`)
+        .map((builtFilename) => join(`${dir}/build`, builtFilename))
+        .forEach((builtFilename) => {
+          const builtContents = readFileSync(builtFilename).toString();
 
-          // TODO: can't test file contents, CircleCI's Puppeteer viewport renders different
-          // assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
-          readdirSync(`${dir}/build`)
-            .map((builtFilename) => join(`${dir}/build`, builtFilename))
-            .forEach((builtFilename) => {
-              const builtContents = readFileSync(builtFilename).toString();
+          // metalsmith-mermaid@0.0.10 / mermaid@9.3.0 style errors
+          expect(builtContents).not.toContain('Syntax error in graph');
 
-              // metalsmith-mermaid@0.0.10 / mermaid@9.3.0 style errors
-              expect(builtContents).not.toContain('Syntax error in graph');
-
-              // metalsmith-mermaid@0.0.10 blank rendering issue
-              expect(builtContents).not.toContain('<g></g></svg>');
-            });
-
-          testDone();
+          // metalsmith-mermaid@0.0.10 blank rendering issue
+          expect(builtContents).not.toContain('<g></g></svg>');
         });
     });
   });

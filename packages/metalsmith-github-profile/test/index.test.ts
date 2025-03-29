@@ -22,40 +22,33 @@ const test = (dir: string, config: Config) => {
       mkdirSync(`${dir}/src`);
     }
 
-    it('should build', (testDone) => {
-      Metalsmith(`${dir}`)
-        // Run the plugin
-        .use(
-          githubProfile({
-            ...config.options,
-            // GitHub Actions mitigation for API rate limits
-            authorization: {
-              username: process.env.GITHUB_ACTOR || undefined,
-              token: process.env.GITHUB_TOKEN || undefined,
-            },
-          }),
-        )
-        .use(hbtmd(handlebars))
-        // Test the output
-        .build((err) => {
-          try {
-            if (config.error) {
-              expect((err ?? '').toString()).toMatch(config.error);
-            } else {
-              expect(err).toBeNull();
-            }
+    it('should build', async () => {
+      try {
+        await Metalsmith(`${dir}`)
+          // Run the plugin
+          .use(
+            githubProfile({
+              ...config.options,
+              // GitHub Actions mitigation for API rate limits
+              authorization: {
+                username: process.env.GITHUB_ACTOR || undefined,
+                token: process.env.GITHUB_TOKEN || undefined,
+              },
+            }),
+          )
+          .use(hbtmd(handlebars))
+          // Test the output
+          .build();
+      } catch (err) {
+        if (config.error) {
+          expect((err ?? '').toString()).toMatch(config.error);
+        } else {
+          expect(err).toBeNull();
+        }
+        return;
+      }
 
-            if (err) {
-              testDone();
-              return;
-            }
-
-            assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
-            testDone();
-          } catch (assertionError) {
-            testDone(assertionError instanceof Error ? assertionError : assertionError?.toString());
-          }
-        });
+      assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
     });
   });
 };

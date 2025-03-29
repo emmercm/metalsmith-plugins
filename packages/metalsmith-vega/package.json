@@ -1,7 +1,7 @@
 {
   "name": "metalsmith-vega",
   "version": "1.0.9",
-  "description": "",
+  "description": "A Metalsmith plugin to render Vega and Vega Lite visualizations in files.",
   "keywords": [
     "metalsmith",
     "metalsmith-plugin",
@@ -16,9 +16,10 @@
   "type": "module",
   "files": [
     "dist",
+    "!**/jest.*",
     "!**/test/**",
     "!**/*.test.*",
-    "!**/jest.*"
+    "!**/*.tsbuildinfo"
   ],
   "main": "dist/index.js",
   "exports": {
@@ -63,6 +64,7 @@
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/jest": "^29.5.14",
+    "@types/node": "^22.13.14",
     "@types/xml2js": "^0.4.14",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "eslint": "8.57.1",

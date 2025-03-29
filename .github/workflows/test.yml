@@ -74,7 +74,7 @@ jobs:
     timeout-minutes: 2
     steps:
       - uses: actions/checkout@v4
-      - run: docker run -v $PWD:/workdir ghcr.io/igorshubovych/markdownlint-cli:latest --ignore "packages/*/test/fixtures/**/*.md" --disable MD013 -- "**/*.md"
+      - run: docker run -v $PWD:/workdir ghcr.io/igorshubovych/markdownlint-cli:latest --ignore "packages/*/test/fixtures/**/*.md" --disable MD013 MD033 -- "**/*.md"
 
   renovate-lint:
     runs-on: ubuntu-latest
