@@ -1,22 +1,21 @@
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+'use strict';
 
-import { FlatCompat } from '@eslint/eslintrc';
-import js from '@eslint/js';
-import typescriptEslint from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
-import jest from 'eslint-plugin-jest';
-import simpleImportSort from 'eslint-plugin-simple-import-sort';
+const globals = require('globals');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const { FlatCompat } = require('@eslint/eslintrc');
+const js = require('@eslint/js');
+const typescriptEslint = require('@typescript-eslint/eslint-plugin');
+const tsParser = require('@typescript-eslint/parser');
+const jest = require('eslint-plugin-jest');
+const simpleImportSort = require('eslint-plugin-simple-import-sort');
+
 const compat = new FlatCompat({
   baseDirectory: __dirname,
   recommendedConfig: js.configs.recommended,
   allConfig: js.configs.all,
 });
 
-export default [
+module.exports = [
   {
     ignores: ['coverage/**', 'dist/**', 'test/fixtures/**'],
   },
@@ -62,6 +61,20 @@ export default [
     files: ['**/fixtures/**/*.js'],
     rules: {
       strict: 'off',
+    },
+  },
+
+  // TODO(cemmer): rename this file to .mjs, convert to module syntax, add type:module to
+  //  package.json, and fix the resulting Jest error
+  {
+    files: ['**/*.cjs'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
     },
   },
 ];

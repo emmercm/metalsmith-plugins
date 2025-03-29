@@ -12,7 +12,6 @@
   },
   "license": "GPL-3.0-or-later",
   "author": "Christian Emmer",
-  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/emmercm/igir.git"
