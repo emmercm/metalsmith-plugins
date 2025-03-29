@@ -13,7 +13,7 @@ From the official [Mermaid](https://mermaid-js.github.io/mermaid/#/) documentati
 
 > Mermaid is a JavaScript based diagramming and charting tool that uses Markdown-inspired text definitions and a renderer to create and modify complex diagrams. The main purpose of Mermaid is to help documentation catch up with development.
 
-Mermaid supports a number of different diagrams including flowcharts, sequence diagrams, class diagrams, state diagrams, entity relationship diagrams (ERDs), user journeys, Gantt charts, pie charts, requirements diagrams, and more. See the examples section below for a few of these.
+Mermaid supports a number of different diagrams including flowcharts, sequence diagrams, class diagrams, state diagrams, entity relationship diagrams (ERDs), user journeys, Gantt charts, pie charts, requirement diagrams, and more. See the examples section below for a few of these.
 
 This Metalsmith plugin works by finding all ```` ```mermaid ```` code blocks in Markdown files, rendering them to SVG, and replacing them with the SVG in-place.
 
@@ -27,15 +27,11 @@ npm install --save metalsmith-mermaid
 
 ## JavaScript Usage
 
-This plugin requires ES6 syntax:
-
 ```javascript
-import path from 'path';
-
 import Metalsmith from 'metalsmith';
 import mermaid from 'metalsmith-mermaid';
 
-Metalsmith(path.resolve())
+Metalsmith(__dirname)
     .use(mermaid({
         // options here
     }))

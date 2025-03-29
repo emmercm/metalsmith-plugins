@@ -22,42 +22,32 @@ const test = (dir: string, config: Config) => {
       mkdirSync(`${dir}/src`);
     }
 
-    it('should build', (testDone) => {
-      Metalsmith(`${dir}`)
-        .use(
-          collections({
-            wikipedia: {
-              pattern: 'wikipedia/*.md',
-              // TODO(cemmer): remove after https://github.com/metalsmith/collections/pull/106 merges
-              sortBy: (a, b) => a.path.localeCompare(b.path),
-              limit: 1000,
-              refer: false,
-              reverse: false,
-              filterBy: () => true,
-              metadata: null,
-            },
-          }),
-        )
-        // Run the plugin
-        .use(paths())
-        .use(related(config.options))
-        .use(hbtmd(handlebars))
-        // Test the output
-        .build((err) => {
-          if (config.error) {
-            expect((err ?? '').toString()).toMatch(config.error);
-          } else {
-            expect(err).toBeNull();
-          }
+    it('should build', async () => {
+      try {
+        await Metalsmith(`${dir}`)
+          .use(
+            collections({
+              wikipedia: {
+                pattern: 'wikipedia/*.md',
+              },
+            }),
+          )
+          // Run the plugin
+          .use(paths())
+          .use(related(config.options))
+          .use(hbtmd(handlebars))
+          // Test the output
+          .build();
+      } catch (err) {
+        if (config.error) {
+          expect((err ?? '').toString()).toMatch(config.error);
+        } else {
+          expect(err).toBeNull();
+        }
+        return;
+      }
 
-          if (err) {
-            testDone();
-            return;
-          }
-
-          assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
-          testDone();
-        });
+      assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
     });
   });
 };
