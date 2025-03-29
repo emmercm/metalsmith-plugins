@@ -32,7 +32,7 @@ const timePrefix = (milliseconds: number) => {
   return ' '.repeat(LEFT_MARGIN - fixed.length - suffix.length) + fixed + suffix;
 };
 
-export default (realMetalsmith: Metalsmith, options: Options = {}) => {
+export default (realMetalsmith: Metalsmith, options: Options = {}): Metalsmith => {
   const defaultedOptions = deepmerge(
     {
       log: console.log,

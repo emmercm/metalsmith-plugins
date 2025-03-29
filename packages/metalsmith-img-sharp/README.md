@@ -9,7 +9,7 @@
 
 A Metalsmith plugin to process images with [Sharp](https://sharp.pixelplumbing.com/).
 
-_This plugin is designed to be a modernized drop-in replacement for the outdated and unmaintained [`metalsmith-sharp` plugin](https://github.com/axe312ger/metalsmith-sharp)._
+_This plugin is designed to be a modernized, grossly more performant, drop-in replacement for the outdated and unmaintained [`metalsmith-sharp` plugin](https://github.com/axe312ger/metalsmith-sharp)._
 
 ## Installation
 
@@ -89,7 +89,7 @@ Metalsmith(__dirname)
 
 Type: `{ name: string, args: unknown}[]`
 
-An array of Sharp methods to apply in order to each file. See the full [Sharp documentation](https://sharp.pixelplumbing.com/api-operation) on what resizing, compositing, color manipulation, and other functions are available.
+An array of Sharp methods to apply to each file. See the full [Sharp documentation](https://sharp.pixelplumbing.com/api-operation) on what resizing, compositing, color manipulation, and other functions are available.
 
 `args` can be one of:
 

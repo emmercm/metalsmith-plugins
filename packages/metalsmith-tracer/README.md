@@ -11,7 +11,7 @@ A tool to automatically trace and measure Metalsmith build time.
 
 The Metalsmith build process has no progress output to indicate how many plugins have been processed and how many more are left. Build pipelines with a lot of plugins can take a long time to finish, and it's very difficult to know which plugins take the most time. This package is a wrapper around Metalsmith that outputs meaningful build progress.
 
-Here is example console output when wrapped around the [metalsmith/startbootstrap-clean-blog](https://github.com/metalsmith/startbootstrap-clean-blog) example:
+Here is an example console output when wrapped around the [metalsmith/startbootstrap-clean-blog](https://github.com/metalsmith/startbootstrap-clean-blog) example:
 
 ```text
 ------- Build process started -------
@@ -37,19 +37,16 @@ npm install --save metalsmith-tracer
 
 ## JavaScript Usage
 
-This plugin requires ES6 syntax.
-
 `metalsmith-tracer` wraps the root `metalsmith` call:
 
 ```javascript
-import path from 'path';
-
 import Metalsmith from 'metalsmith';
 import tracer from 'metalsmith-tracer';
 
-tracer(Metalsmith(path.resolve()), {
+tracer(Metalsmith(__dirname), {
         // options here
     })
+    // .use() every build plugin
     .build((err) => {
         if (err) {
             throw err;

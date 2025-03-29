@@ -16,9 +16,10 @@
   "type": "module",
   "files": [
     "dist",
+    "!**/jest.*",
     "!**/test/**",
     "!**/*.test.*",
-    "!**/jest.*"
+    "!**/*.tsbuildinfo"
   ],
   "main": "dist/index.js",
   "exports": {

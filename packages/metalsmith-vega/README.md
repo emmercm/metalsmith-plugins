@@ -27,15 +27,11 @@ npm install --save metalsmith-vega
 
 ## JavaScript Usage
 
-This plugin requires ES6 syntax:
-
 ```javascript
-import path from 'path';
-
 import Metalsmith from 'metalsmith';
 import vega from 'metalsmith-vega';
 
-Metalsmith(path.resolve())
+Metalsmith(__dirname)
     .use(vega({
         // options here
     }))

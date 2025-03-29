@@ -18,29 +18,21 @@ const test = (dir: string, config: Config) => {
       mkdirSync(`${dir}/src`);
     }
 
-    it('should build', (testDone) => {
-      tracer(Metalsmith(`${dir}`), config.options)
-        .use(() => {})
-        // Test the output
-        .build((err) => {
-          try {
-            if (config.error) {
-              expect((err ?? '').toString()).toMatch(config.error);
-            } else {
-              expect(err).toBeNull();
-            }
+    it('should build', async () => {
+      try {
+        await tracer(Metalsmith(`${dir}`), config.options)
+          .use(() => {})
+          .build();
+      } catch (err) {
+        if (config.error) {
+          expect((err ?? '').toString()).toMatch(config.error);
+        } else {
+          expect(err).toBeNull();
+        }
+        return;
+      }
 
-            if (err) {
-              testDone();
-              return;
-            }
-
-            assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
-            testDone();
-          } catch (assertionError) {
-            testDone(assertionError instanceof Error ? assertionError : assertionError?.toString());
-          }
-        });
+      assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
     });
   });
 };

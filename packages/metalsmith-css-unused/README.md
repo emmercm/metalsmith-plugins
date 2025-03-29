@@ -11,7 +11,7 @@ A Metalsmith plugin to remove unused CSS rules.
 
 This plugin works by removing rules in every CSS file that don't match any content in any HTML files.
 
-CSS files are not moved or combined in any way, only the content of the files is changed. You can use plugins such as [`metalsmith-renamer`](https://www.npmjs.com/package/metalsmith-renamer) or [`metalsmith-concat`](https://www.npmjs.com/package/metalsmith-concat) to rename or combine your CSS files before or after this plugin.
+CSS files aren't moved or combined in any way, only the content of the files is changed. You can use plugins such as [`metalsmith-renamer`](https://www.npmjs.com/package/metalsmith-renamer) or [`metalsmith-concat`](https://www.npmjs.com/package/metalsmith-concat) to rename or combine your CSS files before or after this plugin.
 
 You might also want to consider minifying your CSS files after this plugin using [`@metalsmith/postcss`](https://www.npmjs.com/package/@metalsmith/postcss) with [`cssnano`](https://www.npmjs.com/package/cssnano) or another similar plugin.
 

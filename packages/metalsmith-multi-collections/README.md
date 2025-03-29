@@ -74,7 +74,7 @@ This plugin is helpful!
 
 Type: `string` Default: `"{val}"`
 
-The resulting collection name. The token `{val}` is replaced with any and all values found in the `key` option above.
+The resulting collection name. The token `{val}` is replaced with all values found in the `key` option above.
 
 Example: `"blog/tag/{val}"`
 

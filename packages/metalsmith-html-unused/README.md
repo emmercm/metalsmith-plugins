@@ -49,7 +49,7 @@ Example: `"**/*.@(css|js|bmp|gif|jpg|jpeg|png|svg|tif|tiff|webp)"`
 
 Type: `string`
 
-A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern for files to exclude from removal. If no pattern is defined then no files will be ignored.
+A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern for files to exclude from removal. If no pattern is defined, then no files will be ignored.
 
 ### `html` (optional)
 
@@ -104,7 +104,7 @@ And `index.html`:
 </html>
 ```
 
-Both `static/js/fontawesome.all.min.css` and `static/js/popper.js` would be excluded from build output because they are not referenced, and `static/img/logo.png` would persist because it was ignored. The final file tree would be:
+Both `static/js/fontawesome.all.min.css` and `static/js/popper.js` would be excluded from build output because they aren't referenced, and `static/img/logo.png` would persist because it was ignored. The final file tree would be:
 
 ```text
 .
