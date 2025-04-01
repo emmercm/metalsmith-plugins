@@ -62,7 +62,7 @@
     "@types/html-escaper": "^3.0.4",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.14",
-    "@types/sanitize-html": "^2.13.0",
+    "@types/sanitize-html": "^2.15.0",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "assert-dir-equal": "1.1.0",
     "cd": "^0.3.3",
