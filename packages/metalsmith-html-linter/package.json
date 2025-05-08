@@ -62,7 +62,7 @@
     "@types/async": "^3.2.24",
     "@types/babel__code-frame": "^7.0.6",
     "@types/jest": "^29.5.14",
-    "@types/node": "^22.13.14",
+    "@types/node": "^22.15.8",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "assert-dir-equal": "1.1.0",
     "eslint": "9.26.0",
