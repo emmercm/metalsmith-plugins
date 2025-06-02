@@ -79,7 +79,7 @@
     "metalsmith-hbt-md": "1.0.1",
     "metalsmith-paths": "^4.0.6",
     "prettier": "^3.5.3",
-    "ts-jest": "^29.3.2",
+    "ts-jest": "^29.3.4",
     "ts-migrate": "^0.1.35",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
