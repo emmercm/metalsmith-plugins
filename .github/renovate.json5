@@ -73,6 +73,12 @@
         matchDepTypes: ['dependencies'],
         bumpVersion: 'patch'
       },
+      {
+        // Group Vega major updates together
+        matchPackageNames: ['/^vega/'],
+        groupName: 'Vega',
+        matchUpdateTypes: ['major']
+      },
 
       // Dev dependencies
       {
