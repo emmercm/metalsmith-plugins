@@ -6,10 +6,10 @@ import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
-import vega, { Config as VegaConfig } from 'vega';
-import vegaLite, { Config as VegaLiteConfig } from 'vega-lite';
-import { CompileOptions } from 'vega-lite/build/src/compile/compile.js';
-import { LayoutSizeMixins } from 'vega-lite/build/src/spec/index.js';
+import { Config as VegaConfig, parse as vegaParse, Spec as VegaSpec, View as VegaView } from 'vega';
+import { compile as vegaLiteCompile, Config as VegaLiteConfig } from 'vega-lite';
+import { CompileOptions } from 'vega-lite/types_unstable/compile/compile.js';
+import { LayoutSizeMixins } from 'vega-lite/types_unstable/spec/index.js';
 import xml2js from 'xml2js';
 
 export interface Options {
@@ -18,8 +18,8 @@ export interface Options {
   vega?: VegaConfig & LayoutSizeMixins;
 }
 
-const vegaToSvg = async (vegaBody: vega.Spec, vegaOptions: VegaConfig = {}) => {
-  const view = new vega.View(vega.parse(vegaBody, vegaOptions), {
+const vegaToSvg = async (vegaBody: VegaSpec, vegaOptions: VegaConfig = {}) => {
+  const view = new VegaView(vegaParse(vegaBody, vegaOptions), {
     renderer: 'none',
   });
   const svg = await view.toSVG();
@@ -61,7 +61,7 @@ const remarkVegaLite =
         throw new Error(`Failed to JSON parse '${node.value.replace(/\n +/g, '').trim()}' : ${e}`);
       }
 
-      const vegaBody = vegaLite.compile(nodeValue, vegaLiteOptions).spec;
+      const vegaBody = vegaLiteCompile(nodeValue, vegaLiteOptions).spec;
 
       const promise = vegaToSvg(vegaBody).then((svg) => {
         const newNode: Html = {
