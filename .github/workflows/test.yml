@@ -28,7 +28,7 @@ jobs:
         run: |
           echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
       # Setup and install
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Use Node.js ${{ matrix.node-version }}
         uses: volta-cli/action@v4
         with:
@@ -47,7 +47,7 @@ jobs:
         os: [ ubuntu, macos, windows ]
     steps:
       # Setup and install
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: volta-cli/action@v4
       - run: npm ci
       # Test building
@@ -58,7 +58,7 @@ jobs:
     timeout-minutes: 5
     steps:
       # Setup and install
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: volta-cli/action@v4
       - run: npm ci
       # Test building & packing
@@ -73,14 +73,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: docker run -v $PWD:/workdir ghcr.io/igorshubovych/markdownlint-cli:latest --ignore "packages/*/test/fixtures/**/*.md" --disable MD013 MD033 -- "**/*.md"
 
   renovate-lint:
     runs-on: ubuntu-latest
     timeout-minutes: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: rinchsan/renovate-config-validator@v0.2.0
         with:
           pattern: 'renovate.json5'
