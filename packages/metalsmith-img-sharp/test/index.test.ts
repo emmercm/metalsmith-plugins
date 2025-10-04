@@ -34,7 +34,7 @@ const test = (dir: string, config: Config) => {
       }
 
       // TODO: can't test file contents, different OSes render slightly differently
-      //  assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
+      //  assertDir(`${dir}/build`, `${dir}/expected`);
     });
   });
 };

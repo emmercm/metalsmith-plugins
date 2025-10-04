@@ -40,7 +40,7 @@ const test = (dir: string, config: Config) => {
         .clean(true)
         .build();
 
-      assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
+      assertDir(`${dir}/build`, `${dir}/expected`);
     });
   });
 };

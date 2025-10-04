@@ -48,7 +48,7 @@ const test = (dir: string, config: Config) => {
         return;
       }
 
-      assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
+      assertDir(`${dir}/build`, `${dir}/expected`);
     });
   });
 };
