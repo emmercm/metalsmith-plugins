@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-html-favicons",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Metalsmith plugin to generate favicons.",
   "keywords": [
     "metalsmith",
@@ -48,7 +48,7 @@
     "postpack": "rm ./LICENSE"
   },
   "dependencies": {
-    "cheerio": "^1.1.0",
+    "cheerio": "^1.1.2",
     "deepmerge": "^4.3.1",
     "favicons": "^7.2.0"
   },
