@@ -1,12 +1,10 @@
-import { describe, expect, it, jest } from '@jest/globals';
+import { describe, expect, it } from '@jest/globals';
+import assertDir from 'assert-dir-equal';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync } from 'fs';
 import Metalsmith from 'metalsmith';
 import { join } from 'path';
 
-// import assertDir from 'assert-dir-equal';
-import mermaid, { Options } from '../index.js';
-
-jest.setTimeout(30_000);
+import favicons, { Options } from '../index.js';
 
 interface Config {
   options: Options;
@@ -24,7 +22,7 @@ const test = (dir: string, config: Config) => {
       try {
         await Metalsmith(`${dir}`)
           // Run the plugin
-          .use(mermaid(config.options))
+          .use(favicons(config.options))
           // Test the output
           .build();
       } catch (err) {
@@ -36,24 +34,16 @@ const test = (dir: string, config: Config) => {
         return;
       }
 
-      // TODO: can't test file contents, CircleCI's Puppeteer viewport renders different
-      // assertDir(`${dir}/build`, `${dir}/expected`);
-      readdirSync(`${dir}/build`)
-        .map((builtFilename) => join(`${dir}/build`, builtFilename))
-        .forEach((builtFilename) => {
-          const builtContents = readFileSync(builtFilename).toString();
-
-          // metalsmith-mermaid@0.0.10 / mermaid@9.3.0 style errors
-          expect(builtContents).not.toContain('Syntax error in graph');
-
-          // metalsmith-mermaid@0.0.10 blank rendering issue
-          expect(builtContents).not.toContain('<g></g></svg>');
-        });
+      assertDir(`${dir}/build`, `${dir}/expected`, {
+        // Don't test the contents of image files, these are likely to change over time as various
+        // libraries are updated
+        filter: (name) => name.toLowerCase().match(/\.(ico|png|svg)$/) === null,
+      });
     });
   });
 };
 
-describe('metalsmith-mermaid', () => {
+describe('metalsmith-html-favicons', () => {
   const dirs = (p: string) =>
     readdirSync(p)
       .map((f) => join(p, f))
