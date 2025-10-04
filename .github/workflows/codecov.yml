@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: formsort/action-check-codecov-config@v1
 
   # !!! The codecov/project check should be required by GitHub !!!
@@ -38,7 +38,7 @@ jobs:
           echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
 
       # Setup and install
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: volta-cli/action@v4
       - run: npm ci
 
