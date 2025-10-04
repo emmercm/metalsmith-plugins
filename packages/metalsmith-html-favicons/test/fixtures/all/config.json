@@ -1,0 +1,15 @@
+{
+  "options": {
+    "icon": "hammer.svg",
+    "favicons": {
+      "icons": {
+        "android": true,
+        "appleIcon": true,
+        "appleStartup": true,
+        "favicons": true,
+        "windows": true,
+        "yandex": true
+      }
+    }
+  }
+}

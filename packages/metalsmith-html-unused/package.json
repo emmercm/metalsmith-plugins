@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-html-unused",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "A Metalsmith plugin to exclude files unused in HTML.",
   "keywords": [
     "metalsmith",
@@ -48,7 +48,7 @@
     "postpack": "rm ./LICENSE"
   },
   "dependencies": {
-    "cheerio": "^1.1.0",
+    "cheerio": "^1.1.2",
     "deepmerge": "^4.3.1"
   },
   "peerDependencies": {
@@ -57,7 +57,7 @@
   "devDependencies": {
     "@jest/globals": "^30.0.3",
     "@types/jest": "^30.0.0",
-    "@types/node": "^22.15.34",
+    "@types/node": "^22.18.8",
     "@typescript-eslint/eslint-plugin": "^8.35.0",
     "assert-dir-equal": "1.1.0",
     "eslint": "9.30.0",
@@ -76,9 +76,10 @@
   },
   "//engines": [
     "Requires ^12.20.0 || ^14.13.1 || >=16.0.0 for ES6 modules.",
-    "Requires >=18.17.0 for cheerio v1.0.0."
+    "Requires >=18.17.0 for cheerio v1.0.0.",
+    "Requires >=20.18.1 for undici v7.0.0, from cheerio v1.0.0."
   ],
   "engines": {
-    "node": ">=18.17.0"
+    "node": ">=20.18.1"
   }
 }

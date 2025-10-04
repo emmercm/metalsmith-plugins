@@ -23,7 +23,7 @@ export default (options: Options = {}): Metalsmith.Plugin => {
   );
 
   return (files, metalsmith, done) => {
-    const debug = metalsmith.debug('metalsmith-github-profile');
+    const debug = metalsmith.debug('metalsmith-html-glob');
     debug('running with options: %O', defaultedOptions);
 
     const normalizedFilenames = Object.keys(files).map((resource) =>

@@ -37,7 +37,7 @@ const test = (dir: string, config: Config) => {
       }
 
       // TODO: can't test file contents, CircleCI's Puppeteer viewport renders different
-      // assertDir(`${dir}/build`, `${dir}/expected`, { filter: () => true });
+      // assertDir(`${dir}/build`, `${dir}/expected`);
       readdirSync(`${dir}/build`)
         .map((builtFilename) => join(`${dir}/build`, builtFilename))
         .forEach((builtFilename) => {
