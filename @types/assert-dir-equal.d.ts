@@ -2,7 +2,7 @@ declare module 'assert-dir-equal' {
   function assertDirEqual(
     actual: string,
     expected: string,
-    options: {
+    options?: {
       filter?: (name: string) => boolean;
     },
   ): void;
