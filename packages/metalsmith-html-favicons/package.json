@@ -77,9 +77,10 @@
   },
   "//engines": [
     "Requires ^12.20.0 || ^14.13.1 || >=16.0.0 for ES6 modules.",
-    "Requires >=18.17.0 for cheerio v1.0.0."
+    "Requires >=18.17.0 for cheerio v1.0.0.",
+    "Requires >=20.18.1 for undici v7.0.0, from cheerio v1.0.0."
   ],
   "engines": {
-    "node": ">=18.17.0"
+    "node": ">=20.18.1"
   }
 }
