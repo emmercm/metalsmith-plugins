@@ -8,6 +8,7 @@ const { TfIdf } = natural;
 
 export interface Options {
   pattern?: string;
+  filter?: (basePage: Metalsmith.File, relatedPage: Metalsmith.File, idx: number) => boolean;
   maxRelated?: number;
   natural?: {
     minTfIdf?: number;
@@ -117,6 +118,12 @@ export default (options: Options = {}): Metalsmith.Plugin => {
             // Sort by filename ascending second
             return a.filename > b.filename ? 1 : -1;
           })
+          .filter((related) => !files[related.filename].related_ignore)
+          .filter((related, idx) =>
+            options.filter !== undefined
+              ? options.filter(files[filename], files[related.filename], idx)
+              : true,
+          )
           .slice(0, defaultedOptions.maxRelated)
           .map((related) => files[related.filename]);
 

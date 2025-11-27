@@ -80,13 +80,19 @@ which can be used with templating engines, such as with [`handlebars`](https://w
 {{/each}}
 ```
 
-## Options
+## Plugin options
 
 ### `pattern` (optional)
 
 Type: `string` Default: `"**/*"`
 
 A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern to find input files.
+
+### `filter` (optional)
+
+Type: `(basePage: Metalsmith.File, relatedPage: Metalsmith.File, idx: number) => boolean`
+
+A function to filter out pages from a "base" page's list of related pages.
 
 ### `maxRelated` (optional)
 
@@ -130,6 +136,23 @@ Type: `object` Default:
 ```
 
 An object of [`sanitize-html`](https://www.npmjs.com/package/sanitize-html) options.
+
+## Metadata options
+
+### `related_ignore` (optional)
+
+Type: `boolean` Default: `false`
+
+If a file has a truthy `related_ignore` metadata value, it will be excluded from other files' related lists. These files will still have a related list calculated for them.
+
+Example:
+
+```markdown
+---
+related_ignore: true
+---
+This Markdown file won't appear in any other file's "related" list.
+```
 
 ## Changelog
 

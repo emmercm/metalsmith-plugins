@@ -4,4 +4,4 @@ The prevalence of metalworking in the culture of recent centuries has led Smith 
 
 /wikipedia/goldsmith.md
 /wikipedia/tinsmith.md
-/wikipedia/blacksmith.md
+/wikipedia/coppersmith.md
