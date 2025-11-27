@@ -128,7 +128,7 @@ const validUrl = async (
     return validUrlCache[link];
   }
 
-  const result = await new Promise<string | undefined>((resolve) => {
+  const errorMessage = await new Promise<string | undefined>((resolve) => {
     debug('checking URL with %s: %s, attempt %i', method, link, attempt);
     const library = link.slice(0, 5) === 'https' ? https : http;
     const req = library.request(
@@ -169,12 +169,20 @@ const validUrl = async (
   });
 
   // Re-attempt HEAD errors as GETs
-  if (result && method === 'HEAD') {
+  if (errorMessage && method === 'HEAD') {
     return validUrl(link, options, debug, attempt, 'GET');
   }
 
+  // Retry some failures automatically, even if retrying isn't specified
+  if (errorMessage?.indexOf('EAI_AGAIN') !== -1 && attempt <= (options.attempts ?? 0) + 3) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, Math.min(1000, 100 * 2 ** attempt));
+    });
+    return validUrl(link, options, debug, attempt + 1, method);
+  }
+
   // Retry failures if we haven't reached the retry limit
-  if (result && attempt <= (options.attempts ?? 0)) {
+  if (errorMessage && attempt <= (options.attempts ?? 0)) {
     await new Promise((resolve) => {
       setTimeout(resolve, Math.min(1000, 100 * 2 ** attempt));
     });
@@ -182,8 +190,8 @@ const validUrl = async (
   }
 
   // Otherwise, store the result and return
-  validUrlCache[link] = result;
-  return result;
+  validUrlCache[link] = errorMessage;
+  return errorMessage;
 };
 
 /**
