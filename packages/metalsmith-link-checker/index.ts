@@ -174,7 +174,7 @@ const validUrl = async (
   }
 
   // Retry some failures automatically, even if retrying isn't specified
-  if (errorMessage?.indexOf('EAI_AGAIN') !== -1) {
+  if (errorMessage?.indexOf('EAI_AGAIN') !== -1 && attempt <= (options.attempts ?? 0) + 3) {
     await new Promise((resolve) => {
       setTimeout(resolve, Math.min(1000, 100 * 2 ** attempt));
     });
