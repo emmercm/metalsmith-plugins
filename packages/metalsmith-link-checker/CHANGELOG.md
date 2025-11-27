@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.17 / 2025-11-27
+
+- `EAI_AGAIN` errors are now retried automatically, regardless of of the `attempts` value.
+
 ## v2.1.1 / 2024-02-18
 
 - Don't validate `link[href][rel='preconnect']` links as they can 404 (e.g. `https://fonts.googleapis.com`).
