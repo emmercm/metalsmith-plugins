@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.0 / 2025-11-27
+
+- Added the `filter` function option.
+- Added filtering of the `related_ignore` file metadata key.
+
 ## v2.0.0 / 2023-11-06
 
 - Converted to TypeScript, including type definitions.
