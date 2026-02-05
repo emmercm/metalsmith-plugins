@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-vega",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "A Metalsmith plugin to render Vega and Vega Lite visualizations in files.",
   "keywords": [
     "metalsmith",
@@ -53,9 +53,9 @@
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
     "unified": "^11.0.5",
-    "unist-util-visit": "^5.0.0",
+    "unist-util-visit": "^5.1.0",
     "vega": "^6.2.0",
-    "vega-lite": "^6.4.1",
+    "vega-lite": "^6.4.2",
     "xml2js": "^0.6.2"
   },
   "peerDependencies": {
