@@ -56,7 +56,7 @@
   "devDependencies": {
     "@jest/globals": "^30.2.0",
     "@types/jest": "^30.0.0",
-    "@types/node": "^24.10.1",
+    "@types/node": "^24.10.11",
     "@typescript-eslint/eslint-plugin": "^8.50.0",
     "assert-dir-equal": "^1.1.0",
     "eslint": "^9.39.2",
@@ -68,7 +68,7 @@
     "jest": "30.2.0",
     "jest-junit": "16.0.0",
     "metalsmith": "^2.6.3",
-    "prettier": "^3.7.1",
+    "prettier": "^3.8.1",
     "ts-jest": "^29.4.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
