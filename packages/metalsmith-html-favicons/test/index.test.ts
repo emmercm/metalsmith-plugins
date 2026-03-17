@@ -1,8 +1,8 @@
-import { describe, expect, it } from '@jest/globals';
 import assertDir from 'assert-dir-equal';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync } from 'fs';
 import Metalsmith from 'metalsmith';
 import { join } from 'path';
+import { describe, expect, it } from 'vitest';
 
 import favicons, { Options } from '../index.js';
 

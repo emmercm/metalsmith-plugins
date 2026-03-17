@@ -6,7 +6,7 @@ const { FlatCompat } = require('@eslint/eslintrc');
 const js = require('@eslint/js');
 const typescriptEslint = require('@typescript-eslint/eslint-plugin');
 const tsParser = require('@typescript-eslint/parser');
-const jest = require('eslint-plugin-jest');
+const vitest = require('@vitest/eslint-plugin');
 const simpleImportSort = require('eslint-plugin-simple-import-sort');
 
 const compat = new FlatCompat({
@@ -22,7 +22,6 @@ module.exports = [
   ...compat.extends(
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:jest/recommended',
     'plugin:prettier/recommended', // MUST BE LAST!
   ),
   {
@@ -31,7 +30,7 @@ module.exports = [
     plugins: {
       '@typescript-eslint': typescriptEslint,
       'simple-import-sort': simpleImportSort,
-      jest,
+      vitest,
     },
 
     languageOptions: {
@@ -42,7 +41,7 @@ module.exports = [
       sourceType: 'module',
 
       globals: {
-        ...jest.environments.globals.globals,
+        ...vitest.environments.env.globals,
       },
     },
 

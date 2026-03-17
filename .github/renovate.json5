@@ -97,17 +97,6 @@
         groupName: 'ESLint'
       },
       {
-        // Group Jest together because of peerDependencies
-        matchPackageNames: [
-          '@jest/globals',
-          '@types/jest',
-          'jest',
-          'jest-junit',
-          'ts-jest',
-        ],
-        groupName: 'Jest'
-      },
-      {
         // Separate Lerna
         matchPackageNames: ['lerna'],
         groupName: 'Lerna',

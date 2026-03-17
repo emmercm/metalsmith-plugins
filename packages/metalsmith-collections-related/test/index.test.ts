@@ -1,4 +1,3 @@
-import { describe, expect, it } from '@jest/globals';
 import collections from '@metalsmith/collections';
 import assertDir from 'assert-dir-equal';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync } from 'fs';
@@ -7,6 +6,7 @@ import Metalsmith from 'metalsmith';
 import hbtmd from 'metalsmith-hbt-md';
 import paths from 'metalsmith-paths';
 import { join } from 'path';
+import { describe, expect, it } from 'vitest';
 
 import related, { Options } from '../index.js';
 

@@ -1,12 +1,10 @@
-import { describe, expect, it, jest as requiredJest } from '@jest/globals';
 import assertDir from 'assert-dir-equal';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync } from 'fs';
 import Metalsmith from 'metalsmith';
 import { join } from 'path';
+import { describe, expect, it } from 'vitest';
 
 import linkChecker, { Options } from '../index.js';
-
-requiredJest.setTimeout(30 * 1000);
 
 interface Config {
   options: Options;
