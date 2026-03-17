@@ -78,7 +78,7 @@
     "prettier": "^3.8.1",
     "ts-migrate": "^0.1.35",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3",
+    "typescript": "^5.9.3",
     "vitest": "^4.1.0"
   },
   "engines": {
