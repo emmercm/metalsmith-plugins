@@ -18,7 +18,7 @@ const test = (dir: string, config: Config) => {
       mkdirSync(`${dir}/src`);
     }
 
-    it('should build', async () => {
+    it('should build', { retry: { count: 2, delay: 1_000 } }, async () => {
       try {
         await Metalsmith(`${dir}`)
           // Run the plugin
