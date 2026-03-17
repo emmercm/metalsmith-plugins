@@ -9,6 +9,8 @@
 
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
-    "outDir": "./dist"
+    "outDir": "./dist",
+
+    "lib": ["es2022"], // for Array#at()
   }
 }

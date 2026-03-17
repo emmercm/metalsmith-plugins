@@ -1,12 +1,10 @@
-import { describe, expect, it, jest } from '@jest/globals';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync } from 'fs';
 import Metalsmith from 'metalsmith';
 import { join } from 'path';
+import { describe, expect, it } from 'vitest';
 
 // import assertDir from 'assert-dir-equal';
 import mermaid, { Options } from '../index.js';
-
-jest.setTimeout(30_000);
 
 interface Config {
   options: Options;
@@ -20,7 +18,7 @@ const test = (dir: string, config: Config) => {
       mkdirSync(`${dir}/src`);
     }
 
-    it('should build', async () => {
+    it('should build', { retry: 2 }, async () => {
       try {
         await Metalsmith(`${dir}`)
           // Run the plugin

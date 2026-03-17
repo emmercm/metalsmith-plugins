@@ -1,7 +1,7 @@
-import { describe, expect, it } from '@jest/globals';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync } from 'fs';
 import Metalsmith from 'metalsmith';
 import { join } from 'path';
+import { describe, expect, it } from 'vitest';
 
 import sharp, { Options } from '../index.js';
 

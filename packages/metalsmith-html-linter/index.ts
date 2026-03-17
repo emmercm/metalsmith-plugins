@@ -49,7 +49,10 @@ const upgradeHtmllintConfig = (htmllint: LegacyLinterConfig): LinterConfig => {
 };
 
 // Get the linthtml (written in  htmllint config) and upgrade it
-const linthtmlDefault = upgradeHtmllintConfig(linthtml.default.presets.default);
+const linthtmlDefault = upgradeHtmllintConfig(
+  // @ts-expect-error linthtml.presets exists, the typing is just wrong
+  linthtml.presets?.default ?? linthtml.default?.presets?.default ?? {},
+);
 
 export default (options: Options = {}): Metalsmith.Plugin => {
   // Upgrade any old htmllint config
@@ -175,8 +178,10 @@ export default (options: Options = {}): Metalsmith.Plugin => {
 
         const contents = $.html();
 
-        linthtml
-          .default(contents, defaultedOptions.linthtml ?? {})
+        (typeof linthtml === 'function' ? linthtml : linthtml.default)(
+          contents,
+          defaultedOptions.linthtml ?? {},
+        )
           .then((results) => {
             if (results.length) {
               const codeFrames = results

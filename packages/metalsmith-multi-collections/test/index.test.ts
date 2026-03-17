@@ -1,10 +1,10 @@
-import { describe, expect, it } from '@jest/globals';
 import assertDir from 'assert-dir-equal';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync } from 'fs';
 import handlebars from 'handlebars';
 import Metalsmith from 'metalsmith';
 import hbtmd from 'metalsmith-hbt-md';
 import { join } from 'path';
+import { describe, expect, it } from 'vitest';
 
 import multiCollections, { Options } from '../index.js';
 
