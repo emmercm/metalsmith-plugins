@@ -178,8 +178,10 @@ export default (options: Options = {}): Metalsmith.Plugin => {
 
         const contents = $.html();
 
-        linthtml
-          .default(contents, defaultedOptions.linthtml ?? {})
+        (typeof linthtml === 'function' ? linthtml : linthtml.default)(
+          contents,
+          defaultedOptions.linthtml ?? {},
+        )
           .then((results) => {
             if (results.length) {
               const codeFrames = results
