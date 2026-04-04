@@ -30,7 +30,7 @@ jobs:
       # Setup and install
       - uses: actions/checkout@v6
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: volta-cli/action@v4
+        uses: volta-cli/action@v5
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
@@ -48,7 +48,7 @@ jobs:
     steps:
       # Setup and install
       - uses: actions/checkout@v6
-      - uses: volta-cli/action@v4
+      - uses: volta-cli/action@v5
       - run: npm ci
       # Test building
       - run: npm run build
@@ -59,7 +59,7 @@ jobs:
     steps:
       # Setup and install
       - uses: actions/checkout@v6
-      - uses: volta-cli/action@v4
+      - uses: volta-cli/action@v5
       - run: npm ci
       # Test building & packing
       - run: |

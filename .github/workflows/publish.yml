@@ -18,7 +18,7 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v6
-      - uses: volta-cli/action@v4
+      - uses: volta-cli/action@v5
       - run: npm ci
       - name: npm publish
         # https://github.com/bitwarden/clients/pull/3272
