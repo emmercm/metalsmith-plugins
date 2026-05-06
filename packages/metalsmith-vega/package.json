@@ -62,21 +62,21 @@
     "metalsmith": "^2.5.0"
   },
   "devDependencies": {
-    "@types/node": "^24.12.0",
+    "@types/node": "^24.12.2",
     "@types/xml2js": "^0.4.14",
     "@typescript-eslint/eslint-plugin": "^8.57.2",
-    "@vitest/coverage-v8": "^4.1.2",
-    "@vitest/eslint-plugin": "^1.6.13",
+    "@vitest/coverage-v8": "^4.1.5",
+    "@vitest/eslint-plugin": "^1.6.16",
     "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "metalsmith": "^2.7.0",
-    "prettier": "^3.8.1",
+    "prettier": "^3.8.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
-    "vitest": "^4.1.2"
+    "vitest": "^4.1.5"
   },
   "//engines": [
     "Requires ^12.20.0 || ^14.13.1 || >=16.0.0 for ES6 modules.",
