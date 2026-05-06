@@ -1,8 +1,13 @@
 # Changelog
 
+## v2.2.0 / 2026-05-05
+
+- Removed `HEAD` HTTP requests, only `GET` requests are issued.
+- Constructs more valid HTTP headers to look less like a bot.
+
 ## v2.1.17 / 2025-11-27
 
-- `EAI_AGAIN` errors are now retried automatically, regardless of of the `attempts` value.
+- `EAI_AGAIN` errors are now retried automatically, regardless of the `attempts` value.
 
 ## v2.1.1 / 2024-02-18
 
