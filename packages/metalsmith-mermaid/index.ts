@@ -38,7 +38,7 @@ const mermaidToSvg = async (
   return page.$eval(
     'svg',
     (svgElem, css) => {
-      /* eslint-env browser */
+      /* global document */
 
       // Remove HTML elements that cause problems if their contents are empty
       document.querySelectorAll('title, desc').forEach((elem) => {
