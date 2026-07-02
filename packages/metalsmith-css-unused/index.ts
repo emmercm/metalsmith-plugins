@@ -9,11 +9,11 @@ export interface Options {
 }
 
 export default (options: Options = {}): Metalsmith.Plugin => {
-  const defaultedOptions = deepmerge(
+  const defaultedOptions = deepmerge<Required<Options>>(
     {
       html: '**/*.html',
       css: '**/*.css',
-      purgecss: {},
+      purgecss: { content: [], css: [] },
     },
     options || {},
   );

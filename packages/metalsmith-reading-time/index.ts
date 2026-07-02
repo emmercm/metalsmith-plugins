@@ -10,13 +10,13 @@ export interface Options {
 }
 
 export default (options: Options = {}): Metalsmith.Plugin => {
-  const defaultedOptions = deepmerge(
+  const defaultedOptions = deepmerge<Required<Options>>(
     {
       pattern: '**/*',
       stripHtml: true,
       replacements: [],
       readingTime: {},
-    } satisfies Options,
+    },
     options || {},
   );
 
