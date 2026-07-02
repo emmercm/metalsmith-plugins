@@ -112,6 +112,46 @@ const validFacetime = (link: string) => {
   return undefined;
 };
 
+/**
+ * Build a browser-like header set for outbound requests, to reduce false-positive
+ * 403s from anti-bot defenses. Sec-Ch-Ua client hints are only added when the
+ * User-Agent looks Chromium-based, so they don't conflict with a Firefox/Safari UA.
+ */
+const browserHeaders = (userAgent: string): { [key: string]: string } => {
+  const headers: { [key: string]: string } = {
+    'User-Agent': userAgent,
+    Accept:
+      'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Upgrade-Insecure-Requests': '1',
+    'Sec-Fetch-Site': 'none',
+    'Sec-Fetch-Mode': 'navigate',
+    'Sec-Fetch-Dest': 'document',
+    'Sec-Fetch-User': '?1',
+    'Cache-Control': 'max-age=0',
+    Connection: 'keep-alive',
+  };
+
+  const chromeMatch = userAgent.match(/Chrome\/(\d+)/);
+  const isPureChromium = chromeMatch && !userAgent.includes('Edg/') && !userAgent.includes('OPR/');
+  if (isPureChromium) {
+    const version = chromeMatch[1];
+    headers['Sec-Ch-Ua'] =
+      `"Chromium";v="${version}", "Not(A:Brand";v="24", "Google Chrome";v="${version}"`;
+    headers['Sec-Ch-Ua-Mobile'] = '?0';
+    if (userAgent.includes('Macintosh')) {
+      headers['Sec-Ch-Ua-Platform'] = '"macOS"';
+    } else if (userAgent.includes('Windows')) {
+      headers['Sec-Ch-Ua-Platform'] = '"Windows"';
+    } else if (userAgent.includes('Linux')) {
+      headers['Sec-Ch-Ua-Platform'] = '"Linux"';
+    }
+  }
+
+  return headers;
+};
+
 const validUrlCache: { [key: string]: string | undefined } = {};
 /**
  * Validate a remote HTTP or HTTPS URL.
@@ -121,7 +161,6 @@ const validUrl = async (
   options: Options,
   debug: Metalsmith.Debugger,
   attempt = 1,
-  method = 'HEAD',
 ): Promise<string | undefined> => {
   if (link in validUrlCache) {
     // Already validated
@@ -129,21 +168,21 @@ const validUrl = async (
   }
 
   const errorMessage = await new Promise<string | undefined>((resolve) => {
-    debug('checking URL with %s: %s, attempt %i', method, link, attempt);
+    debug('checking URL: %s, attempt %i', link, attempt);
     const library = link.slice(0, 5) === 'https' ? https : http;
     const req = library.request(
       link,
       {
-        method,
-        headers: {
-          // TODO: something to fix Pixabay
-          'User-Agent': options.userAgent,
-        },
+        method: 'GET',
+        headers: browserHeaders(options.userAgent ?? ''),
         timeout: options.timeout,
         rejectUnauthorized: false,
       },
       (res) => {
-        debug('%s %s (%s)', method, link, res.statusCode);
+        debug('GET %s (%s)', link, res.statusCode);
+
+        // Discard the response body — only the status code matters here.
+        res.resume();
 
         if (!res) {
           resolve('no response');
@@ -156,29 +195,24 @@ const validUrl = async (
     );
 
     req.on('error', (err) => {
-      debug.error('failed to %s URL "%s": %s', method, link, err);
+      debug.error('failed to GET URL "%s": %s', link, err);
       resolve(err.message);
     });
 
     req.on('timeout', () => {
-      debug.error('failed to %s URL "%s": timeout', method, link);
+      debug.error('failed to GET URL "%s": timeout', link);
       req.destroy(); // cause an error
     });
 
     req.end();
   });
 
-  // Re-attempt HEAD errors as GETs
-  if (errorMessage && method === 'HEAD') {
-    return validUrl(link, options, debug, attempt, 'GET');
-  }
-
   // Retry some failures automatically, even if retrying isn't specified
   if (errorMessage?.indexOf('EAI_AGAIN') !== -1 && attempt <= (options.attempts ?? 0) + 3) {
     await new Promise((resolve) => {
       setTimeout(resolve, Math.min(1000, 100 * 2 ** attempt));
     });
-    return validUrl(link, options, debug, attempt + 1, method);
+    return validUrl(link, options, debug, attempt + 1);
   }
 
   // Retry failures if we haven't reached the retry limit
@@ -186,7 +220,7 @@ const validUrl = async (
     await new Promise((resolve) => {
       setTimeout(resolve, Math.min(1000, 100 * 2 ** attempt));
     });
-    return validUrl(link, options, debug, attempt + 1, method);
+    return validUrl(link, options, debug, attempt + 1);
   }
 
   // Otherwise, store the result and return
