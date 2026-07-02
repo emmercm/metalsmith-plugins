@@ -47,7 +47,7 @@ export default (options: Options | Options[] = []): Metalsmith.Plugin => {
       .reduce(async (promise, opts) => {
         await promise;
 
-        const defaultedOptions = deepmerge(
+        const defaultedOptions = deepmerge<Required<Options>>(
           {
             src: '**/*.@(avif|bmp|gif|heic|jpg|jpeg|png|svg|webp)',
             namingPattern: '{dir}{base}',
@@ -55,7 +55,7 @@ export default (options: Options | Options[] = []): Metalsmith.Plugin => {
             moveFile: false,
             sharp: {},
             parallelism: os.cpus().length,
-          } satisfies Options,
+          },
           opts || {},
           { arrayMerge: (destinationArray, sourceArray) => sourceArray },
         );
