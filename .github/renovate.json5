@@ -79,6 +79,11 @@
         groupName: 'Vega',
         matchUpdateTypes: ['major']
       },
+      {
+        // Some packages don't follow semver, they break on minor updates
+        matchPackageNames: ['sharp'],
+        separateMinorPatch: true
+      },
 
       // Dev dependencies
       {
