@@ -3,12 +3,12 @@ import deepmerge from 'deepmerge';
 import Metalsmith from 'metalsmith';
 import os from 'os';
 import path from 'path';
-import sharp from 'sharp';
+import sharp, { Metadata, SharpOptions } from 'sharp';
 
 export interface Method {
   // TODO(cemmer): the way Sharp exports a namespace doesn't let us be more type strict than 'string'
   name: string;
-  args: ((metadata: sharp.Metadata) => unknown[]) | unknown[] | unknown;
+  args: ((metadata: Metadata) => unknown[]) | unknown[] | unknown;
 }
 
 export interface Options {
@@ -18,7 +18,7 @@ export interface Options {
   methods?: Method[];
   moveFile?: boolean;
   // New options
-  sharp?: sharp.SharpOptions;
+  sharp?: SharpOptions;
   parallelism?: number;
 }
 
