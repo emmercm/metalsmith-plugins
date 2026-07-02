@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitest/config';
+import { configDefaults, defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
@@ -7,6 +7,9 @@ export default defineConfig({
     sequence: {
       shuffle: true,
     },
+
+    // Never run the compiled output; only the TypeScript sources
+    exclude: [...configDefaults.exclude, '**/dist/**'],
 
     // Default Jest behavior
     reporters: ['verbose'],
