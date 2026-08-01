@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-img-sharp",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A Metalsmith plugin to process images with Sharp.",
   "keywords": [
     "metalsmith",
@@ -50,7 +50,7 @@
   "dependencies": {
     "async": "^3.2.6",
     "deepmerge": "^4.3.1",
-    "sharp": "^0.35.2"
+    "sharp": "^0.35.3"
   },
   "peerDependencies": {
     "metalsmith": "^2.5.0"
