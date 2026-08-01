@@ -59,11 +59,11 @@
   "devDependencies": {
     "@metalsmith/collections": "^2.0.0",
     "@types/html-escaper": "^3.0.4",
-    "@types/node": "^24.13.2",
+    "@types/node": "^24.13.3",
     "@types/sanitize-html": "^2.16.1",
     "@typescript-eslint/eslint-plugin": "^8.62.0",
-    "@vitest/coverage-v8": "^4.1.9",
-    "@vitest/eslint-plugin": "^1.6.20",
+    "@vitest/coverage-v8": "^4.1.10",
+    "@vitest/eslint-plugin": "^1.6.24",
     "assert-dir-equal": "^1.1.0",
     "cd": "^0.3.3",
     "eslint": "^10.6.0",
@@ -75,11 +75,11 @@
     "metalsmith": "^2.7.0",
     "metalsmith-hbt-md": "^1.0.1",
     "metalsmith-paths": "^4.0.6",
-    "prettier": "^3.9.1",
+    "prettier": "^3.9.6",
     "ts-migrate": "^0.1.35",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.10"
   },
   "engines": {
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
