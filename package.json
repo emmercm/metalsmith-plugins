@@ -35,7 +35,7 @@
     "pack:all": "lerna exec -- npm pack"
   },
   "devDependencies": {
-    "lerna": "^9.0.7",
+    "lerna": "^10.0.0",
     "ts-migrate": "^0.1.35"
   },
   "engines": {
