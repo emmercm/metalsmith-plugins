@@ -60,7 +60,7 @@
   "devDependencies": {
     "@types/async": "^3.2.26",
     "@types/babel__code-frame": "^7.27.0",
-    "@types/node": "^24.13.6",
+    "@types/node": "^24.19.0",
     "@typescript-eslint/eslint-plugin": "^8.65.0",
     "@vitest/coverage-v8": "^4.1.11",
     "@vitest/eslint-plugin": "^1.6.27",
@@ -71,7 +71,7 @@
     "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "metalsmith": "^2.7.0",
-    "prettier": "^3.9.8",
+    "prettier": "^3.9.9",
     "ts-node": "^10.9.2",
     "typescript": "^7.0.2",
     "vitest": "^4.1.11"
