@@ -33,7 +33,7 @@ import Metalsmith from 'metalsmith';
 import multiCollections from 'metalsmith-multi-collections';
 
 Metalsmith(__dirname)
-    .use(multiCollections.default({
+    .use(multiCollections({
         // options here
     }))
     .build((err) => {
@@ -84,13 +84,12 @@ Type: `object`
 
 [`@metalsmith/collections`](https://www.npmjs.com/package/@metalsmith/collections) options to use when generating collections.
 
-Example: you may want to provide `sortBy`, `reverse`, `limit`, or other options:
+Example: you may want to provide `filter`, `sort`, `limit`, or other options:
 
 ```javascript
 {
   settings: {
-    sortBy: (a, b) => DateTime.fromJSDate(a.date).toMillis() - DateTime.fromJSDate(b.date).toMillis(),
-    reverse: true
+    sort: (a, b) => DateTime.fromJSDate(b.date).toMillis() - DateTime.fromJSDate(a.date).toMillis()
   }
 }
 ```
