@@ -1,12 +1,28 @@
 'use strict';
 
+const { createRequire } = require('node:module');
+const path = require('node:path');
+
 const globals = require('globals');
+
+/**
+ * Resolve a module from the package being linted first, falling back to the repository root.
+ * npm may install a dependency in each package's own `node_modules` instead of hoisting it to the
+ * root (e.g. when its peer dependencies are only satisfied at the package level).
+ */
+const requireFromPackage = (id) => {
+  try {
+    return createRequire(path.join(process.cwd(), 'package.json'))(id);
+  } catch {
+    return require(id);
+  }
+};
 
 const { FlatCompat } = require('@eslint/eslintrc');
 const js = require('@eslint/js');
 const typescriptEslint = require('@typescript-eslint/eslint-plugin');
 const tsParser = require('@typescript-eslint/parser');
-const vitest = require('@vitest/eslint-plugin');
+const vitest = requireFromPackage('@vitest/eslint-plugin');
 const simpleImportSort = require('eslint-plugin-simple-import-sort');
 
 const compat = new FlatCompat({

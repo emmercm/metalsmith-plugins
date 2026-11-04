@@ -40,10 +40,10 @@
     "build": "tsc --build --verbose",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "node ../../node_modules/vitest/vitest.mjs && eslint .",
-    "test:update": "node ../../node_modules/vitest/vitest.mjs --coverage.enabled --updateSnapshot",
-    "test:watch": "node ../../node_modules/vitest/vitest.mjs --watch",
-    "test:coverage": "node ../../node_modules/vitest/vitest.mjs --coverage.enabled",
+    "test": "vitest && eslint .",
+    "test:update": "vitest --updateSnapshot",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage.enabled",
     "prepack": "npm run build && cp -f ../../LICENSE ./",
     "postpack": "rm ./LICENSE"
   },
@@ -57,7 +57,7 @@
   "devDependencies": {
     "@types/node": "^26.6.6",
     "@typescript-eslint/eslint-plugin": "^8.65.0",
-    "@vitest/coverage-v8": "^4.1.12",
+    "@vitest/coverage-v8": "^5.0.5",
     "@vitest/eslint-plugin": "^1.6.28",
     "assert-dir-equal": "^1.1.0",
     "eslint": "^10.8.0",
@@ -71,7 +71,7 @@
     "prettier": "^3.9.10",
     "ts-node": "^10.9.2",
     "typescript": "^7.0.2",
-    "vitest": "^4.1.12"
+    "vitest": "^5.0.5"
   },
   "engines": {
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
