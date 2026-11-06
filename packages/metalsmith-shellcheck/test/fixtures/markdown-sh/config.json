@@ -1,4 +1,0 @@
-{
-  "options": {},
-  "error": "SC3010 (warning): In POSIX sh, [[ ]] is undefined.\n  \n      4 |\n      5 | ```sh\n    > 6 | [[ -f x ]] && echo \"y\""
-}

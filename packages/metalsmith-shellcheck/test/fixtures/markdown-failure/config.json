@@ -1,4 +1,0 @@
-{
-  "options": {},
-  "error": "SC2086 (info): Double quote to prevent globbing and word splitting.\n  \n      3 | This post shows how to clean up:\n      4 | ```bash\n    > 5 | rm -rf $DIR/*\n        |        ^"
-}

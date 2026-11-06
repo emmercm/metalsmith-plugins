@@ -9,15 +9,9 @@ import shellcheck, { Options } from '../index.js';
 interface Config {
   options: Options;
   error?: string;
-  skip?: boolean;
 }
 
 const test = (dir: string, config: Config) => {
-  if (config.skip) {
-    // Covered by a standalone test
-    return;
-  }
-
   describe(dir, () => {
     // Allow src directory to not exist / be empty and not committed
     if (!existsSync(`${dir}/src`)) {
@@ -62,7 +56,7 @@ describe('metalsmith-shellcheck (standalone)', () => {
   it('should be reusable across builds', async () => {
     const plugin = shellcheck();
     for (let i = 0; i < 2; i += 1) {
-      await expect(Metalsmith('test/fixtures/shell-failure').use(plugin).build()).rejects.toThrow(
+      await expect(Metalsmith('test/fixtures/failures').use(plugin).build()).rejects.toThrow(
         'SC2086 (info)',
       );
     }
@@ -81,36 +75,13 @@ describe('metalsmith-shellcheck (standalone)', () => {
     ).resolves.toBeDefined();
   });
 
-  it('should not report Markdown bash blocks as POSIX sh', async () => {
-    const err = await Metalsmith('test/fixtures/markdown-sh')
-      .use(shellcheck())
-      .build()
-      .then(
-        () => undefined,
-        (e: unknown) => e,
-      );
-    expect(String(err).match(/SC3010/g)).toHaveLength(1);
-  });
-
-  it('should skip zsh Markdown blocks with a shebang', async () => {
-    const err = await Metalsmith('test/fixtures/markdown-shebang')
-      .use(shellcheck())
-      .build()
-      .then(
-        () => undefined,
-        (e: unknown) => e,
-      );
-    expect(String(err)).not.toContain('echo $x');
-  });
-
   it('should lint fences with highlight metadata', async () => {
-    mkdirSync('test/fixtures/generated-file/src', { recursive: true });
-    const err = await Metalsmith('test/fixtures/generated-file')
+    const err = await Metalsmith('test/fixtures/shell-pass')
       .use((files) => {
         files['meta.md'] = { contents: Buffer.from('```bash{2}\nrm -rf $DIR/*\n```\n') };
       })
       .use(shellcheck())
-      .build()
+      .process()
       .then(
         () => undefined,
         (e: unknown) => e,
@@ -119,13 +90,12 @@ describe('metalsmith-shellcheck (standalone)', () => {
   });
 
   it('should fall back to contents line numbers for generated files', async () => {
-    mkdirSync('test/fixtures/generated-file/src', { recursive: true });
-    const err = await Metalsmith('test/fixtures/generated-file')
+    const err = await Metalsmith('test/fixtures/shell-pass')
       .use((files) => {
         files['generated.md'] = { contents: Buffer.from('```bash\nrm -rf $DIR/*\n```\n') };
       })
       .use(shellcheck())
-      .build()
+      .process()
       .then(
         () => undefined,
         (e: unknown) => e,

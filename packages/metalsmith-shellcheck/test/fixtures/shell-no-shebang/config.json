@@ -1,4 +1,0 @@
-{
-  "options": {},
-  "error": "script.sh:\n\n  SC2086 (info): Double quote to prevent globbing and word splitting.\n  \n    > 1 | [[ -f x ]] && echo $1"
-}

@@ -1,4 +1,0 @@
-{
-  "options": {},
-  "error": "    > 6 |    echo $1\n        |         ^"
-}

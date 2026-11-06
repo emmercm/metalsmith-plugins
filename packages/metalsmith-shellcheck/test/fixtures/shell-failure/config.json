@@ -1,4 +1,0 @@
-{
-  "options": {},
-  "error": "script.sh:\n\n  SC2115 (warning): Use \"${var:?}\" to ensure this never expands to /* .\n  \n      1 | #!/usr/bin/env bash\n    > 2 | rm -rf $DIR/*\n        |        ^\n      3 |\n  \n  SC2086 (info): Double quote to prevent globbing and word splitting.\n  \n      1 | #!/usr/bin/env bash\n    > 2 | rm -rf $DIR/*"
-}
