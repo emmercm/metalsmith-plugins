@@ -1,0 +1,88 @@
+{
+  "name": "metalsmith-shellcheck",
+  "version": "0.0.1",
+  "description": "A Metalsmith plugin to lint shell scripts with ShellCheck.",
+  "keywords": [
+    "metalsmith",
+    "metalsmith-plugin",
+    "plugin"
+  ],
+  "homepage": "https://github.com/emmercm/metalsmith-plugins/tree/main/packages/metalsmith-shellcheck#readme",
+  "bugs": {
+    "url": "https://github.com/emmercm/metalsmith-plugins/issues"
+  },
+  "license": "GPL-3.0-or-later",
+  "author": "Christian Emmer",
+  "type": "module",
+  "files": [
+    "dist",
+    "!**/vitest.*",
+    "!**/test/**",
+    "!**/*.test.*",
+    "!**/*.tsbuildinfo"
+  ],
+  "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emmercm/metalsmith-plugins.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsc --build --verbose",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest && eslint .",
+    "test:update": "vitest --updateSnapshot",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage.enabled",
+    "prepack": "npm run build && cp -f ../../LICENSE ./",
+    "postpack": "rm ./LICENSE"
+  },
+  "dependencies": {
+    "@babel/code-frame": "^8.0.6",
+    "@vscode-shellcheck/shellcheck-wasm": "^0.3.1",
+    "async": "^3.2.6",
+    "deepmerge": "^4.3.1",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.2.0"
+  },
+  "peerDependencies": {
+    "metalsmith": "^2.5.0"
+  },
+  "devDependencies": {
+    "@types/async": "^3.2.26",
+    "@types/babel__code-frame": "^7.27.0",
+    "@types/node": "^26.6.6",
+    "@typescript-eslint/eslint-plugin": "^8.72.1",
+    "@vitest/coverage-v8": "^5.0.5",
+    "@vitest/eslint-plugin": "^1.6.28",
+    "assert-dir-equal": "^1.1.0",
+    "eslint": "^10.14.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.7",
+    "eslint-plugin-simple-import-sort": "^14.0.0",
+    "metalsmith": "^2.7.0",
+    "prettier": "^3.9.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.5"
+  },
+  "//engines": [
+    "Requires ^12.20.0 || ^14.13.1 || >=16.0.0 for ES6 modules.",
+    "Requires >=22.0.0 for @vscode-shellcheck/shellcheck-wasm v0.3.1."
+  ],
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
