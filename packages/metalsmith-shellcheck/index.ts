@@ -20,6 +20,9 @@ export interface Options {
   parallelism?: number;
 }
 
+// Shells supported by ShellCheck's `-s` option, except BusyBox
+type Dialect = 'bash' | 'sh' | 'dash' | 'ksh';
+
 interface ShellCheckComment {
   line: number;
   endLine: number;
@@ -95,7 +98,7 @@ startWorker({ postMessage: (m) => parentPort.postMessage(m), onMessage: (l) => p
     );
   }
 
-  async lint(code: string, dialect: 'bash' | 'sh'): Promise<ShellCheckComment[] | undefined> {
+  async lint(code: string, dialect: Dialect): Promise<ShellCheckComment[] | undefined> {
     const args = ['-f', 'json1', '-S', this.options.severity];
     if (this.options.exclude.length) {
       args.push('-e', this.options.exclude.join(','));
@@ -169,41 +172,12 @@ const formatFailure = (
   return `${filename}:\n\n${codeFrames.replace(/^/gm, '  ')}`;
 };
 
-const FENCE_DIALECTS: Record<string, 'bash' | 'sh'> = {
+const FENCE_DIALECTS: Record<string, Dialect> = {
   bash: 'bash',
-  shell: 'bash',
-  console: 'bash',
+  'shell-script': 'bash',
   sh: 'sh',
-};
-
-// Strip `$ ` prompts from terminal-session snippets and blank out the output lines, keeping the line count
-const extractTerminalSession = (
-  code: string,
-): { code: string; columnOffsets: number[] } | undefined => {
-  const lines = code.split('\n');
-  if (!lines.some((line) => line.startsWith('$ '))) {
-    return undefined;
-  }
-
-  const columnOffsets: number[] = [];
-  let continued = false;
-  const extracted = lines.map((line) => {
-    let kept: string;
-    if (continued) {
-      kept = line;
-      columnOffsets.push(0);
-    } else if (line.startsWith('$ ')) {
-      kept = line.slice(2);
-      columnOffsets.push(2);
-    } else {
-      columnOffsets.push(0);
-      return '';
-    }
-    // An even number of trailing backslashes is escaped backslashes, not a continuation
-    continued = (/\\*$/.exec(kept)?.[0].length ?? 0) % 2 === 1;
-    return kept;
-  });
-  return { code: extracted.join('\n'), columnOffsets };
+  dash: 'dash',
+  ksh: 'ksh',
 };
 
 const lintMarkdown = async (
@@ -214,7 +188,7 @@ const lintMarkdown = async (
 ): Promise<ShellCheckComment[]> => {
   const tree = unified().use(remarkParse).parse(contents);
 
-  const blocks: { value: string; dialect: 'bash' | 'sh'; line: number; column: number }[] = [];
+  const blocks: { value: string; dialect: Dialect; line: number; column: number }[] = [];
   visit(tree, 'code', (node) => {
     // Strip highlight metadata such as `bash{2}`
     const dialect = FENCE_DIALECTS[(node.lang ?? '').replace(/\{.*\}$/, '').toLowerCase()];
@@ -235,24 +209,18 @@ const lintMarkdown = async (
       if (!block.value.trim()) {
         return [];
       }
-      const session = extractTerminalSession(block.value);
-      const comments = await pool.lint(session?.code ?? block.value, block.dialect);
+      const comments = await pool.lint(block.value, block.dialect);
       if (comments === undefined) {
         debug('skipping unsupported shell in %s', filename);
         return [];
       }
-      return comments.map((comment) => {
-        // Re-add the stripped prompt, `columnOffsets` is indexed by 0-based snippet line
-        const column = comment.column + (session?.columnOffsets[comment.line - 1] ?? 0);
-        const endColumn = comment.endColumn + (session?.columnOffsets[comment.endLine - 1] ?? 0);
-        return {
-          ...comment,
-          line: block.line + comment.line,
-          endLine: block.line + comment.endLine,
-          column: column + block.column - 1,
-          endColumn: endColumn + block.column - 1,
-        };
-      });
+      return comments.map((comment) => ({
+        ...comment,
+        line: block.line + comment.line,
+        endLine: block.line + comment.endLine,
+        column: comment.column + block.column - 1,
+        endColumn: comment.endColumn + block.column - 1,
+      }));
     }),
   );
 

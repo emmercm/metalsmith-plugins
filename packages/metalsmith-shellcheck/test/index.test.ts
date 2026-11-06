@@ -103,31 +103,6 @@ describe('metalsmith-shellcheck (standalone)', () => {
     expect(String(err)).not.toContain('echo $x');
   });
 
-  it('should not report findings for output lines after a continuation', async () => {
-    const err = await Metalsmith('test/fixtures/session-continuation')
-      .use(shellcheck())
-      .build()
-      .then(
-        () => undefined,
-        (e: unknown) => e,
-      );
-    expect(String(err).match(/SC\d+ \(/g)).toHaveLength(1);
-  });
-
-  it('should not treat an escaped trailing backslash as a continuation', async () => {
-    mkdirSync('test/fixtures/generated-file/src', { recursive: true });
-    await expect(
-      Metalsmith('test/fixtures/generated-file')
-        .use((files) => {
-          files['escaped.md'] = {
-            contents: Buffer.from('```console\n$ echo foo\\\\\nfoo\\\n```\n'),
-          };
-        })
-        .use(shellcheck())
-        .build(),
-    ).resolves.toBeDefined();
-  });
-
   it('should lint fences with highlight metadata', async () => {
     mkdirSync('test/fixtures/generated-file/src', { recursive: true });
     const err = await Metalsmith('test/fixtures/generated-file')

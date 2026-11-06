@@ -52,11 +52,13 @@ A [`micromatch`](https://www.npmjs.com/package/micromatch) glob pattern, or arra
 
 Fenced code blocks in these files are checked, based on their label:
 
-| Fence label                | Checked as |
-|----------------------------|------------|
-| `bash`, `shell`, `console` | `bash`     |
-| `sh`                       | POSIX `sh` |
-| anything else              | skipped    |
+| Fence label                                    | Checked as |
+|------------------------------------------------|------------|
+| `bash`, `shell-script`                         | `bash`     |
+| `sh`                                           | POSIX `sh` |
+| `dash`                                         | `dash`     |
+| `ksh`                                          | `ksh`      |
+| anything else, including `shell` and `console` | (skipped)  |
 
 Unlabeled blocks, indented code blocks, and empty blocks are skipped. A block that starts with a shebang or has a `# shellcheck shell=` directive is checked as that shell, regardless of its label, and shells that ShellCheck doesn't support (e.g. `zsh`) are skipped.
 

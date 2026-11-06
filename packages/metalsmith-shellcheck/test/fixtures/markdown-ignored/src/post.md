@@ -8,6 +8,14 @@ rm -rf $DIR/*
 rm -rf $DIR/*
 ```
 
+```shell
+rm -rf $DIR/*
+```
+
+```console
+$ rm -rf $DIR/*
+```
+
 ```powershell
 rm -rf $DIR/*
 ```
