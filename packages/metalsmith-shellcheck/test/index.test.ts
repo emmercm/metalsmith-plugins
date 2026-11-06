@@ -7,7 +7,7 @@ import { describe, expect, it } from 'vitest';
 import shellcheck, { Options } from '../index.js';
 
 interface Config {
-  options: Options;
+  options?: Options;
   error?: string;
 }
 
@@ -64,10 +64,10 @@ describe('metalsmith-shellcheck (standalone)', () => {
 
   it('should normalize CRLF in Markdown snippets', async () => {
     await expect(
-      Metalsmith('test/fixtures/markdown-pass')
+      Metalsmith('test/fixtures/passes')
         .use((files) => {
-          files['post.md'].contents = Buffer.from(
-            files['post.md'].contents.toString().replace(/\n/g, '\r\n'),
+          files['markdown.md'].contents = Buffer.from(
+            files['markdown.md'].contents.toString().replace(/\n/g, '\r\n'),
           );
         })
         .use(shellcheck())
@@ -76,7 +76,7 @@ describe('metalsmith-shellcheck (standalone)', () => {
   });
 
   it('should lint fences with highlight metadata', async () => {
-    const err = await Metalsmith('test/fixtures/shell-pass')
+    const err = await Metalsmith('test/fixtures/passes')
       .use((files) => {
         files['meta.md'] = { contents: Buffer.from('```bash{2}\nrm -rf $DIR/*\n```\n') };
       })
@@ -90,7 +90,7 @@ describe('metalsmith-shellcheck (standalone)', () => {
   });
 
   it('should fall back to contents line numbers for generated files', async () => {
-    const err = await Metalsmith('test/fixtures/shell-pass')
+    const err = await Metalsmith('test/fixtures/passes')
       .use((files) => {
         files['generated.md'] = { contents: Buffer.from('```bash\nrm -rf $DIR/*\n```\n') };
       })
