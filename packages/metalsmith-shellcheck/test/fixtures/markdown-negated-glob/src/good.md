@@ -1,0 +1,5 @@
+# Good
+
+```bash
+echo "hello"
+```

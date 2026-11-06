@@ -1,0 +1,1 @@
+{ "options": { "markdown": ["**/*.md", "!old/**"] } }

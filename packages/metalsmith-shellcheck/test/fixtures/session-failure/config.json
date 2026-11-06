@@ -1,0 +1,4 @@
+{
+  "options": {},
+  "error": "SC2086 (info): Double quote to prevent globbing and word splitting.\n  \n      4 | $ ls somewhere\n      5 | Changed directory\n    > 6 | $ rm -rf $DIR/*\n        |          ^"
+}

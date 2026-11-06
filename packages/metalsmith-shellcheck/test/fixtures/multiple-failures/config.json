@@ -1,0 +1,4 @@
+{
+  "options": {},
+  "error": "a.sh:\n\n  SC2086 (info): Double quote to prevent globbing and word splitting.\n  \n      1 | #!/usr/bin/env bash\n    > 2 | echo $1\n        |      ^\n      3 |\n\nb.sh:"
+}

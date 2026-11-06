@@ -1,0 +1,4 @@
+{
+  "options": {},
+  "error": "SC2086 (info): Double quote to prevent globbing and word splitting.\n  \n      3 | ```console\n      4 | $ docker run \\\n    > 5 |   -v $PWD:/workdir \\\n        |      ^\n      6 |   image\n      7 | Unable to find image (local)"
+}
