@@ -1,13 +1,15 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync } from 'fs';
 import Metalsmith from 'metalsmith';
-import { join } from 'path';
+import { createRequire } from 'module';
+import { basename, join } from 'path';
+import { pathToFileURL } from 'url';
 import { describe, expect, it } from 'vitest';
 
 // import assertDir from 'assert-dir-equal';
 import mermaid, { Options } from '../index.js';
 
 interface Config {
-  options: Options;
+  options?: Options;
   error?: string;
 }
 
@@ -46,9 +48,22 @@ const test = (dir: string, config: Config) => {
 
           // metalsmith-mermaid@0.0.10 blank rendering issue
           expect(builtContents).not.toContain('<g></g></svg>');
+
+          // Mermaid's fallback for icons that couldn't be found in any registered icon pack
+          expect(builtContents).not.toContain('>?</tspan>');
         });
     });
   });
+};
+
+// Options that can't be expressed in a static config.json, such as absolute file:// URLs
+const programmaticOptions: Record<string, Options> = {
+  'icon-packs-names-and-urls': {
+    iconPacksNamesAndUrls: {
+      logos: pathToFileURL(createRequire(import.meta.url).resolve('@iconify-json/logos/icons.json'))
+        .href,
+    },
+  },
 };
 
 describe('metalsmith-mermaid', () => {
@@ -57,9 +72,13 @@ describe('metalsmith-mermaid', () => {
       .map((f) => join(p, f))
       .filter((f) => statSync(f).isDirectory());
   dirs('test/fixtures').forEach((dir) => {
-    const config = existsSync(`${dir}/config.json`)
+    const config: Config = existsSync(`${dir}/config.json`)
       ? JSON.parse(readFileSync(`${dir}/config.json`).toString())
       : {};
+    const dirName = basename(dir);
+    if (programmaticOptions[dirName]) {
+      config.options = { ...config.options, ...programmaticOptions[dirName] };
+    }
     test(dir, config);
   });
 });

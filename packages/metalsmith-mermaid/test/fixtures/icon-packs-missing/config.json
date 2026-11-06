@@ -1,0 +1,6 @@
+{
+  "options": {
+    "iconPacks": ["@iconify-json/does-not-exist"]
+  },
+  "error": "Could not find icon pack \"@iconify-json/does-not-exist/icons.json\""
+}
