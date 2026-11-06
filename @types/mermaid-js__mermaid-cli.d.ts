@@ -8,6 +8,7 @@ declare module '@mermaid-js/mermaid-cli' {
     myCSS?: string | undefined;
     pdfFit?: boolean | undefined;
     svgId?: string | undefined;
+    iconPacks?: Record<string, URL> | undefined;
   };
   export type MarkdownImageProps = {
     url: string;

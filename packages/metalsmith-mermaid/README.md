@@ -73,6 +73,39 @@ Type: `object` Default:
 
 An object of [Mermaid options](https://github.com/mermaid-js/mermaid/blob/develop/docs/Setup.md#configuration).
 
+### `iconPacks` (optional)
+
+Type: `string[]` Default: `[]`
+
+A list of [Iconify](https://iconify.design/) icon pack npm package names to register with Mermaid to be used in diagrams.
+
+Icon packs must be installed separately, and they are resolved from your Metalsmith project's directory. Each package must expose an `icons.json` file, which every [`@iconify-json/*`](https://www.npmjs.com/search?q=%40iconify-json) package does. The icon pack's name (prefix) is read from that file.
+
+```javascript
+Metalsmith(__dirname)
+    .use(mermaid({
+        iconPacks: ['@iconify-json/logos'],
+    }))
+```
+
+### `iconPacksNamesAndUrls` (optional)
+
+Type: `object` Default: `{}`
+
+An object of icon pack names (prefixes) to URLs of [Iconify JSON](https://iconify.design/docs/types/iconify-json.html) files, for icon packs that aren't installed as npm packages. Use `file://` URLs to reference local files.
+
+```javascript
+import { pathToFileURL } from 'url';
+
+Metalsmith(__dirname)
+    .use(mermaid({
+        iconPacksNamesAndUrls: {
+            azure: 'https://example.com/azure-icons.json',
+            custom: pathToFileURL('./icons/custom.json').href,
+        },
+    }))
+```
+
 ## Examples
 
 Here are a few examples from the [official documentation](https://mermaid-js.github.io/mermaid/#/) to get an idea of what types of diagrams are possible.
