@@ -1,0 +1,1 @@
+<pre class="hljs" data-lang="myjson"><code class="language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;a&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">}</span></code></pre>

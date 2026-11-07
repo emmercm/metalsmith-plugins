@@ -1,0 +1,1 @@
+{ "options": { "aliases": { "notalanguage": "foo" } }, "error": "unknown highlight.js language: \"notalanguage\"" }

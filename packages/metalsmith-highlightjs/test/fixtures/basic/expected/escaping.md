@@ -1,0 +1,1 @@
+<pre class="hljs" data-lang="a&quot;b"><code class="language-a&quot;b"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript">&amp;amp;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>

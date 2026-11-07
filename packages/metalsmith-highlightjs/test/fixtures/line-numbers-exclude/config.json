@@ -1,0 +1,1 @@
+{ "options": { "lineNumbers": { "excludeLanguages": ["bash", "console"] }, "aliases": { "bash": ["myshell"] } } }
