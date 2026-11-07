@@ -103,4 +103,47 @@ describe('metalsmith-shellcheck (standalone)', () => {
     expect(String(err)).toContain('generated.md:');
     expect(String(err)).toContain('> 2 | rm -rf $DIR/*');
   });
+
+  it('should only apply front matter excludes to their own file', async () => {
+    const err = await Metalsmith('test/fixtures/markdown-frontmatter-exclude')
+      .use((files) => {
+        files['other.md'] = { contents: Buffer.from('```bash\nrm -rf $DIR/*\n```\n') };
+      })
+      .use(shellcheck())
+      .process()
+      .then(
+        () => undefined,
+        (e: unknown) => e,
+      );
+    expect(String(err)).toContain('other.md:');
+    expect(String(err)).not.toContain('index.md:');
+  });
+
+  it('should combine front matter excludes with the exclude option', async () => {
+    await expect(
+      Metalsmith('test/fixtures/passes')
+        .use((files) => {
+          files['combined.md'] = {
+            contents: Buffer.from('```bash\n[[ -f x ]] && echo $1\nx=`pwd`\necho "$x"\n```\n'),
+            shellcheck: { exclude: ['SC2086'] },
+          };
+        })
+        .use(shellcheck({ exclude: ['SC2006'] }))
+        .process(),
+    ).resolves.toBeDefined();
+  });
+
+  it('should reject invalid front matter excludes', async () => {
+    await expect(
+      Metalsmith('test/fixtures/passes')
+        .use((files) => {
+          files['invalid.md'] = {
+            contents: Buffer.from('```bash\necho hi\n```\n'),
+            shellcheck: { exclude: [{ code: 'SC2086' }] },
+          };
+        })
+        .use(shellcheck())
+        .process(),
+    ).rejects.toThrow('Invalid front matter "shellcheck.exclude"');
+  });
 });

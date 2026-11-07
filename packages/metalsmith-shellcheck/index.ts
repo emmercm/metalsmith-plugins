@@ -98,10 +98,15 @@ startWorker({ postMessage: (m) => parentPort.postMessage(m), onMessage: (l) => p
     );
   }
 
-  async lint(code: string, dialect: Dialect): Promise<ShellCheckComment[] | undefined> {
+  async lint(
+    code: string,
+    dialect: Dialect,
+    extraExclude: string[] = [],
+  ): Promise<ShellCheckComment[] | undefined> {
     const args = ['-f', 'json1', '-S', this.options.severity];
-    if (this.options.exclude.length) {
-      args.push('-e', this.options.exclude.join(','));
+    const exclude = [...new Set([...this.options.exclude, ...extraExclude])];
+    if (exclude.length) {
+      args.push('-e', exclude.join(','));
     }
     if (!code.startsWith('#!') && !/^[ \t]*#[ \t]*shellcheck[ \t][^\n]*\bshell=/m.test(code)) {
       args.push('-s', dialect);
@@ -180,9 +185,25 @@ const FENCE_DIALECTS: Record<string, Dialect> = {
   ksh: 'ksh',
 };
 
+// Codes a Markdown file excludes in its front matter, e.g. `shellcheck: { exclude: [SC2086] }`
+const frontmatterExclude = (file: Metalsmith.File): string[] => {
+  const exclude = (file.shellcheck as { exclude?: unknown } | undefined)?.exclude;
+  if (exclude === undefined) {
+    return [];
+  }
+  const codes = Array.isArray(exclude) ? exclude : [exclude];
+  if (!codes.every((code) => typeof code === 'string' || typeof code === 'number')) {
+    throw new Error(
+      `Invalid front matter "shellcheck.exclude", expected a list of ShellCheck codes: ${JSON.stringify(exclude)}`,
+    );
+  }
+  return codes.map(String);
+};
+
 const lintMarkdown = async (
   pool: ShellCheckWorkerPool,
   contents: string,
+  exclude: string[],
   debug: (...args: unknown[]) => void,
   filename: string,
 ): Promise<ShellCheckComment[]> => {
@@ -209,7 +230,7 @@ const lintMarkdown = async (
       if (!block.value.trim()) {
         return [];
       }
-      const comments = await pool.lint(block.value, block.dialect);
+      const comments = await pool.lint(block.value, block.dialect, exclude);
       if (comments === undefined) {
         debug('skipping unsupported shell in %s', filename);
         return [];
@@ -274,7 +295,13 @@ export default (options: Options = {}): Metalsmith.Plugin => {
           const contents = files[filename].contents.toString();
           try {
             const comments = await (markdown
-              ? lintMarkdown(workerPool, contents, debug, filename)
+              ? lintMarkdown(
+                  workerPool,
+                  contents,
+                  frontmatterExclude(files[filename]),
+                  debug,
+                  filename,
+                )
               : workerPool.lint(contents, 'bash'));
             if (comments === undefined) {
               debug('skipping unsupported shell: %s', filename);

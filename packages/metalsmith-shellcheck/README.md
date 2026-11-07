@@ -71,6 +71,17 @@ A list of ShellCheck codes to ignore. Providing this option replaces the default
 - `SC1091`: ShellCheck can't follow `source`d files because it runs without access to the filesystem
 - `SC2148`: the script is missing a shebang. The plugin already passes `-s` when no shell is declared, so this is rarely reported, and it's excluded in case a shell can't be inferred
 
+Markdown files can exclude more codes for just that file in their front matter, in addition to this list:
+
+```markdown
+---
+shellcheck:
+  exclude:
+    - SC2086
+---
+Page content
+```
+
 ### `severity` (optional)
 
 Type: `"error" | "warning" | "info" | "style"` Default: `"style"`
